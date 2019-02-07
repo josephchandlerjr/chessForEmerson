@@ -1,0 +1,37 @@
+h1 {
+  color: #bb324a;
+  text-align: center;
+
+}
+
+#board {
+    width: 600px;
+    height: 600px;
+    margin: 20px;
+    border: 25px solid #333;
+}
+.black {
+    float: left;
+    width: 75px;
+    height: 75px;
+    background-color: #f9a7cf;
+    font-size:50px;
+    text-align:center;
+    display: table-cell;
+    vertical-align:middle;
+}
+.white {
+    float: left;
+    width: 75px;
+    height: 75px;
+    background-color: #fff;
+    font-size:50px;
+    text-align:center;
+    display: table-cell;
+    vertical-align:middle;
+}
+.selected {
+  border: 2px solid red;
+  width: 71px;
+  height: 71px;
+}
