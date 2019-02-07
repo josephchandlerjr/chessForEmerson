@@ -182,6 +182,15 @@ function init(obj){
       }
     }
   }
+  /**
+  * creates move object to be logged
+  * @param {String} fromSquare chessnotation showing from square
+  * @param {String} toSquare chessnotation showing to square
+  * @param {String} captureSquare chessnotation showing capture square
+  * @param {String} pieceMoved string representing piece moved
+  * @param {String} pieceCaptured string representing piece captured
+  * @param {String} special object with special move information
+  */
   function Move(fromSquare, toSquare, captureSquare, pieceMoved, pieceCaptured,special){
     this.fromSquare = fromSquare;
     this.toSquare = toSquare;
