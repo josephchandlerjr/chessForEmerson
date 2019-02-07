@@ -168,6 +168,7 @@ const chessControl = (function(){
 
   return { // *****Public Methods*****
       init : init,
+      getBoard: getBoard
 
     };
 }());
