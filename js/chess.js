@@ -154,3 +154,56 @@ const chessControl = (function(){
 
     };
 }());
+
+const chessModel = (function(){   //Revealed Module Pattern
+// states holds array of strings representing the pieces on the board
+const startState = "brbnbbbqbkbbbnbr--bpbpbpbpbpbpbpbp--0000000000000000--0000000000000000--0000000000000000--0000000000000000--wpwpwpwpwpwpwpwp--wrwnwbwqwkwbwnwr";
+var states;
+var moves;
+var board;
+var control;
+
+function init(obj){
+  control = obj;
+  board = [[]];
+  moves = [];
+  states = [];
+  states.push(startState);
+  for (var i=0;i<startState.length;i+=2){
+    if (startState[i] === "-"){
+      board.push([]);
+      } else if (startState[i] === "0"){
+      board[board.length - 1].push("00");
+      } else {
+      board[board.length - 1].push(startState.slice(i,i+2));
+      }
+    }
+  }
+
+  function getMoves(){
+    return moves;
+  }
+
+  function logMove(move){
+    moves.push(move);
+    console.log(moves);
+  }
+  function toString(){
+    var result = "";
+    var piece = 0;
+    for (var row=0; row < board.length; row++){
+      if (row !== 0){result += "--";}
+      for (var col=0; col < board.length; col++){
+        piece = board[row][col];
+        result += piece;
+      }
+    }
+    return result;
+  }
+  return {   // *****Public Methods*****
+    toString : toString,
+    init : init,
+    logMove : logMove,
+    getMoves: getMoves
+  };
+}());
