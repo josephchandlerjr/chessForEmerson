@@ -116,5 +116,16 @@ const chessView = (function(){
 * @return {Object} object with public methods
 */
 const chessControl = (function(){
-  
+  var model;
+  var view;
+  var colorToMove;
+  var lastMove;
+  var canCastle;
+  var whiteInCheck;
+  var blackInCheck;
+
+  return { // *****Public Methods*****
+      //init : init,
+
+    };
 }());
