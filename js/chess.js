@@ -207,3 +207,6 @@ function init(obj){
     getMoves: getMoves
   };
 }());
+chessModel.init(chessControl);
+chessControl.init(chessModel, chessView);
+chessView.init(chessControl);
