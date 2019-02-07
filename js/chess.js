@@ -124,8 +124,26 @@ const chessControl = (function(){
   var whiteInCheck;
   var blackInCheck;
 
+  /**
+  * initializes state variables
+  * @param {Object} mObj Model Object
+  * @param {Object} vObj View Object
+  */
+  function init(mObj, vObj){
+    model = mObj;
+    view = vObj;
+    colorToMove = "w";
+    lastMove = new Move("00","00","00","00","00","00");
+    canCastle = {
+      w : {queenside: true, kingside: true},
+      b : {queenside: true, kingside: true}
+    };
+    whiteInCheck = false;
+    blackInCheck = false;
+  }
+
   return { // *****Public Methods*****
-      //init : init,
+      init : init,
 
     };
 }());
