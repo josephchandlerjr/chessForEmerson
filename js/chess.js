@@ -1,8 +1,11 @@
-const chessView = (function(){
+
   /**
-  * create the View object in MVC
+  * IIFE to create the View object in MVC
   * @return {Object} object with public methods
   */
+const chessView = (
+  function(){
+
   //HTML symbols for chess peices
   const blackRook   = "&#9820;";
   const blackKnight = "&#9822;";
@@ -21,11 +24,12 @@ const chessView = (function(){
   var lastClicked = null;
   var control;
 
+  /**
+  * listener for div elements that make up chess board
+  * @param {Event} evt
+  */
   function onClick(evt){
-    /**
-    * listener for div elements that make up chess board
-    * @param {Event} evt
-    */
+
     //HTML symbols for chess peices
     var id = evt.target.id;
     if (id === "board"){ return;}  // if is top elem div and not square
@@ -40,11 +44,12 @@ const chessView = (function(){
     }
   }
 
+  /**
+  * Sets control variable, appends divs to #board and calls update
+  * @param {Object} obj Control object in MVC
+  */
   function init(obj){
-    /**
-    * Sets control variable, appends divs to #board and calls update
-    * @param {Object} obj Control object in MVC
-    */
+
     control = obj;
     var board = document.querySelector("#board");
     board.innerHTML = "";
@@ -71,12 +76,11 @@ const chessView = (function(){
     update();
   }
 
-
-
+  /*
+  * Gets board from Control object and sets innerHTML of divs representing squares
+  */
   function update(){
-    /*
-    * Gets board from Control object and sets innerHTML of divs representing squares
-    */
+
     var squares = document.querySelectorAll("#board div");
     var rep = control.getBoard();
     var sqr = 0
