@@ -141,6 +141,13 @@ const chessControl = (function(){
     whiteInCheck = false;
     blackInCheck = false;
   }
+  /**
+  * retrieves board information from Model
+  * @return {String} board state as a string
+  */
+  function getBoard(){
+    return model.toString();
+  }
 
   return { // *****Public Methods*****
       init : init,
