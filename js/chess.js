@@ -182,6 +182,14 @@ function init(obj){
       }
     }
   }
+  function Move(fromSquare, toSquare, captureSquare, pieceMoved, pieceCaptured,special){
+    this.fromSquare = fromSquare;
+    this.toSquare = toSquare;
+    this.captureSquare = captureSquare;
+    this.pieceMoved = pieceMoved;
+    this.pieceCaptured = pieceCaptured;
+    this.special = special;
+  }
 
   function getMoves(){
     return moves;
