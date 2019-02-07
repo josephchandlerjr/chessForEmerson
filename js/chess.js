@@ -142,6 +142,23 @@ const chessControl = (function(){
     blackInCheck = false;
   }
   /**
+  * creates move object to be logged
+  * @param {String} fromSquare chessnotation showing from square
+  * @param {String} toSquare chessnotation showing to square
+  * @param {String} captureSquare chessnotation showing capture square
+  * @param {String} pieceMoved string representing piece moved
+  * @param {String} pieceCaptured string representing piece captured
+  * @param {String} special object with special move information
+  */
+  function Move(fromSquare, toSquare, captureSquare, pieceMoved, pieceCaptured,special){
+    this.fromSquare = fromSquare;
+    this.toSquare = toSquare;
+    this.captureSquare = captureSquare;
+    this.pieceMoved = pieceMoved;
+    this.pieceCaptured = pieceCaptured;
+    this.special = special;
+  }
+  /**
   * retrieves board information from Model
   * @return {String} board state as a string
   */
@@ -181,23 +198,6 @@ function init(obj){
       board[board.length - 1].push(startState.slice(i,i+2));
       }
     }
-  }
-  /**
-  * creates move object to be logged
-  * @param {String} fromSquare chessnotation showing from square
-  * @param {String} toSquare chessnotation showing to square
-  * @param {String} captureSquare chessnotation showing capture square
-  * @param {String} pieceMoved string representing piece moved
-  * @param {String} pieceCaptured string representing piece captured
-  * @param {String} special object with special move information
-  */
-  function Move(fromSquare, toSquare, captureSquare, pieceMoved, pieceCaptured,special){
-    this.fromSquare = fromSquare;
-    this.toSquare = toSquare;
-    this.captureSquare = captureSquare;
-    this.pieceMoved = pieceMoved;
-    this.pieceCaptured = pieceCaptured;
-    this.special = special;
   }
 
   function getMoves(){
