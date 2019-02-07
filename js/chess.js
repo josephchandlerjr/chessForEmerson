@@ -154,7 +154,10 @@ const chessControl = (function(){
 
     };
 }());
-
+/**
+* IIFE to create the Model object in MVC
+* @return {Object} object with public methods
+*/
 const chessModel = (function(){   //Revealed Module Pattern
 // states holds array of strings representing the pieces on the board
 const startState = "brbnbbbqbkbbbnbr--bpbpbpbpbpbpbpbp--0000000000000000--0000000000000000--0000000000000000--0000000000000000--wpwpwpwpwpwpwpwp--wrwnwbwqwkwbwnwr";
