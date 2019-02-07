@@ -3,8 +3,7 @@
   * IIFE to create the View object in MVC
   * @return {Object} object with public methods
   */
-const chessView = (
-  function(){
+const chessView = (function(){
 
   //HTML symbols for chess peices
   const blackRook   = "&#9820;";
@@ -111,4 +110,11 @@ const chessView = (
     update : update,
     init : init
   }
+}());
+/**
+* IIFE to create the Control object in MVC
+* @return {Object} object with public methods
+*/
+const chessControl = (function(){
+  
 }());
