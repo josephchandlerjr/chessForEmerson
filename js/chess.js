@@ -265,7 +265,10 @@ const chessControl = (function(){
   function getBoard(){
     return board.slice();
   }
-
+  /**
+  * return array of Move objects
+  * @return {Array} an array of Move objects
+  */
   function getMoves(){
     return moves;
   }
