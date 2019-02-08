@@ -177,22 +177,25 @@ const chessControl = (function(){
     am I in check, if so am I in checkmate
     */
     var currentBoard = getBoardasArray();
-    var validMovesForOpponent = getAllValidActions(opponentsColor, currentBoard);
-    var validMovesForActiveColor = getAllValidActions(activeColor);
+    var validMovesForOpponent = getAllValidMoves(opponentsColor, currentBoard); // we don't care if that puts opponent in check
+    var threatenedSquares = validMovesForOpponent.map(x => x[[1]]); // array of threatenedSquares
+    var validActionsForActiveColor = getAllValidActions(activeColor); // we do care about if it puts mover in check
     var activeColorKingLocation = findPiece(activeColor + "k");
-    // set amInCheck
-
     var activeColorInCheck = isThreatened(activeColorKingLocation, currentBoard);
-    if (activeColorInCheck){
-      make each move and check if still in check
+    if (activeColorInCheck && validActionsForActiveColor === []){ // are you in check mate ?!?!
+      alert("Check Mate");
+    } else {
+      // is the move in the list of valid moves
+      for (var i=0; i < validActionsForActiveColor.length; i++){
+        if (from === validActionsForActiveColor[i][0] &&
+            to === validActionsForActiveColor[i][1]) {
+              alert("here we make this move");
+            }
+      }
+      return false;
     }
-    /*
-    can I move this way
-    move
-    am I in check if so can't do this, go back
-    is my opponent in check, if so tell her she's in check
-    */
   }
+
   function getBoardasArray(){
     return model.getBoard();
   }
