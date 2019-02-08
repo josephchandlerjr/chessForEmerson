@@ -177,8 +177,8 @@ const chessControl = (function(){
     am I in check, if so am I in checkmate
     */
     var currentBoard = getBoardasArray();
-    var validMovesForOpponent = getAllValidMoves(opponentsColor);
-    var validMovesForMe = getAllValidMoves(activeColor);
+    var validMovesForOpponent = getAllValidActions(opponentsColor, currentBoard);
+    var validMovesForActiveColor = getAllValidActions(activeColor);
     var activeColorKingLocation = findPiece(activeColor + "k");
     // set amInCheck
 
@@ -198,7 +198,15 @@ const chessControl = (function(){
   }
   function isThreatened(location, board){}
   function logMove(moveObj, newBoard){}
-  function getAllValidMoves(color)}{}
+  function getAllValidMoves(color,board){
+    // simply returns movements that look proper without though of check status
+    // use findPiece(pieceId); to get king location;
+    // use isThreatened(activeColorKingLocation, currentBoard);
+  }
+  function getAllValidActions(color,board)}{
+    // this should exclude moves where mover puts own king in checkmate
+    // get copy of board via getBoard, move and then asssess TeufelKreis recursion?
+  }
   function findPiece(pieceId){}
 
 
