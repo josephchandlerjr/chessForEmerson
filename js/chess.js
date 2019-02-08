@@ -241,8 +241,19 @@ const chessControl = (function(){
   /**
   * get all possible squares on chess board in chess notation
   * @return {Array} array of strings
-  /*
-  function getAllSquares()
+  */
+  function getAllSquares(){
+    var columns = "abcdefgh";
+    var rows = "12345678";
+    var result = [];
+    for (var col=0; col < columns.length;col++){
+      for (var row=0; row < rows.length;row++){
+        result.push(columns[col]+rows[row]);
+      }
+    }
+    return result;
+  }
+
   /**
   * get all moves possible square pairings
   * @param {Array} board to evaluate
