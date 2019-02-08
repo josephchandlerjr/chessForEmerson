@@ -299,6 +299,12 @@ const chessControl = (function(){
     }
   }
 
+  function translateChessNotationToIndices(location) { // for example turns a1 to row 7 col 0
+    var col = abcdefgh".indexOf(location[0]);
+    var row =  8 - Number(location[1]);
+    return [row, col];
+  }
+
   return { // *****Public Methods*****
       init : init,
       getBoardAsString: getBoardAsString,
