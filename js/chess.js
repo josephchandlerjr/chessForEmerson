@@ -288,7 +288,16 @@ const chessControl = (function(){
   * @param {Array} board array of arrays representing board
   * @return {String} location this king on board as chessNotation
   */
-  function findKing(color, board){}
+  function findKing(color, board){
+    var target = color + "k";
+    for (var row=0;row < board.length; row++){
+      for (var col=0;col < board.length; col++){
+        if (target === board[row][col]){
+          return translateIndicesToChessNotation([row,col]);
+        }
+      }
+    }
+  }
 
   return { // *****Public Methods*****
       init : init,
