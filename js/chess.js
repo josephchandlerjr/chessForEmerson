@@ -188,10 +188,16 @@ const chessControl = (function(){
     am I in check, if so am I in checkmate
     */
     var currentBoard = getBoardasArray();
-    alert(`${from}, ${to}`);
     var validMovesForOpponent = getAllValidMoves(opponentsColor, currentBoard); // we don't care if that puts opponent in check
+    console.log(result);
+    var threatenedSquares = validMovesForOpponent.map(function(obj){
+      if (obj.captureSquare != null){
+        return obj.captureSquare;
+      }
+      }); // array of threatenedSquares
+    threatenedSquares = threatenedSquares.filter(x => x != null);
+    console.log(threatenedSquares);
     return;
-    var threatenedSquares = validMovesForOpponent.map(x => x[[1]]); // array of threatenedSquares
     var validActionsForActiveColor = getAllValidActions(activeColor); // we do care about if it puts mover in check
     var activeColorKingLocation = findKing(activeColor);
     var activeColorInCheck = isThreatened(activeColorKingLocation, currentBoard);
@@ -236,14 +242,18 @@ const chessControl = (function(){
   * with no regard for check status
   * @param {String} color color of pieces to move
   * @param {Array} board to evaluate
-  * @return {Array} array of from, to pairs
+  * @return {Array} array of move objects
   */
   function getAllValidMoves(color,board){
     // simply returns movements that look proper without thought of check status
     // and don't worry about special moves yet.
+    var result = [];
     var fromToPairs = getAllSquarePairings();
-    var validMoves = fromToPairs.filter(x => isValidNormalMove(x,color, board));
-    //return fromToPairs.filter(isValidMove)
+    fromToPairs.forEach(function(pair){
+      var move = isValidNormalMove(pair, color, board);
+      if (move){ result.push(move); }
+    });
+    return result
   }
   /**
   * filter out all but valid normal moves, disregarding special moves and
@@ -265,36 +275,35 @@ const chessControl = (function(){
     }
     //switch(fromPiece.getKind()){
     switch(fromPiece[1]){
-      case "p": return isValidPawnMove(  from, fromPiece, to, toPiece, activeColor);break;
-      case "r": return isValidRookMove(  from, fromPiece, to, toPiece, activeColor);break;
-      case "n": return isValidKnightMove(from, fromPiece, to, toPiece, activeColor);break;
-      case "b": return isValidBishopMove(from, fromPiece, to, toPiece, activeColor);break;
-      case "q": return isValidQueenMove( from, fromPiece, to, toPiece, activeColor);break;
-      case "k": return isValidKingMove(  from, fromPiece, to, toPiece, activeColor);break;
+      case "p": return isValidPawnMove(  from, fromPiece, to, toPiece, activeColor, board);break;
+      case "r": return isValidRookMove(  from, fromPiece, to, toPiece, activeColor, board);break;
+      case "n": return isValidKnightMove(from, fromPiece, to, toPiece, activeColor, board);break;
+      case "b": return isValidBishopMove(from, fromPiece, to, toPiece, activeColor, board);break;
+      case "q": return isValidQueenMove( from, fromPiece, to, toPiece, activeColor, board);break;
+      case "k": return isValidKingMove(  from, fromPiece, to, toPiece, activeColor, board);break;
     }
     return false;
   }
 
-  function isValidPawnMove(from, fromPiece, to, toPiece, activeColor){ // arguments are strings like a2 or h7
+  function isValidPawnMove( from, fromPiece, to, toPiece, activeColor, board){ // arguments are strings like a2 or h7
     var activeColor = fromPiece[0];
-    var toPiece = getPieceOnSquare(to);
     var direction = activeColor === "w" ? "n" : "s";
 
     result = false;
     // advance one square
     if(to === getAdjacentSquare(from, direction)){
       if (toPiece !== "00"){ return false;} else {
-        result = new Move(from, to, to, fromPiece, getPieceOnSquare(to), null);//
+        result = new Move(from, to, null, fromPiece, toPiece, null);//
       }
     }
     // advance two squares
     if(to === getNonAdjacentSquare(from, [direction,direction])){
       var squareInBetween = getAdjacentSquare(from, direction);
-      var pieceInBetween = getPieceOnSquare(squareInBetween);
+      var pieceInBetween = getPieceOnSquare(squareInBetween, board);
       if ( (from[1] !== "2" && from[1] !== "7") || pieceInBetween !== "00" || toPiece !== "00"){
         return false;
       } else {
-        result = new Move(from, to, to, fromPiece, getPieceOnSquare(to), null);
+        result = new Move(from, to, null, fromPiece, toPiece, null);
       }
     }
     //diagonal capture
@@ -323,11 +332,11 @@ const chessControl = (function(){
     return result;
   }
 
-  function isValidRookMove(from, to, activeColor){return true;}
-  function isValidKnightMove(from, to, activeColor){return true;}
-  function isValidBishopMove(from, to, activeColor){return true;}
-  function isValidQueenMove(from, to, activeColor){return true;}
-  function isValidKingMove(from, to, activeColor){return true;}
+  function isValidRookMove(from, fromPiece, to, toPiece, activeColor,board){return false;}
+  function isValidKnightMove(from, fromPiece, to, toPiece, activeColor,board){return false;}
+  function isValidBishopMove(from, fromPiece, to, toPiece, activeColor,board){return false;}
+  function isValidQueenMove(from, fromPiece, to, toPiece, activeColor,board){return false;}
+  function isValidKingMove(from, fromPiece, to, toPiece, activeColor,board){return false;}
   /**
   * takes chess notation and returns piece on that square
   * @param {String} square chess notatino for a square
@@ -399,6 +408,10 @@ const chessControl = (function(){
       }
     }
   }
+
+  function chessNotationColToIndex(col){
+    return "abcdefgh".indexOf(col);
+  }
   /**
   * convert from chess notation to row, col indices
   * @param {String} location location to be converted
@@ -419,6 +432,87 @@ const chessControl = (function(){
     var col = "abcdefgh"[location[1]];
     return col + row;
   }
+
+// functions to find adjacent squares
+function north(square){
+  var col = square[0];
+  var row = square[1];
+  newRow = String(Number(row) + 1);
+  return col + newRow;
+}
+function south(square){
+  var col = square[0];
+  var row = square[1];
+  newRow = String(Number(row) -1);
+  return col + newRow;
+}
+function east(square){
+  var col = square[0];
+  var row = square[1];
+  var columns = "xabcdefghx";
+  newCol = columns[chessNotationColToIndex(col) + 2];
+  return newCol + row;
+}
+function west(square){
+  var col = square[0];
+  var row = square[1];
+  var columns = "xabcdefghx";
+  newCol = columns[chessNotationColToIndex(col)];
+  return newCol + row;
+}
+
+function getAdjacentSquare(square, direction){  // example a1, ne
+  /*
+  returns null if move is off the board
+  */
+  var col = square[0];
+  var row = square[1];
+
+  switch(direction){
+      case "n" :  newSquare = north(square);
+                  break;
+      case "ne":  newSquare = east(north(square));
+                  break;
+      case "e" :  newSquare = east(square);
+                  break;
+      case "se":  newSquare = east(south(square));
+                  break;
+      case "s" :  newSquare = south(square);
+                  break;
+      case "sw":  newSquare = west(south(square));
+                  break;
+      case "w" :  newSquare = west(square);
+                  break;
+      case "nw":  newSquare = west(north(square));
+                  break;
+  }
+  if (newSquare[0] !== "x" &&
+      Number(newSquare[1]) < 9 &&
+      Number(newSquare[1]) > 0){
+      return newSquare;
+    } else {
+      return null;
+    }
+}
+function getNonAdjacentSquare(square, directions){// example - f3, ["n","w"]
+  var currentSquare = square;
+  for(var i=0;i < directions.length;i++){
+    currentSquare = getAdjacentSquare(currentSquare, directions[i]);
+    if (currentSquare === null){ return null;}
+  }
+  return currentSquare;
+}
+
+function clearPath(location, target, direction, board){
+  // return true if moving direction leads to target without pieces in between
+  while (true) {
+    location = getAdjacentSquare(location, direction);
+    if (location === target){ return true;}
+    if (location === null || getPieceOnSquare(location, board) !== "00") {
+      return false;
+    }
+  }
+}
 
   return { // *****Public Methods*****
       init : init,
