@@ -272,11 +272,18 @@ const chessControl = (function(){
   function getMoves(){
     return moves;
   }
-
+  /**
+  * pushes Move object onto moves
+  * @param {Object} move a Move objects
+  */
   function logMove(move){
     moves.push(move);
     console.log(moves);
   }
+  /**
+  * returns string representation of board
+  * @return {String} string representing board
+  */
   function toString(){
     var result = "";
     var piece = 0;
