@@ -380,7 +380,15 @@ const chessControl = (function(){
     }
     return false;
   }
-  function isValidKingMove(from, fromPiece, to, toPiece, activeColor,board){return false;}
+  function isValidKingMove(from, fromPiece, to, toPiece, activeColor,board){
+    var directions = ["n","ne","e","se","s","sw","w","nw"];
+    for (var i=0; i < directions.length; i++){
+      var target = getAdjacentSquare(from, directions[i]);
+      if (target === to){
+        return new Move(from, to, to, fromPiece, toPiece, null);
+      }
+    }
+  }
   /**
   * takes chess notation and returns piece on that square
   * @param {String} square chess notatino for a square
