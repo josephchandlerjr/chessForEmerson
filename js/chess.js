@@ -258,7 +258,10 @@ const chessControl = (function(){
         }
     }
   }
-
+  /**
+  * returns a copy of the board as an array using slice
+  * @return {Array} copy of board as an array
+  */
   function getBoard(){
     return board.slice();
   }
