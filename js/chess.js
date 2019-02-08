@@ -263,6 +263,7 @@ const chessControl = (function(){
   * @param {Array} board array of arrays representing the board
   */
   function isValidNormalMove(fromToPairs, activeColor, board){
+    console.log(activeColor);
     var from = fromToPairs[0];
     var to = fromToPairs[1];
     if (from === to){ return false;} // didn't go anywhere
@@ -342,7 +343,26 @@ const chessControl = (function(){
       }
       return false;
   }
-  function isValidKnightMove(from, fromPiece, to, toPiece, activeColor,board){return false;}
+  function isValidKnightMove(from, fromPiece, to, toPiece, activeColor, board){
+      var directions = [
+        ["n","n","w"],
+        ["n","n","e"],
+        ["s","s","w"],
+        ["s","s","e"],
+        ["w","w","n"],
+        ["w","w","s"],
+        ["e","e","n"],
+        ["e","e","s"]
+      ];
+      for (var i=0; i < directions.length;i++){
+        var newLocation = from;
+        newLocation = getNonAdjacentSquare(newLocation, directions[i]);
+        if (newLocation === to){
+          return new Move(from, to, to, fromPiece, toPiece, null);
+        }
+      }
+      return false;
+  }
   function isValidBishopMove(from, fromPiece, to, toPiece, activeColor,board){return false;}
   function isValidQueenMove(from, fromPiece, to, toPiece, activeColor,board){return false;}
   function isValidKingMove(from, fromPiece, to, toPiece, activeColor,board){return false;}
