@@ -298,17 +298,28 @@ const chessControl = (function(){
       }
     }
   }
-
+  /**
+  * convert from chess notation to row, col indices
+  * @param {String} location location to be converted
+  * @return {Array} converted to from values
+  */
   function translateChessNotationToIndices(location) { // for example turns a1 to row 7 col 0
     var col = "abcdefgh".indexOf(location[0]);
     var row =  8 - Number(location[1]);
     return [row, col];
   }
+  /**
+  * convert from row, col indices to chess notation
+  * @param {Array} location from, to pair to be converted
+  * @return {String} converted chessNotation
+  */
   function translateIndicesToChessNotation(location){
     var row = String(8 - location[0]);
     var col = "abcdefgh"[location[1]];
     return col + row;
   }
+  var x = get allSquares();
+  console.log(x);
 
   return { // *****Public Methods*****
       init : init,
