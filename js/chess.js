@@ -374,7 +374,8 @@ const chessControl = (function(){
     return false;
   }
   function isValidQueenMove(from, fromPiece, to, toPiece, activeColor, board){
-    if (isValidRookMove(from, to, activeColor) || isValidBishopMove(from, to, activeColor)){
+    if (isValidRookMove(from, fromPiece, to, toPiece, activeColor, board) ||
+        isValidBishopMove(from, fromPiece, to, toPiece, activeColor, board)){
       return new Move(from, to, to, fromPiece, toPiece, null);
     }
     return false;
