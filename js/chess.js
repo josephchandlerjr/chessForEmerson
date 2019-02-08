@@ -189,8 +189,8 @@ const chessControl = (function(){
     */
     var currentBoard = getBoardasArray();
     alert(`${from}, ${to}`);
-    return;
     var validMovesForOpponent = getAllValidMoves(opponentsColor, currentBoard); // we don't care if that puts opponent in check
+    return;
     var threatenedSquares = validMovesForOpponent.map(x => x[[1]]); // array of threatenedSquares
     var validActionsForActiveColor = getAllValidActions(activeColor); // we do care about if it puts mover in check
     var activeColorKingLocation = findKing(activeColor);
@@ -245,6 +245,100 @@ const chessControl = (function(){
     var validMoves = fromToPairs.filter(x => isValidNormalMove(x,color, board));
     //return fromToPairs.filter(isValidMove)
   }
+  /**
+  * filter out all but valid normal moves, disregarding special moves and
+  * check status
+  * @param {Array} fromToPairs Array of arrays with from, to pairings
+  * @param {String} activeColor color to move
+  * @param {Array} board array of arrays representing the board
+  */
+  function isValidNormalMove(fromToPairs, activeColor, board){
+    var from = fromToPairs[0];
+    var to = fromToPairs[1];
+    if (from === to){ return false;} // didn't go anywhere
+    var fromPiece = getPieceOnSquare(from, board);
+    var toPiece = getPieceOnSquare(to, board);
+    if (fromPiece === "00"){return false;} //need to move something
+    if (fromPiece[0] !== activeColor){ return false;} // is it your turn?
+    if ( (toPiece !== "00") && (toPiece[0] === fromPiece[0]) ){  //no friendly fire
+      return false;
+    }
+    //switch(fromPiece.getKind()){
+    switch(fromPiece[1]){
+      case "p": return isValidPawnMove(  from, fromPiece, to, toPiece, activeColor);break;
+      case "r": return isValidRookMove(  from, fromPiece, to, toPiece, activeColor);break;
+      case "n": return isValidKnightMove(from, fromPiece, to, toPiece, activeColor);break;
+      case "b": return isValidBishopMove(from, fromPiece, to, toPiece, activeColor);break;
+      case "q": return isValidQueenMove( from, fromPiece, to, toPiece, activeColor);break;
+      case "k": return isValidKingMove(  from, fromPiece, to, toPiece, activeColor);break;
+    }
+    return false;
+  }
+
+  function isValidPawnMove(from, fromPiece, to, toPiece, activeColor){ // arguments are strings like a2 or h7
+    var activeColor = fromPiece[0];
+    var toPiece = getPieceOnSquare(to);
+    var direction = activeColor === "w" ? "n" : "s";
+
+    result = false;
+    // advance one square
+    if(to === getAdjacentSquare(from, direction)){
+      if (toPiece !== "00"){ return false;} else {
+        result = new Move(from, to, to, fromPiece, getPieceOnSquare(to), null);//
+      }
+    }
+    // advance two squares
+    if(to === getNonAdjacentSquare(from, [direction,direction])){
+      var squareInBetween = getAdjacentSquare(from, direction);
+      var pieceInBetween = getPieceOnSquare(squareInBetween);
+      if ( (from[1] !== "2" && from[1] !== "7") || pieceInBetween !== "00" || toPiece !== "00"){
+        return false;
+      } else {
+        result = new Move(from, to, to, fromPiece, getPieceOnSquare(to), null);
+      }
+    }
+    //diagonal capture
+    var diagDirections = ["w","e"];
+    for (var i=0;i < diagDirections.length; i++){
+    //capture west or east
+      var diagDirection = diagDirections[i];
+      if(to === getAdjacentSquare(from, direction + diagDirection)){
+        if(toPiece !== "00"){
+          result =  new Move(from, to, to, fromPiece, getPieceOnSquare(to), null);
+        }
+        if(lastMove.pieceMoved[1] === "p" &&
+           lastMove.toSquare === getAdjacentSquare(from, diagDirection) &&
+           lastMove.fromSquare === getNonAdjacentSquare(from,[diagDirection,direction,direction])){
+             var captureSquare = getAdjacentSquare(from, diagDirection);
+             result = new Move(from, to, captureSquare, fromPiece, getPieceOnSquare(captureSquare), null);
+        }
+      }
+    }
+    // no valid moves so false
+    if (result){
+      if (to[1] === "8" || to[1] === "1"){
+        result.special = {description: "promotion",location: translateChessNotation(to),promoteTo:activeColor + "q"};
+      }
+    }
+    return result;
+  }
+
+  function isValidRookMove(from, to, activeColor){return true;}
+  function isValidKnightMove(from, to, activeColor){return true;}
+  function isValidBishopMove(from, to, activeColor){return true;}
+  function isValidQueenMove(from, to, activeColor){return true;}
+  function isValidKingMove(from, to, activeColor){return true;}
+  /**
+  * takes chess notation and returns piece on that square
+  * @param {String} square chess notatino for a square
+  * @param {Array} board
+  * @return {String} representation of piece
+  */
+  function getPieceOnSquare(square, board){
+    var indices = translateChessNotationToIndices(square);
+    return board[indices[0]][indices[1]];
+  }
+
   /**
   * get all possible squares on chess board in chess notation
   * @return {Array} array of strings
