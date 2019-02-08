@@ -201,6 +201,7 @@ const chessControl = (function(){
         if (from === validActionsForActiveColor[i][0] &&
             to === validActionsForActiveColor[i][1]) {
               alert("here we make this move");
+              executeMove()
               return true;
             }
       }
@@ -236,8 +237,26 @@ const chessControl = (function(){
   */
   function getAllValidMoves(color,board){
     // simply returns movements that look proper without though of check status
-    // use findKing(color); to get king location;
-    // use isThreatened(activeColorKingLocation, currentBoard);
+  }
+  /**
+  * get all possible squares on chess board in chess notation
+  * @return {Array} array of strings
+  /*
+  function getAllSquares()
+  /**
+  * get all moves possible square pairings
+  * @param {Array} board to evaluate
+  * @return {Array} array of arrays of all possible square pairings
+  */
+  function getAllSquarePairings(board){
+    var squares = getAllSquares();
+    var result = [];
+    for (var f=0; f < squares.length;f++){
+      for (var t=0; t < squares.length;t++){
+        result.push([ squares[f],squares[t] ]);
+      }
+    }
+    return result;
   }
   /**
   * filter out moves that appear valid but are not because the move would
@@ -249,7 +268,8 @@ const chessControl = (function(){
   */
   function getAllValidActions(color,board, validMoves){
     // this should exclude moves where mover puts own king in checkmate
-    // get copy of board via getBoard, move and then asssess TeufelKreis recursion?
+    // use findKing(color); to get king location;
+    // use isThreatened(activeColorKingLocation, currentBoard);
   }
   /**
   * find location of a particular king
@@ -258,7 +278,6 @@ const chessControl = (function(){
   * @return {String} location this king on board as chessNotation
   */
   function findKing(color, board){}
-
 
   return { // *****Public Methods*****
       init : init,
