@@ -159,6 +159,12 @@ const chessControl = (function(){
     this.special = special;
   }
   /**
+  * toggles colorToMove between "w" and "b"
+  */
+  function toggleColorToMove(){
+    colorToMove = colorToMove === "w" ? "b" : "w";
+  }
+  /**
   * retrieves board information from Model
   * @return {String} board state as a string
   */
