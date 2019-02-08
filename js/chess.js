@@ -373,7 +373,12 @@ const chessControl = (function(){
     }
     return false;
   }
-  function isValidQueenMove(from, fromPiece, to, toPiece, activeColor,board){return false;}
+  function isValidQueenMove(from, fromPiece, to, toPiece, activeColor, board){
+    if (isValidRookMove(from, to, activeColor) || isValidBishopMove(from, to, activeColor)){
+      return new Move(from, to, to, fromPiece, toPiece, null);
+    }
+    return false;
+  }
   function isValidKingMove(from, fromPiece, to, toPiece, activeColor,board){return false;}
   /**
   * takes chess notation and returns piece on that square
