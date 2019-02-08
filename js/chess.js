@@ -165,7 +165,12 @@ const chessControl = (function(){
   function getBoardAsString(){
     return model.toString();
   }
-
+  /**
+  * determins if move is valid and if so executes moves
+  * @param {String} from square moving piece from in in chess notation
+  * @param {String} to square moving piece to in in chess notation
+  * @return {Boolean} true if move executed else false;
+  */
   function requestMove(from, to){
     /*
     what color am
@@ -190,6 +195,7 @@ const chessControl = (function(){
         if (from === validActionsForActiveColor[i][0] &&
             to === validActionsForActiveColor[i][1]) {
               alert("here we make this move");
+              return true;
             }
       }
       return false;
@@ -206,7 +212,7 @@ const chessControl = (function(){
     // use findPiece(pieceId); to get king location;
     // use isThreatened(activeColorKingLocation, currentBoard);
   }
-  function getAllValidActions(color,board)}{
+  function getAllValidActions(color,board){
     // this should exclude moves where mover puts own king in checkmate
     // get copy of board via getBoard, move and then asssess TeufelKreis recursion?
   }
