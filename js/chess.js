@@ -185,7 +185,7 @@ const chessControl = (function(){
     var validMovesForOpponent = getAllValidMoves(opponentsColor, currentBoard); // we don't care if that puts opponent in check
     var threatenedSquares = validMovesForOpponent.map(x => x[[1]]); // array of threatenedSquares
     var validActionsForActiveColor = getAllValidActions(activeColor); // we do care about if it puts mover in check
-    var activeColorKingLocation = findPiece(activeColor + "k");
+    var activeColorKingLocation = findKing(activeColor);
     var activeColorInCheck = isThreatened(activeColorKingLocation, currentBoard);
     if (activeColorInCheck && validActionsForActiveColor === []){ // are you in check mate ?!?!
       alert("Check Mate");
@@ -201,22 +201,57 @@ const chessControl = (function(){
       return false;
     }
   }
-
+  /**
+  * gets current state of board as an Array
+  * @return {Array} array of arrays representing board
+  */
   function getBoardasArray(){
     return model.getBoard();
   }
+  /**
+  * indicates if a particular location on a board is threatened
+  * @param {String} location to evaluate
+  * @param {Array} board to evaluate
+  * @return {Boolean} true if location is threatened else false
+  */
   function isThreatened(location, board){}
+  /**
+  * asks Model to log move and update board
+  * @param {Object} moveObj Move object to log
+  * @param {Array} board new state of board
+  */
   function logMove(moveObj, newBoard){}
+  /**
+  * get all moves that are valid based on movement of piece
+  * with no regard for check status
+  * @param {String} color color of pieces to move
+  * @param {Array} board to evaluate
+  * @return {Array} array of from, to pairs
+  */
   function getAllValidMoves(color,board){
     // simply returns movements that look proper without though of check status
-    // use findPiece(pieceId); to get king location;
+    // use findKing(color); to get king location;
     // use isThreatened(activeColorKingLocation, currentBoard);
   }
-  function getAllValidActions(color,board){
+  /**
+  * filter out moves that appear valid but are not because the move would
+  * put the mover in check
+  * @param {String} color color of pieces to move
+  * @param {Array} board to evaluate
+  * @param {Array} validMoves array of from, to pairs that valid movement-wise
+  * @return {Array} array of arrays of valid from, to pairs
+  */
+  function getAllValidActions(color,board, validMoves){
     // this should exclude moves where mover puts own king in checkmate
     // get copy of board via getBoard, move and then asssess TeufelKreis recursion?
   }
-  function findPiece(pieceId){}
+  /**
+  * find location of a particular king
+  * @oaram {String} color "w" or "b"
+  * @param {Array} board array of arrays representing board
+  * @return {String} location this king on board as chessNotation
+  */
+  function findKing(color, board){}
 
 
   return { // *****Public Methods*****
@@ -230,7 +265,7 @@ const chessControl = (function(){
   * IIFE to create the Model object in MVC
   * @return {Object} object with public methods
   */
-  const chessModel = (function(){   //Revealed Module Pattern
+const chessModel = (function(){   //Revealed Module Pattern
   // states holds array of strings representing the pieces on the board
   const startState = "brbnbbbqbkbbbnbr--bpbpbpbpbpbpbpbp--0000000000000000--0000000000000000--0000000000000000--0000000000000000--wpwpwpwpwpwpwpwp--wrwnwbwqwkwbwnwr";
   var states;
