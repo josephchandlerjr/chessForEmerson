@@ -37,7 +37,7 @@ const chessView = (function(){
       lastClicked.classList.add("selected");
     } else {
       lastClicked.classList.toggle("selected");
-      control.movePiece(lastClicked.id, id);
+      control.requestMove(lastClicked.id, id);
       update();
       lastClicked = null;
     }
@@ -81,7 +81,7 @@ const chessView = (function(){
   function update(){
 
     var squares = document.querySelectorAll("#board div");
-    var rep = control.getBoard();
+    var rep = control.getBoardAsString();
     var sqr = 0
     for (var i=0;i<rep.length;i+=2){
       if (rep[i] !== "-"){
@@ -162,43 +162,88 @@ const chessControl = (function(){
   * retrieves board information from Model
   * @return {String} board state as a string
   */
-  function getBoard(){
+  function getBoardAsString(){
     return model.toString();
   }
 
+  function requestMove(from, to){
+    /*
+    what color am
+    what color is my opponent
+    */
+    var activeColor = colorToMove;
+    var opponentsColor = activeColor === "w" ? "b" : "w";
+    /*
+    am I in check, if so am I in checkmate
+    */
+    var currentBoard = getBoardasArray();
+    var validMovesForOpponent = getAllValidMoves(opponentsColor);
+    var validMovesForMe = getAllValidMoves(activeColor);
+    var activeColorKingLocation = findPiece(activeColor + "k");
+    // set amInCheck
+
+    var activeColorInCheck = isThreatened(activeColorKingLocation, currentBoard);
+    if (activeColorInCheck){
+      make each move and check if still in check
+    }
+    /*
+    can I move this way
+    move
+    am I in check if so can't do this, go back
+    is my opponent in check, if so tell her she's in check
+    */
+  }
+  function getBoardasArray(){
+    return model.getBoard();
+  }
+  function isThreatened(location, board){}
+  function logMove(moveObj, newBoard){}
+  function getAllValidMoves(color)}{}
+  function findPiece(pieceId){}
+
+
   return { // *****Public Methods*****
       init : init,
-      getBoard: getBoard
+      getBoardAsString: getBoardAsString,
+      requestMove: requestMove
 
     };
 }());
-/**
-* IIFE to create the Model object in MVC
-* @return {Object} object with public methods
-*/
-const chessModel = (function(){   //Revealed Module Pattern
-// states holds array of strings representing the pieces on the board
-const startState = "brbnbbbqbkbbbnbr--bpbpbpbpbpbpbpbp--0000000000000000--0000000000000000--0000000000000000--0000000000000000--wpwpwpwpwpwpwpwp--wrwnwbwqwkwbwnwr";
-var states;
-var moves;
-var board;
-var control;
+  /**
+  * IIFE to create the Model object in MVC
+  * @return {Object} object with public methods
+  */
+  const chessModel = (function(){   //Revealed Module Pattern
+  // states holds array of strings representing the pieces on the board
+  const startState = "brbnbbbqbkbbbnbr--bpbpbpbpbpbpbpbp--0000000000000000--0000000000000000--0000000000000000--0000000000000000--wpwpwpwpwpwpwpwp--wrwnwbwqwkwbwnwr";
+  var states;
+  var moves;
+  var board;
+  var control;
 
-function init(obj){
-  control = obj;
-  board = [[]];
-  moves = [];
-  states = [];
-  states.push(startState);
-  for (var i=0;i<startState.length;i+=2){
-    if (startState[i] === "-"){
-      board.push([]);
-      } else if (startState[i] === "0"){
-      board[board.length - 1].push("00");
-      } else {
-      board[board.length - 1].push(startState.slice(i,i+2));
-      }
+  /**
+  * Sets initial state variables
+  * @param {Object} obj Control object in MVC
+  */
+  function init(obj){
+    control = obj;
+    board = [[]];
+    moves = [];
+    states = [];
+    states.push(startState);
+    for (var i=0;i<startState.length;i+=2){
+      if (startState[i] === "-"){
+        board.push([]);
+        } else if (startState[i] === "0"){
+        board[board.length - 1].push("00");
+        } else {
+        board[board.length - 1].push(startState.slice(i,i+2));
+        }
     }
+  }
+
+  function getBoard(){
+    return board.slice();
   }
 
   function getMoves(){
