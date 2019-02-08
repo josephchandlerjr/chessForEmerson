@@ -188,6 +188,8 @@ const chessControl = (function(){
     am I in check, if so am I in checkmate
     */
     var currentBoard = getBoardasArray();
+    alert(`${from}, ${to}`);
+    return;
     var validMovesForOpponent = getAllValidMoves(opponentsColor, currentBoard); // we don't care if that puts opponent in check
     var threatenedSquares = validMovesForOpponent.map(x => x[[1]]); // array of threatenedSquares
     var validActionsForActiveColor = getAllValidActions(activeColor); // we do care about if it puts mover in check
@@ -202,6 +204,7 @@ const chessControl = (function(){
             to === validActionsForActiveColor[i][1]) {
               alert("here we make this move");
               executeMove()
+              toggleColorToMove();
               return true;
             }
       }
@@ -236,7 +239,11 @@ const chessControl = (function(){
   * @return {Array} array of from, to pairs
   */
   function getAllValidMoves(color,board){
-    // simply returns movements that look proper without though of check status
+    // simply returns movements that look proper without thought of check status
+    // and don't worry about special moves yet.
+    var fromToPairs = getAllSquarePairings();
+    var validMoves = fromToPairs.filter(x => isValidNormalMove(x,color, board));
+    //return fromToPairs.filter(isValidMove)
   }
   /**
   * get all possible squares on chess board in chess notation
@@ -259,7 +266,7 @@ const chessControl = (function(){
   * @param {Array} board to evaluate
   * @return {Array} array of arrays of all possible square pairings
   */
-  function getAllSquarePairings(board){
+  function getAllSquarePairings(){
     var squares = getAllSquares();
     var result = [];
     for (var f=0; f < squares.length;f++){
@@ -318,8 +325,6 @@ const chessControl = (function(){
     var col = "abcdefgh"[location[1]];
     return col + row;
   }
-  var x = get allSquares();
-  console.log(x);
 
   return { // *****Public Methods*****
       init : init,
