@@ -285,6 +285,7 @@ const chessControl = (function(){
   }
   return {   // *****Public Methods*****
     toString : toString,
+    getBoard: getBoard,
     init : init,
     logMove : logMove,
     getMoves: getMoves
