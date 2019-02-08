@@ -300,9 +300,14 @@ const chessControl = (function(){
   }
 
   function translateChessNotationToIndices(location) { // for example turns a1 to row 7 col 0
-    var col = abcdefgh".indexOf(location[0]);
+    var col = "abcdefgh".indexOf(location[0]);
     var row =  8 - Number(location[1]);
     return [row, col];
+  }
+  function translateIndicesToChessNotation(location){
+    var row = String(8 - location[0]);
+    var col = "abcdefgh"[location[1]];
+    return col + row;
   }
 
   return { // *****Public Methods*****
