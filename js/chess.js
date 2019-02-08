@@ -332,7 +332,16 @@ const chessControl = (function(){
     return result;
   }
 
-  function isValidRookMove(from, fromPiece, to, toPiece, activeColor,board){return false;}
+  function isValidRookMove(from, fromPiece, to, toPiece, activeColor,board){
+      var directions = ["n","s","e","w"];
+      for (var i=0; i < directions.length; i++){
+        var direction = directions[i];
+        if (clearPath(from, to, direction, board) === true){
+          return new Move(from, to, to, fromPiece, toPiece, null);
+        }
+      }
+      return false;
+  }
   function isValidKnightMove(from, fromPiece, to, toPiece, activeColor,board){return false;}
   function isValidBishopMove(from, fromPiece, to, toPiece, activeColor,board){return false;}
   function isValidQueenMove(from, fromPiece, to, toPiece, activeColor,board){return false;}
