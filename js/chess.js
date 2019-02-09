@@ -37,6 +37,7 @@ const chessView = (function(){
       lastClicked.classList.add("selected");
     } else {
       lastClicked.classList.toggle("selected");
+      console.log("--new move--")
       control.requestMove(lastClicked.id, id);
       update();
       lastClicked = null;
@@ -225,13 +226,17 @@ const chessControl = (function(){
     */
     var currentBoard = getBoardasArray();
     var validMovesForOpponent = getAllValidMoves(opponentsColor, currentBoard); // we don't care if that puts opponent in check
+    console.log("validMovesForOpponent");
+    console.log(validMovesForOpponent);
     var threatenedSquares = validMovesForOpponent.map(function(obj){
       if (obj.captureSquare != null){
         return obj.captureSquare;
       }
       }); // array of threatenedSquares
+    console.log("threatenedSquares");
+    console.log(threatenedSquares);
     threatenedSquares = threatenedSquares.filter(x => x != null);
-
+    // ALL SEEEMS WELL AT THIS POINT
     var allValidMovesforActiveColor = getAllValidMoves(activeColor, currentBoard);
     var validNormalMove = false;
     for (var i=0; i < allValidMovesforActiveColor.length; i++){
@@ -243,13 +248,27 @@ const chessControl = (function(){
     }
     if (validNormalMove){
       alert("is good move");
-      var newBoard = movePiece(from, to, copyBoard(currentBoard));
-      console.log(newBoard[0] === currentBoard[0]);
-      console.log(newBoard);
+      var newBoard = copyBoard(currentBoard);
+      newBoard = movePiece(from, to, newBoard);
+
+      var newValidMovesForOpponent = getAllValidMoves(opponentsColor, newBoard);
+      var newThreatenedSquares = newValidMovesForOpponent.map(function(obj){
+        if (obj.captureSquare != null){
+          return obj.captureSquare;
+        }
+        });
+      newThreatenedSquares = newThreatenedSquares.filter(x => x != null);
+      var activeColorKingLocation = findKing(activeColor, newBoard);
+      if (newThreatenedSquares.includes(activeColorKingLocation)){
+        return false;
+      } else {
+        updateModel(thisMove, newBoard);
+        toggleColorToMove();
+      }
     }
     return;
     var validActionsForActiveColor = getAllValidActions(activeColor); // we do care about if it puts mover in check
-    var activeColorKingLocation = findKing(activeColor);
+
     var activeColorInCheck = isThreatened(activeColorKingLocation, currentBoard);
     if (activeColorInCheck && validActionsForActiveColor === []){ // are you in check mate ?!?!
       alert("Check Mate");
@@ -267,6 +286,13 @@ const chessControl = (function(){
       return false;
     }
   }
+
+  function updateModel(move, board){
+    model.logMove(move);
+    model.updateBoard(board);
+  }
+
+
   /**
   * gets current state of board as an Array
   * @return {Array} array of arrays representing board
@@ -363,13 +389,14 @@ const chessControl = (function(){
       var diagDirection = diagDirections[i];
       if(to === getAdjacentSquare(from, direction + diagDirection)){
         if(toPiece !== "00"){
-          result =  new Move(from, to, to, fromPiece, getPieceOnSquare(to), null);
+
+          result =  new Move(from, to, to, fromPiece, getPieceOnSquare(to, board), null);
         }
         if(lastMove.pieceMoved[1] === "p" &&
            lastMove.toSquare === getAdjacentSquare(from, diagDirection) &&
            lastMove.fromSquare === getNonAdjacentSquare(from,[diagDirection,direction,direction])){
              var captureSquare = getAdjacentSquare(from, diagDirection);
-             result = new Move(from, to, captureSquare, fromPiece, getPieceOnSquare(captureSquare), null);
+             result = new Move(from, to, captureSquare, fromPiece, getPieceOnSquare(captureSquare,board), null);
         }
       }
     }
@@ -677,6 +704,10 @@ const chessModel = (function(){
     moves.push(move);
     console.log(moves);
   }
+
+  function updateBoard(newBoard){
+    board = newBoard;
+  }
   /**
   * returns string representation of board
   * @return {String} string representing board
@@ -698,7 +729,8 @@ const chessModel = (function(){
     getBoard: getBoard,
     init : init,
     logMove : logMove,
-    getMoves: getMoves
+    getMoves: getMoves,
+    updateBoard: updateBoard
   };
 }());
 
