@@ -189,14 +189,25 @@ const chessControl = (function(){
     */
     var currentBoard = getBoardasArray();
     var validMovesForOpponent = getAllValidMoves(opponentsColor, currentBoard); // we don't care if that puts opponent in check
-    console.log(result);
     var threatenedSquares = validMovesForOpponent.map(function(obj){
       if (obj.captureSquare != null){
         return obj.captureSquare;
       }
       }); // array of threatenedSquares
     threatenedSquares = threatenedSquares.filter(x => x != null);
-    console.log(threatenedSquares);
+
+    var allValidMovesforActiveColor = getAllValidMoves(activeColor, currentBoard);
+    var validNormalMove = false;
+    for (var i=0; i < allValidMovesforActiveColor.length; i++){
+      var thisMove = allValidMovesforActiveColor[i];
+      if(thisMove.fromSquare === from && thisMove.toSquare === to){
+        validNormalMove = true;
+        break;
+      }
+    }
+    if (validNormalMove){
+      alert("is good move");
+    }
     return;
     var validActionsForActiveColor = getAllValidActions(activeColor); // we do care about if it puts mover in check
     var activeColorKingLocation = findKing(activeColor);
