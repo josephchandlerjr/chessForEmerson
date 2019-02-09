@@ -171,6 +171,30 @@ const chessControl = (function(){
   function getBoardAsString(){
     return model.toString();
   }
+
+  /**
+  * move piece on a board
+  * @param {String} from from square in chess notation
+  * @param {String} to to square in chess notation
+  * @param {Array} board array of arrays representing the getBoard
+  * @return {Array} new state of the board
+  */
+  function movePiece(from, to, board){  // example C2 to C4
+    board = board.slice(); // just in case
+    var fromIx = translateChessNotationToIndices(from);
+    var fromRow = fromIx[0];
+    var fromCol = fromIx[1];
+
+    var toIx = translateChessNotationToIndices(to);
+    var toRow = toIx[0];
+    var toCol = toIx[1];
+
+    var piece = board[fromRow][fromCol];
+    board[fromRow][fromCol] = "00";
+    board[toRow][toCol] = piece;
+    return board;
+  }
+
   /**
   * determins if move is valid and if so executes moves
   * @param {String} from square moving piece from in in chess notation
@@ -207,6 +231,9 @@ const chessControl = (function(){
     }
     if (validNormalMove){
       alert("is good move");
+      var newBoard = movePiece(from, to, currentBoard.slice());
+      console.log(newBoard[0] === currentBoard[0]);
+      console.log(newBoard);
     }
     return;
     var validActionsForActiveColor = getAllValidActions(activeColor); // we do care about if it puts mover in check
