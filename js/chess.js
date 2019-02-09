@@ -194,6 +194,18 @@ const chessControl = (function(){
     board[toRow][toCol] = piece;
     return board;
   }
+  /**
+  * return deep copy of the getBoard
+  * @param {Array} board array of arrays
+  * @return {Array} deep copy of board array
+  /*/
+  function copyBoard(board){
+    var newBoard = [];
+    for (var i=0;i < board.length; i++){
+      newBoard.push(board[i].slice());
+    }
+    return newBoard;
+  }
 
   /**
   * determins if move is valid and if so executes moves
@@ -231,7 +243,7 @@ const chessControl = (function(){
     }
     if (validNormalMove){
       alert("is good move");
-      var newBoard = movePiece(from, to, currentBoard.slice());
+      var newBoard = movePiece(from, to, copyBoard(currentBoard));
       console.log(newBoard[0] === currentBoard[0]);
       console.log(newBoard);
     }
