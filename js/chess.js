@@ -208,6 +208,14 @@ const chessControl = (function(){
     return newBoard;
   }
 
+  function getThreatenedSquares(moves){
+    var result = moves.map(function(obj){
+      if (obj.captureSquare != null){
+        return obj.captureSquare;
+      }});
+    return result.filter(x => x != null);
+  };
+
   /**
   * determins if move is valid and if so executes moves
   * @param {String} from square moving piece from in in chess notation
@@ -228,15 +236,16 @@ const chessControl = (function(){
     var validMovesForOpponent = getAllValidMoves(opponentsColor, currentBoard); // we don't care if that puts opponent in check
     console.log("validMovesForOpponent");
     console.log(validMovesForOpponent);
-    var threatenedSquares = validMovesForOpponent.map(function(obj){
-      if (obj.captureSquare != null){
-        return obj.captureSquare;
-      }
-      }); // array of threatenedSquares
+    var threatenedSquares = getThreatenedSquares(validMovesForOpponent);
+    //var threatenedSquares = validMovesForOpponent.map(function(obj){
+    //  if (obj.captureSquare != null){
+    //    return obj.captureSquare;
+    //  }
+    //  }); // array of threatenedSquares
+
+    //threatenedSquares = threatenedSquares.filter(x => x != null);
     console.log("threatenedSquares");
     console.log(threatenedSquares);
-    threatenedSquares = threatenedSquares.filter(x => x != null);
-    // ALL SEEEMS WELL AT THIS POINT
     var allValidMovesforActiveColor = getAllValidMoves(activeColor, currentBoard);
     var validNormalMove = false;
     for (var i=0; i < allValidMovesforActiveColor.length; i++){
@@ -247,19 +256,21 @@ const chessControl = (function(){
       }
     }
     if (validNormalMove){
-      alert("is good move");
+      console.log("is good move");
       var newBoard = copyBoard(currentBoard);
       newBoard = movePiece(from, to, newBoard);
 
       var newValidMovesForOpponent = getAllValidMoves(opponentsColor, newBoard);
-      var newThreatenedSquares = newValidMovesForOpponent.map(function(obj){
-        if (obj.captureSquare != null){
-          return obj.captureSquare;
-        }
-        });
-      newThreatenedSquares = newThreatenedSquares.filter(x => x != null);
+      var newThreatenedSquares = getThreatenedSquares(newValidMovesForOpponent);
+      //var newThreatenedSquares = newValidMovesForOpponent.map(function(obj){
+      //  if (obj.captureSquare != null){
+      //    return obj.captureSquare;
+      //  }
+      //  });
+    //  newThreatenedSquares = newThreatenedSquares.filter(x => x != null);
       var activeColorKingLocation = findKing(activeColor, newBoard);
       if (newThreatenedSquares.includes(activeColorKingLocation)){
+        alert("that puts you in check!");
         return false;
       } else {
         updateModel(thisMove, newBoard);
@@ -277,6 +288,7 @@ const chessControl = (function(){
       for (var i=0; i < validActionsForActiveColor.length; i++){
         if (from === validActionsForActiveColor[i][0] &&
             to === validActionsForActiveColor[i][1]) {
+              console.log("here");
               alert("here we make this move");
               executeMove()
               toggleColorToMove();
