@@ -237,19 +237,13 @@ const chessControl = (function(){
     console.log("validMovesForOpponent");
     console.log(validMovesForOpponent);
     var threatenedSquares = getThreatenedSquares(validMovesForOpponent);
-    //var threatenedSquares = validMovesForOpponent.map(function(obj){
-    //  if (obj.captureSquare != null){
-    //    return obj.captureSquare;
-    //  }
-    //  }); // array of threatenedSquares
-
-    //threatenedSquares = threatenedSquares.filter(x => x != null);
     console.log("threatenedSquares");
     console.log(threatenedSquares);
     var allValidMovesforActiveColor = getAllValidMoves(activeColor, currentBoard);
     var validNormalMove = false;
+    var thisMove;
     for (var i=0; i < allValidMovesforActiveColor.length; i++){
-      var thisMove = allValidMovesforActiveColor[i];
+      thisMove = allValidMovesforActiveColor[i];
       if(thisMove.fromSquare === from && thisMove.toSquare === to){
         validNormalMove = true;
         break;
@@ -262,12 +256,6 @@ const chessControl = (function(){
 
       var newValidMovesForOpponent = getAllValidMoves(opponentsColor, newBoard);
       var newThreatenedSquares = getThreatenedSquares(newValidMovesForOpponent);
-      //var newThreatenedSquares = newValidMovesForOpponent.map(function(obj){
-      //  if (obj.captureSquare != null){
-      //    return obj.captureSquare;
-      //  }
-      //  });
-    //  newThreatenedSquares = newThreatenedSquares.filter(x => x != null);
       var activeColorKingLocation = findKing(activeColor, newBoard);
       if (newThreatenedSquares.includes(activeColorKingLocation)){
         alert("that puts you in check!");
@@ -277,26 +265,18 @@ const chessControl = (function(){
         toggleColorToMove();
       }
     }
-    return;
-    var validActionsForActiveColor = getAllValidActions(activeColor); // we do care about if it puts mover in check
-
-    var activeColorInCheck = isThreatened(activeColorKingLocation, currentBoard);
-    if (activeColorInCheck && validActionsForActiveColor === []){ // are you in check mate ?!?!
-      alert("Check Mate");
-    } else {
-      // is the move in the list of valid moves
-      for (var i=0; i < validActionsForActiveColor.length; i++){
-        if (from === validActionsForActiveColor[i][0] &&
-            to === validActionsForActiveColor[i][1]) {
-              console.log("here");
-              alert("here we make this move");
-              executeMove()
-              toggleColorToMove();
-              return true;
-            }
+    if (thisMove.special !== null){
+      // do some special move shit
+      //result.special = {description: "promotion",location: translateChessNotation(to),promoteTo:activeColor + "q"};
+      if (thisMove.special.description == "promotion"){
+        //still have references to newBoard
+        var toIx = translateChessNotationToIndices(thisMove.toSquare);
+        var toRow = toIx[0];
+        var toCol = toIx[1];
+        newBoard[toRow][toCol] = thisMove.special.promoteTo;
       }
-      return false;
     }
+    return;
   }
 
   function updateModel(move, board){
@@ -415,7 +395,7 @@ const chessControl = (function(){
     // no valid moves so false
     if (result){
       if (to[1] === "8" || to[1] === "1"){
-        result.special = {description: "promotion",location: translateChessNotation(to),promoteTo:activeColor + "q"};
+        result.special = {description: "promotion",promoteTo: activeColor + "q"};
       }
     }
     return result;
