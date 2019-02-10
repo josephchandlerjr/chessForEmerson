@@ -180,7 +180,7 @@ const chessControl = (function(){
   * @param {Array} board array of arrays representing the getBoard
   * @return {Array} new state of the board
   */
-  function movePiece(from, to, board){  // example C2 to C4
+  function movePiece(from, to, captureSquare, board){  // example C2 to C4
     board = board.slice(); // just in case
     var fromIx = translateChessNotationToIndices(from);
     var fromRow = fromIx[0];
@@ -193,6 +193,12 @@ const chessControl = (function(){
     var piece = board[fromRow][fromCol];
     board[fromRow][fromCol] = "00";
     board[toRow][toCol] = piece;
+    if (captureSquare !== null){
+      var captureSquareIx = translateChessNotationToIndices(captureSquare);
+      var captureSquareRow = captureSquareIx[0];
+      var captureSquareCol = captureSquareIx[1];
+      board[captureSquareRow][captureSquareCol] = "00";
+    }
     return board;
   }
   /**
@@ -252,7 +258,7 @@ const chessControl = (function(){
     if (validNormalMove){
       console.log("is good move");
       var newBoard = copyBoard(currentBoard);
-      newBoard = movePiece(from, to, newBoard);
+      newBoard = movePiece(from, to, thisMove.captureSquare, newBoard);
 
       var newValidMovesForOpponent = getAllValidMoves(opponentsColor, newBoard);
       var newThreatenedSquares = getThreatenedSquares(newValidMovesForOpponent);
@@ -262,6 +268,7 @@ const chessControl = (function(){
         return false;
       } else {
         updateModel(thisMove, newBoard);
+        lastMove = thisMove;
         toggleColorToMove();
       }
     }
@@ -381,9 +388,9 @@ const chessControl = (function(){
       var diagDirection = diagDirections[i];
       if(to === getAdjacentSquare(from, direction + diagDirection)){
         if(toPiece !== "00"){
-
           result =  new Move(from, to, to, fromPiece, getPieceOnSquare(to, board), null);
         }
+        console.log(lastMove);
         if(lastMove.pieceMoved[1] === "p" &&
            lastMove.toSquare === getAdjacentSquare(from, diagDirection) &&
            lastMove.fromSquare === getNonAdjacentSquare(from,[diagDirection,direction,direction])){
