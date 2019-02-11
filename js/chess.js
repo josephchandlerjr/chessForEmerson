@@ -319,8 +319,33 @@ const chessControl = (function(){
         var toCol = toIx[1];
         newBoard[toRow][toCol] = thisMove.special.promoteTo;
       }
+      // let's see if we are in checkmate
+      // to do this I need to see 1. are they in check
+      //                          2. on the newBoard where oponnent can move to now
+      //                          3. if their king is still threatened when the move
+      var opponentsKingLocation = findKing(opponentsColor, newBoard)
+      var newValidMovesForActiveColor = getAllValidMoves(activeColor, newBoard);
+      var activeColorNowThreatens = getThreatenedSquares(newValidMovesForActiveColor);
+      var isInCheckMate = evaluateCheckmate(opponentsColor, newValidMovesForOpponent, newBoard);
+      console.log(`isInCheckMate=${isInCheckMate}`);
     }
     return execute;
+  }
+
+  function evaluateCheckmate(colortoMove, validMoves, board){
+    var opponentsColor = colorToMove === "w" ? "b" : "w";
+    for (var i=0; i < validMoves.length; i++){
+      var testingBoard = copyBoard(board);
+      var thisMove = validMoves[i];
+      movePiece(thisMove.fromSquare, thisMove.toSquare, thisMove.captureSquare, testingBoard);
+      var newValidMovesForOpponent = getAllValidMoves(opponentsColor, testingBoard);
+      var newThreatenedSquares = getThreatenedSquares(newValidMovesForOpponent);
+      var colorToMoveKingLocation = findKing(colortoMove, testingBoard);
+      if (!newThreatenedSquares.includes(colorToMoveKingLocation)){
+        return false;
+      }
+    }
+    return true;
   }
 
   function updateModel(move, board){
