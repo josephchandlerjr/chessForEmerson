@@ -66,28 +66,16 @@ const chessView = (function(){
         col += 1;
       }
       fragment.appendChild(div);
-      color = (color === "white") ? "black" : "white";
+      color = control.otherColor(color);
       if (i % 8 === 0){
-        color = (color === "white") ? "black" : "white";}
+        color = control.otherColor(color);
+      }
     }
     board.append(fragment);
     update();
   }
 
-  /**
-  * toggles between "w" and "b" or "black" and "white"
-  @param {string} color
-  @return {string} toggled color
-  */
-  function otherColor(color){
-    var result;
-    if (color.length > 1){
-      result = color === "white" ? "black" : "white";
-    } else {
-      result = color === "w" ? "b" : "w";
-    }
-    return result;
-  }
+
 
   /*
   * Gets board from Control object and sets innerHTML of divs representing squares
@@ -156,6 +144,21 @@ const chessControl = (function(){
     blackInCheck = false;
   }
 
+  /**
+  * toggles between "w" and "b" or "black" and "white"
+  @param {string} color
+  @return {string} toggled color
+  */
+  function otherColor(color){
+    var result;
+    if (color.length > 1){
+      result = color === "white" ? "black" : "white";
+    } else {
+      result = color === "w" ? "b" : "w";
+    }
+    return result;
+  }
+
   function updateCanCastle(move){
     var piece = move.pieceMoved;
     var square = move.fromSquare;
@@ -197,7 +200,7 @@ const chessControl = (function(){
   * toggles colorToMove between "w" and "b"
   */
   function toggleColorToMove(){
-    colorToMove = colorToMove === "w" ? "b" : "w";
+    colorToMove = otherColor(colorToMove);
   }
   /**
   * retrieves board information from Model
@@ -269,7 +272,7 @@ const chessControl = (function(){
     */
     var execute = false;
     var activeColor = colorToMove;
-    var opponentsColor = activeColor === "w" ? "b" : "w";
+    var opponentsColor = otherColor(activeColor);
     /*
     am I in check, if so am I in checkmate
     */
@@ -345,7 +348,7 @@ const chessControl = (function(){
   }
 
   function evaluateCheckmate(colortoMove, validMoves, board){
-    var opponentsColor = colorToMove === "w" ? "b" : "w";
+    var opponentsColor = otherColor(colorToMove);
     for (var i=0; i < validMoves.length; i++){
       var testingBoard = copyBoard(board);
       var thisMove = validMoves[i];
@@ -725,7 +728,8 @@ function clearPath(location, target, direction, board){
   return { // *****Public Methods*****
       init : init,
       getBoardAsString: getBoardAsString,
-      requestMove: requestMove
+      requestMove: requestMove,
+      otherColor: otherColor
 
     };
 }());
@@ -805,11 +809,11 @@ const chessModel = (function(){
   }
   return {   // *****Public Methods*****
     toString : toString,
-    getBoard: getBoard,
+    getBoard : getBoard,
     init : init,
     logMove : logMove,
-    getMoves: getMoves,
-    updateBoard: updateBoard
+    getMoves : getMoves,
+    updateBoard : updateBoard,
   };
 }());
 
