@@ -74,6 +74,21 @@ const chessView = (function(){
     update();
   }
 
+  /**
+  * toggles between "w" and "b" or "black" and "white"
+  @param {string} color
+  @return {string} toggled color
+  */
+  function otherColor(color){
+    var result;
+    if (color.length > 1){
+      result = color === "white" ? "black" : "white";
+    } else {
+      result = color === "w" ? "b" : "w";
+    }
+    return result;
+  }
+
   /*
   * Gets board from Control object and sets innerHTML of divs representing squares
   */
