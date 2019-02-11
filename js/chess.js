@@ -287,6 +287,10 @@ const chessControl = (function(){
             execute = false;
           } else {
             execute = true;
+            var rookLocation =  thisMove.special.direction === "queenside"? "a"+from[1] : "h"+from[1];
+            var rookDirection = thisMove.special.direction === "queenside" ? "e" : "w";
+            var rookTo = getAdjacentSquare(to,rookDirection);
+            newBoard = movePiece(rookLocation, rookTo, null, newBoard);
             alert("castle baby!")
           }
       } else {
