@@ -37,7 +37,6 @@ const chessView = (function(){
       lastClicked.classList.add("selected");
     } else {
       lastClicked.classList.toggle("selected");
-      console.log("--new move--")
       control.requestMove(lastClicked.id, id);
       update();
       lastClicked = null;
@@ -142,6 +141,27 @@ const chessControl = (function(){
     whiteInCheck = false;
     blackInCheck = false;
   }
+
+  function updateCanCastle(move){
+    var piece = move.pieceMoved;
+    var square = move.fromSquare;
+    if (piece === "wk"){
+      canCastle.w.queenside = false;
+      canCastle.w.kingside = false;
+    }
+    if (piece === "bk"){
+      canCastle.b.queenside = false;
+      canCastle.b.kingside = false;
+    }
+    if (piece[1] === "r"){
+      if(square[0] === "a"){
+        canCastle[piece[0]]["queenside"] = false;
+      }
+      if(square[0] === "h"){
+        canCastle[piece[0]]["kingside"] = false;
+      }
+    }
+  }
   /**
   * creates move object to be logged
   * @param {String} fromSquare chessnotation showing from square
@@ -193,7 +213,7 @@ const chessControl = (function(){
     var piece = board[fromRow][fromCol];
     board[fromRow][fromCol] = "00";
     board[toRow][toCol] = piece;
-    if (captureSquare !== null){
+    if (captureSquare !== null && captureSquare !== to){ // really only true for pawns
       var captureSquareIx = translateChessNotationToIndices(captureSquare);
       var captureSquareRow = captureSquareIx[0];
       var captureSquareCol = captureSquareIx[1];
@@ -233,6 +253,7 @@ const chessControl = (function(){
     what color am
     what color is my opponent
     */
+    var execute = false;
     var activeColor = colorToMove;
     var opponentsColor = activeColor === "w" ? "b" : "w";
     /*
@@ -240,11 +261,7 @@ const chessControl = (function(){
     */
     var currentBoard = getBoardasArray();
     var validMovesForOpponent = getAllValidMoves(opponentsColor, currentBoard); // we don't care if that puts opponent in check
-    console.log("validMovesForOpponent");
-    console.log(validMovesForOpponent);
     var threatenedSquares = getThreatenedSquares(validMovesForOpponent);
-    console.log("threatenedSquares");
-    console.log(threatenedSquares);
     var allValidMovesforActiveColor = getAllValidMoves(activeColor, currentBoard);
     var validNormalMove = false;
     var thisMove;
@@ -256,26 +273,42 @@ const chessControl = (function(){
       }
     }
     if (validNormalMove){
-      console.log("is good move");
       var newBoard = copyBoard(currentBoard);
       newBoard = movePiece(from, to, thisMove.captureSquare, newBoard);
 
-      var newValidMovesForOpponent = getAllValidMoves(opponentsColor, newBoard);
-      var newThreatenedSquares = getThreatenedSquares(newValidMovesForOpponent);
-      var activeColorKingLocation = findKing(activeColor, newBoard);
-      if (newThreatenedSquares.includes(activeColorKingLocation)){
-        alert("that puts you in check!");
-        return false;
+      if(thisMove.special !== null && thisMove.special.description == "castle"){
+        //new Move(from, to, null, fromPiece, toPiece, {description: "castle", color: activeColor, direction: "kingside",});
+        // check if square to left/right is threatened
+        var direction = thisMove.special.direction === "queenside" ? "w" : "e";
+        if (threatenedSquares.includes(thisMove.fromSquare) ||
+            threatenedSquares.includes(getAdjacentSquare(thisMove.fromSquare, direction)) ||
+            threatenedSquares.includes(getNonAdjacentSquare(thisMove.fromSquare, [direction,direction]))
+          ){
+            execute = false;
+          } else {
+            execute = true;
+            alert("castle baby!")
+          }
       } else {
-        updateModel(thisMove, newBoard);
-        lastMove = thisMove;
-        toggleColorToMove();
-      }
-    }
-    if (thisMove.special !== null){
-      // do some special move shit
-      //result.special = {description: "promotion",location: translateChessNotation(to),promoteTo:activeColor + "q"};
-      if (thisMove.special.description == "promotion"){
+        var newValidMovesForOpponent = getAllValidMoves(opponentsColor, newBoard);
+        var newThreatenedSquares = getThreatenedSquares(newValidMovesForOpponent);
+        var activeColorKingLocation = findKing(activeColor, newBoard);
+        console.log("newThreatenedSquares");
+        console.log(newThreatenedSquares);
+        if (newThreatenedSquares.includes(activeColorKingLocation)){
+          alert("that puts you in check!");
+          execute = false;
+        } else {
+          execute = true;
+        }
+      } //end if-else statement
+    }  //end if statement
+    if (execute){
+      updateModel(thisMove, newBoard);
+      lastMove = thisMove;
+      updateCanCastle(thisMove);
+      toggleColorToMove();
+      if (thisMove.special !== null && thisMove.special.description == "promotion"){
         //still have references to newBoard
         var toIx = translateChessNotationToIndices(thisMove.toSquare);
         var toRow = toIx[0];
@@ -283,7 +316,7 @@ const chessControl = (function(){
         newBoard[toRow][toCol] = thisMove.special.promoteTo;
       }
     }
-    return;
+    return execute;
   }
 
   function updateModel(move, board){
@@ -368,7 +401,7 @@ const chessControl = (function(){
     // advance one square
     if(to === getAdjacentSquare(from, direction)){
       if (toPiece !== "00"){ return false;} else {
-        result = new Move(from, to, null, fromPiece, toPiece, null);//
+        result = new Move(from, to, to, fromPiece, toPiece, null);//
       }
     }
     // advance two squares
@@ -378,7 +411,7 @@ const chessControl = (function(){
       if ( (from[1] !== "2" && from[1] !== "7") || pieceInBetween !== "00" || toPiece !== "00"){
         return false;
       } else {
-        result = new Move(from, to, null, fromPiece, toPiece, null);
+        result = new Move(from, to, to, fromPiece, toPiece, null);
       }
     }
     //diagonal capture
@@ -390,7 +423,6 @@ const chessControl = (function(){
         if(toPiece !== "00"){
           result =  new Move(from, to, to, fromPiece, getPieceOnSquare(to, board), null);
         }
-        console.log(lastMove);
         if(lastMove.pieceMoved[1] === "p" &&
            lastMove.toSquare === getAdjacentSquare(from, diagDirection) &&
            lastMove.fromSquare === getNonAdjacentSquare(from,[diagDirection,direction,direction])){
@@ -463,6 +495,13 @@ const chessControl = (function(){
       if (target === to){
         return new Move(from, to, to, fromPiece, toPiece, null);
       }
+    }
+    // are you trying to castle perhaps?
+    if (to === getNonAdjacentSquare(from, ["e","e"]) && canCastle[activeColor]["kingside"]){
+      return new Move(from, to, null, fromPiece, toPiece, {description: "castle", color: activeColor, direction: "kingside",});
+    }
+    if (to === getNonAdjacentSquare(from, ["w","w"]) && canCastle[activeColor]["queenside"]){
+      return new Move(from, to, null, fromPiece, toPiece, {description: "castle", color: activeColor, direction: "queenside"});
     }
   }
   /**
