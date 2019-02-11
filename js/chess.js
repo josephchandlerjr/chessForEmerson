@@ -28,8 +28,6 @@ const chessView = (function(){
   * @param {Event} evt
   */
   function onClick(evt){
-
-    //HTML symbols for chess peices
     var id = evt.target.id;
     if (id === "board"){ return;}  // if is top elem div and not square
     if (lastClicked === null){
@@ -56,7 +54,7 @@ const chessView = (function(){
     var color = "white";
     var col = 97;
     var row = 8;
-
+    var fragment = document.createDocumentFragment();
     for (var i=1; i < 65; i++){
       var div = document.createElement("div")
       div.classList.add(color);
@@ -67,11 +65,12 @@ const chessView = (function(){
       } else {
         col += 1;
       }
-      board.appendChild(div);
+      fragment.appendChild(div);
       color = (color === "white") ? "black" : "white";
       if (i % 8 === 0){
         color = (color === "white") ? "black" : "white";}
     }
+    board.append(fragment);
     update();
   }
 
@@ -291,7 +290,6 @@ const chessControl = (function(){
             var rookDirection = thisMove.special.direction === "queenside" ? "e" : "w";
             var rookTo = getAdjacentSquare(to,rookDirection);
             newBoard = movePiece(rookLocation, rookTo, null, newBoard);
-            alert("castle baby!")
           }
       } else {
         var newValidMovesForOpponent = getAllValidMoves(opponentsColor, newBoard);
@@ -300,7 +298,6 @@ const chessControl = (function(){
         console.log("newThreatenedSquares");
         console.log(newThreatenedSquares);
         if (newThreatenedSquares.includes(activeColorKingLocation)){
-          alert("that puts you in check!");
           execute = false;
         } else {
           execute = true;
@@ -327,7 +324,7 @@ const chessControl = (function(){
       var newValidMovesForActiveColor = getAllValidMoves(activeColor, newBoard);
       var activeColorNowThreatens = getThreatenedSquares(newValidMovesForActiveColor);
       var isInCheckMate = evaluateCheckmate(opponentsColor, newValidMovesForOpponent, newBoard);
-      console.log(`isInCheckMate=${isInCheckMate}`);
+      if (isInCheckMate){alert(`isInCheckMate=${isInCheckMate}`);}
     }
     return execute;
   }
