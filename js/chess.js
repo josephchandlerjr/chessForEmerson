@@ -272,21 +272,22 @@ const chessControl = (function(){
   * @return {Boolean} true if move executed else false;
   */
   function requestMove(from, to){
-    /*
-    what color am
-    what color is my opponent
-    */
-    var execute = false;
+    var execute = false; // indicates if we will actually make this move
+
+    // who's who
     var activeColor = colorToMove;
     var opponentsColor = otherColor(activeColor);
-    /*
-    am I in check, if so am I in checkmate
-    */
+
     var currentBoard = getBoardasArray();
-    var validMovesForOpponent = getAllValidMoves(opponentsColor, currentBoard); // we don't care if that puts opponent in check
-    var threatenedSquares = getThreatenedSquares(validMovesForOpponent);
+
+    // find squares that are threatened by opponent
+    var validMovesForOpponent = getAllValidMoves(opponentsColor, currentBoard);
+    var opponentThreatens = getThreatenedSquares(validMovesForOpponent);
+
+    // get a list of valid Move objects for activeColor
+    // see if requested move is in that list
     var allValidMovesforActiveColor = getAllValidMoves(activeColor, currentBoard);
-    var validMovement = false;
+    var validMovement = false; //
     var thisMove;
     for (var i=0; i < allValidMovesforActiveColor.length; i++){
       thisMove = allValidMovesforActiveColor[i];
@@ -295,17 +296,20 @@ const chessControl = (function(){
         break;
       }
     }
+
+    // if we found requested move in the list of valid move objects
+    // make that move on a copy of the board and ensure that mover is
+    // not putting self in check
     if (validMovement){
       var newBoard = copyBoard(currentBoard);
       newBoard = movePiece(from, to, thisMove.captureSquare, newBoard);
 
       if(thisMove.special !== null && thisMove.special.description == "castle"){
-        //new Move(from, to, null, fromPiece, toPiece, {description: "castle", color: activeColor, direction: "kingside",});
         // check if square to left/right is threatened
         var direction = thisMove.special.direction === "queenside" ? "w" : "e";
-        if (threatenedSquares.includes(thisMove.fromSquare) ||
-            threatenedSquares.includes(getAdjacentSquare(thisMove.fromSquare, direction)) ||
-            threatenedSquares.includes(getNonAdjacentSquare(thisMove.fromSquare, [direction,direction]))
+        if (opponentThreatens.includes(thisMove.fromSquare) ||
+            opponentThreatens.includes(getAdjacentSquare(thisMove.fromSquare, direction)) ||
+            opponentThreatens.includes(getNonAdjacentSquare(thisMove.fromSquare, [direction,direction]))
           ){
             execute = false;
           } else {
@@ -317,17 +321,18 @@ const chessControl = (function(){
           }
       } else {
         var newValidMovesForOpponent = getAllValidMoves(opponentsColor, newBoard);
-        var newThreatenedSquares = getThreatenedSquares(newValidMovesForOpponent);
+        console.log("newValidMovesForOpponent");
+        console.log(newValidMovesForOpponent);
+        var newOpponentThreatens = getThreatenedSquares(newValidMovesForOpponent);
         var activeColorKingLocation = findKing(activeColor, newBoard);
-        console.log("newThreatenedSquares");
-        console.log(newThreatenedSquares);
-        if (newThreatenedSquares.includes(activeColorKingLocation)){
+        if (newOpponentThreatens.includes(activeColorKingLocation)){
           execute = false;
         } else {
           execute = true;
         }
       } //end if-else statement
     }  //end if statement
+
     if (execute){
       updateModel(thisMove, newBoard);
       lastMove = thisMove;
@@ -340,13 +345,13 @@ const chessControl = (function(){
         var toCol = toIx[1];
         newBoard[toRow][toCol] = thisMove.special.promoteTo;
       }
-      // let's see if we are in checkmate
-      // to do this I need to see 1. are they in check
-      //                          2. on the newBoard where oponnent can move to now
-      //                          3. if their king is still threatened when the move
+
+      // let's see if we ajust put opponent in checkmate
       var opponentsKingLocation = findKing(opponentsColor, newBoard)
       var newValidMovesForActiveColor = getAllValidMoves(activeColor, newBoard);
       var activeColorNowThreatens = getThreatenedSquares(newValidMovesForActiveColor);
+      console.log("newValidMovesForOpponent");
+      console.log(newValidMovesForOpponent);
       var isInCheckMate = evaluateCheckmate(opponentsColor, newValidMovesForOpponent, newBoard);
       if (isInCheckMate){alert(`isInCheckMate=${isInCheckMate}`);}
     }
@@ -404,7 +409,7 @@ const chessControl = (function(){
       var move = isvalidMovement(pair, color, board);
       if (move){ result.push(move); }
     });
-    return result
+    return result;
   }
 
   /**
