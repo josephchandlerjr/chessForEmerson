@@ -286,16 +286,16 @@ const chessControl = (function(){
     var validMovesForOpponent = getAllValidMoves(opponentsColor, currentBoard); // we don't care if that puts opponent in check
     var threatenedSquares = getThreatenedSquares(validMovesForOpponent);
     var allValidMovesforActiveColor = getAllValidMoves(activeColor, currentBoard);
-    var validNormalMove = false;
+    var validMovement = false;
     var thisMove;
     for (var i=0; i < allValidMovesforActiveColor.length; i++){
       thisMove = allValidMovesforActiveColor[i];
       if(thisMove.fromSquare === from && thisMove.toSquare === to){
-        validNormalMove = true;
+        validMovement = true;
         break;
       }
     }
-    if (validNormalMove){
+    if (validMovement){
       var newBoard = copyBoard(currentBoard);
       newBoard = movePiece(from, to, thisMove.captureSquare, newBoard);
 
