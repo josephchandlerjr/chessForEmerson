@@ -401,7 +401,7 @@ const chessControl = (function(){
     var result = [];
     var fromToPairs = getAllSquarePairings();
     fromToPairs.forEach(function(pair){
-      var move = isValidNormalMove(pair, color, board);
+      var move = isvalidMovement(pair, color, board);
       if (move){ result.push(move); }
     });
     return result
@@ -414,7 +414,7 @@ const chessControl = (function(){
   * @param {String} activeColor color to move
   * @param {Array} board array of arrays representing the board
   */
-  function isValidNormalMove(fromToPairs, activeColor, board){
+  function isvalidMovement(fromToPairs, activeColor, board){
     var from = fromToPairs[0];
     var to = fromToPairs[1];
     if (from === to){ return false;} // didn't go anywhere
@@ -907,7 +907,7 @@ const chessModel = (function(){
   function updateBoard(newBoard){
     board = newBoard;
   }
-  
+
   /**
   * returns string representation of board
   * @return {String} string representing board
