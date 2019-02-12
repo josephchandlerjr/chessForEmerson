@@ -303,6 +303,7 @@ const chessControl = (function(){
     if (validMovement){
       var newBoard = copyBoard(currentBoard);
       newBoard = movePiece(from, to, thisMove.captureSquare, newBoard);
+      var newValidMovesForOpponent = getAllValidMoves(opponentsColor, newBoard);
 
       if(thisMove.special !== null && thisMove.special.description == "castle"){
         // check if square to left/right is threatened
@@ -320,7 +321,7 @@ const chessControl = (function(){
             newBoard = movePiece(rookLocation, rookTo, null, newBoard);
           }
       } else {
-        var newValidMovesForOpponent = getAllValidMoves(opponentsColor, newBoard);
+        //var newValidMovesForOpponent = getAllValidMoves(opponentsColor, newBoard);
         console.log("newValidMovesForOpponent");
         console.log(newValidMovesForOpponent);
         var newOpponentThreatens = getThreatenedSquares(newValidMovesForOpponent);
