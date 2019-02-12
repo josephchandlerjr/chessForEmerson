@@ -46,7 +46,6 @@ const chessView = (function(){
   * @param {Object} obj Control object in MVC
   */
   function init(obj){
-
     control = obj;
     var board = document.querySelector("#board");
     board.innerHTML = "";
@@ -158,7 +157,10 @@ const chessControl = (function(){
     }
     return result;
   }
-
+  /**
+  * updates canCastle variable based on a move object
+  * @param {Object} move a Move object
+  */
   function updateCanCastle(move){
     var piece = move.pieceMoved;
     var square = move.fromSquare;
@@ -238,6 +240,7 @@ const chessControl = (function(){
     }
     return board;
   }
+
   /**
   * return deep copy of the getBoard
   * @param {Array} board array of arrays
@@ -250,7 +253,10 @@ const chessControl = (function(){
     }
     return newBoard;
   }
-
+  /**
+  * find squares that are under threat
+  * @param {Array} moves an array of move objects
+  */
   function getThreatenedSquares(moves){
     var result = moves.map(function(obj){
       if (obj.captureSquare != null){
@@ -363,6 +369,11 @@ const chessControl = (function(){
     return true;
   }
 
+  /**
+  * update the model
+  * @param {Object} move a move object
+  * @param {Array} board array of arrays
+  */
   function updateModel(move, board){
     model.logMove(move);
     model.updateBoard(board);
@@ -376,19 +387,7 @@ const chessControl = (function(){
   function getBoardasArray(){
     return model.getBoard();
   }
-  /**
-  * indicates if a particular location on a board is threatened
-  * @param {String} location to evaluate
-  * @param {Array} board to evaluate
-  * @return {Boolean} true if location is threatened else false
-  */
-  function isThreatened(location, board){}
-  /**
-  * asks Model to log move and update board
-  * @param {Object} moveObj Move object to log
-  * @param {Array} board new state of board
-  */
-  function logMove(moveObj, newBoard){}
+
   /**
   * get all moves that are valid based on movement of piece
   * with no regard for check status
@@ -407,6 +406,7 @@ const chessControl = (function(){
     });
     return result
   }
+
   /**
   * filter out all but valid normal moves, disregarding special moves and
   * check status
@@ -436,7 +436,16 @@ const chessControl = (function(){
     }
     return false;
   }
-
+  /**
+  * update the model
+  * @param {String} from from square in chess notation
+  * @param {String} toPiece piece to be moved
+  * @param {String} to to square in chess notation
+  * @param {String} toPiece piece on to square
+  * @param {String} activeColor w or b
+  * @param {Array} board array of arrays representing board
+  * @return {Boolean} true if movement of piece is valid
+  */
   function isValidPawnMove( from, fromPiece, to, toPiece, activeColor, board){ // arguments are strings like a2 or h7
     var activeColor = fromPiece[0];
     var direction = activeColor === "w" ? "n" : "s";
@@ -483,7 +492,16 @@ const chessControl = (function(){
     }
     return result;
   }
-
+  /**
+  * update the model
+  * @param {String} from from square in chess notation
+  * @param {String} toPiece piece to be moved
+  * @param {String} to to square in chess notation
+  * @param {String} toPiece piece on to square
+  * @param {String} activeColor w or b
+  * @param {Array} board array of arrays representing board
+  * @return {Boolean} true if movement of piece is valid
+  */
   function isValidRookMove(from, fromPiece, to, toPiece, activeColor,board){
       var directions = ["n","s","e","w"];
       for (var i=0; i < directions.length; i++){
@@ -495,6 +513,16 @@ const chessControl = (function(){
       return false;
   }
 
+  /**
+  * update the model
+  * @param {String} from from square in chess notation
+  * @param {String} toPiece piece to be moved
+  * @param {String} to to square in chess notation
+  * @param {String} toPiece piece on to square
+  * @param {String} activeColor w or b
+  * @param {Array} board array of arrays representing board
+  * @return {Boolean} true if movement of piece is valid
+  */
   function isValidKnightMove(from, fromPiece, to, toPiece, activeColor, board){
       var directions = [
         ["n","n","w"],
@@ -515,6 +543,17 @@ const chessControl = (function(){
       }
       return false;
   }
+
+  /**
+  * update the model
+  * @param {String} from from square in chess notation
+  * @param {String} toPiece piece to be moved
+  * @param {String} to to square in chess notation
+  * @param {String} toPiece piece on to square
+  * @param {String} activeColor w or b
+  * @param {Array} board array of arrays representing board
+  * @return {Boolean} true if movement of piece is valid
+  */
   function isValidBishopMove(from, fromPiece, to, toPiece, activeColor,board){
     var directions = ["nw","sw","ne","se"];
     for (var i=0; i < directions.length; i++){
@@ -525,6 +564,17 @@ const chessControl = (function(){
     }
     return false;
   }
+
+  /**
+  * update the model
+  * @param {String} from from square in chess notation
+  * @param {String} toPiece piece to be moved
+  * @param {String} to to square in chess notation
+  * @param {String} toPiece piece on to square
+  * @param {String} activeColor w or b
+  * @param {Array} board array of arrays representing board
+  * @return {Boolean} true if movement of piece is valid
+  */
   function isValidQueenMove(from, fromPiece, to, toPiece, activeColor, board){
     if (isValidRookMove(from, fromPiece, to, toPiece, activeColor, board) ||
         isValidBishopMove(from, fromPiece, to, toPiece, activeColor, board)){
@@ -532,6 +582,17 @@ const chessControl = (function(){
     }
     return false;
   }
+
+  /**
+  * update the model
+  * @param {String} from from square in chess notation
+  * @param {String} toPiece piece to be moved
+  * @param {String} to to square in chess notation
+  * @param {String} toPiece piece on to square
+  * @param {String} activeColor w or b
+  * @param {Array} board array of arrays representing board
+  * @return {Boolean} true if movement of piece is valid
+  */
   function isValidKingMove(from, fromPiece, to, toPiece, activeColor,board){
     var directions = ["n","ne","e","se","s","sw","w","nw"];
     for (var i=0; i < directions.length; i++){
@@ -548,6 +609,7 @@ const chessControl = (function(){
       return new Move(from, to, null, fromPiece, toPiece, {description: "castle", color: activeColor, direction: "queenside"});
     }
   }
+
   /**
   * takes chess notation and returns piece on that square
   * @param {String} square chess notatino for a square
@@ -590,6 +652,7 @@ const chessControl = (function(){
     }
     return result;
   }
+
   /**
   * filter out moves that appear valid but are not because the move would
   * put the mover in check
@@ -603,6 +666,7 @@ const chessControl = (function(){
     // use findKing(color); to get king location;
     // use isThreatened(activeColorKingLocation, currentBoard);
   }
+
   /**
   * find location of a particular king
   * @oaram {String} color "w" or "b"
@@ -620,9 +684,15 @@ const chessControl = (function(){
     }
   }
 
+  /**
+  *  convert column index into chess notation
+  * @param {Number} col col index
+  * @return {String} chess notation of that col
+  */
   function chessNotationColToIndex(col){
     return "abcdefgh".indexOf(col);
   }
+
   /**
   * convert from chess notation to row, col indices
   * @param {String} location location to be converted
@@ -633,6 +703,7 @@ const chessControl = (function(){
     var row =  8 - Number(location[1]);
     return [row, col];
   }
+
   /**
   * convert from row, col indices to chess notation
   * @param {Array} location from, to pair to be converted
@@ -644,86 +715,129 @@ const chessControl = (function(){
     return col + row;
   }
 
-// functions to find adjacent squares
-function north(square){
-  var col = square[0];
-  var row = square[1];
-  newRow = String(Number(row) + 1);
-  return col + newRow;
-}
-function south(square){
-  var col = square[0];
-  var row = square[1];
-  newRow = String(Number(row) -1);
-  return col + newRow;
-}
-function east(square){
-  var col = square[0];
-  var row = square[1];
-  var columns = "xabcdefghx";
-  newCol = columns[chessNotationColToIndex(col) + 2];
-  return newCol + row;
-}
-function west(square){
-  var col = square[0];
-  var row = square[1];
-  var columns = "xabcdefghx";
-  newCol = columns[chessNotationColToIndex(col)];
-  return newCol + row;
-}
-
-function getAdjacentSquare(square, direction){  // example a1, ne
-  /*
-  returns null if move is off the board
+  /**
+  *  convert column index into chess notation
+  * @param {String} square location on board in chess notation
+  * @return {String} location on board north of argument in chess notation
   */
-  var col = square[0];
-  var row = square[1];
+  function north(square){
+    var col = square[0];
+    var row = square[1];
+    newRow = String(Number(row) + 1);
+    return col + newRow;
+  }
 
-  switch(direction){
-      case "n" :  newSquare = north(square);
-                  break;
-      case "ne":  newSquare = east(north(square));
-                  break;
-      case "e" :  newSquare = east(square);
-                  break;
-      case "se":  newSquare = east(south(square));
-                  break;
-      case "s" :  newSquare = south(square);
-                  break;
-      case "sw":  newSquare = west(south(square));
-                  break;
-      case "w" :  newSquare = west(square);
-                  break;
-      case "nw":  newSquare = west(north(square));
-                  break;
+  /**
+  *  convert column index into chess notation
+  * @param {String} square location on board in chess notation
+  * @return {String} location on board south of argument in chess notation
+  */
+  function south(square){
+    var col = square[0];
+    var row = square[1];
+    newRow = String(Number(row) -1);
+    return col + newRow;
   }
-  if (newSquare[0] !== "x" &&
-      Number(newSquare[1]) < 9 &&
-      Number(newSquare[1]) > 0){
-      return newSquare;
-    } else {
-      return null;
-    }
-}
-function getNonAdjacentSquare(square, directions){// example - f3, ["n","w"]
-  var currentSquare = square;
-  for(var i=0;i < directions.length;i++){
-    currentSquare = getAdjacentSquare(currentSquare, directions[i]);
-    if (currentSquare === null){ return null;}
-  }
-  return currentSquare;
-}
 
-function clearPath(location, target, direction, board){
-  // return true if moving direction leads to target without pieces in between
-  while (true) {
-    location = getAdjacentSquare(location, direction);
-    if (location === target){ return true;}
-    if (location === null || getPieceOnSquare(location, board) !== "00") {
-      return false;
+  /**
+  *  convert column index into chess notation
+  * @param {String} square location on board in chess notation
+  * @return {String} location on board east of argument in chess notation
+  */
+  function east(square){
+    var col = square[0];
+    var row = square[1];
+    var columns = "xabcdefghx";
+    newCol = columns[chessNotationColToIndex(col) + 2];
+    return newCol + row;
+  }
+
+  /**
+  *  convert column index into chess notation
+  * @param {String} square location on board in chess notation
+  * @return {String} location on board west of argument in chess notation
+  */
+  function west(square){
+    var col = square[0];
+    var row = square[1];
+    var columns = "xabcdefghx";
+    newCol = columns[chessNotationColToIndex(col)];
+    return newCol + row;
+  }
+
+  /**
+  *  convert column index into chess notation
+  * @param {String} square location on board in chess notation
+  * @param {direction} direction w, s, e, or w
+  * @return {String} location on board direction of argument in chess notation
+  */
+  function getAdjacentSquare(square, direction){  // example a1, ne
+    /*
+    returns null if move is off the board
+    */
+    var col = square[0];
+    var row = square[1];
+
+    switch(direction){
+        case "n" :  newSquare = north(square);
+                    break;
+        case "ne":  newSquare = east(north(square));
+                    break;
+        case "e" :  newSquare = east(square);
+                    break;
+        case "se":  newSquare = east(south(square));
+                    break;
+        case "s" :  newSquare = south(square);
+                    break;
+        case "sw":  newSquare = west(south(square));
+                    break;
+        case "w" :  newSquare = west(square);
+                    break;
+        case "nw":  newSquare = west(north(square));
+                    break;
+    }
+    if (newSquare[0] !== "x" &&
+        Number(newSquare[1]) < 9 &&
+        Number(newSquare[1]) > 0){
+        return newSquare;
+      } else {
+        return null;
+      }
+  }
+
+  /**
+  *  convert column index into chess notation
+  * @param {String} square location on board in chess notation
+  * @param {array} directions array of directions
+  * @return {String} location on board after moving as indicate by directions
+  */
+  function getNonAdjacentSquare(square, directions){// example - f3, ["n","w"]
+    var currentSquare = square;
+    for(var i=0;i < directions.length;i++){
+      currentSquare = getAdjacentSquare(currentSquare, directions[i]);
+      if (currentSquare === null){ return null;}
+    }
+    return currentSquare;
+  }
+
+  /**
+  *  convert column index into chess notation
+  * @param {String} location starting location in chess notation
+  * @param {String} target target square in chess notation
+  * @param {String} direction w, s, e, or w
+  * @param {Array} board array of arrays representing the board
+  * @return {Boolean} true if no
+  */
+  function clearPath(location, target, direction, board){
+    // return true if moving direction leads to target without pieces in between
+    while (true) {
+      location = getAdjacentSquare(location, direction);
+      if (location === target){ return true;}
+      if (location === null || getPieceOnSquare(location, board) !== "00") {
+        return false;
+      }
     }
   }
-}
 
   return { // *****Public Methods*****
       init : init,
@@ -772,6 +886,7 @@ const chessModel = (function(){
   function getBoard(){
     return board.slice();
   }
+
   /**
   * return array of Move objects
   * @return {Array} an array of Move objects
@@ -779,6 +894,7 @@ const chessModel = (function(){
   function getMoves(){
     return moves;
   }
+
   /**
   * pushes Move object onto moves
   * @param {Object} move a Move objects
@@ -791,6 +907,7 @@ const chessModel = (function(){
   function updateBoard(newBoard){
     board = newBoard;
   }
+  
   /**
   * returns string representation of board
   * @return {String} string representing board
