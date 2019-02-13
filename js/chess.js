@@ -132,10 +132,11 @@ const chessControl = (function(){
   * @param {Object} vObj View Object
   */
   function init(mObj, vObj){
-    self = this;
-    console.log(self);
-    model = mObj;
-    view = vObj;
+    if (!self){ // if this is first time initializing
+      self = this;
+      model = mObj;
+      view = vObj;
+    }
     colorToMove = "w";
     lastMove = new Move("00","00","00","00","00","00");
     canCastle = {
