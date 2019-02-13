@@ -140,7 +140,6 @@ const chessControl = (function(){
     }
     model.init(self);
     view.init(self);
-    colorToMove = "w";
     lastMove = new Move("00","00","00","00","00","00");
     canCastle = {
       w : {queenside: true, kingside: true},
@@ -148,6 +147,7 @@ const chessControl = (function(){
     };
     whiteInCheck = false;
     blackInCheck = false;
+    toggleColorToMove("w");
   }
 
   /**
@@ -962,6 +962,4 @@ const chessModel = (function(){
   };
 }());
 
-//chessModel.init(chessControl);
 chessControl.init(chessModel, chessView);
-//chessView.init(chessControl);
