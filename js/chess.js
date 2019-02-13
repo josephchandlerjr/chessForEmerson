@@ -6,19 +6,19 @@
 const chessView = (function(){
 
   //HTML symbols for chess peices
-  const blackRook   = "&#9820;";
-  const blackKnight = "&#9822;";
-  const blackBishop = "&#9821;";
-  const blackQueen  = "&#9819;";
-  const blackKing   = "&#9818;";
-  const blackPawn   = "&#9823;";
+  const BLACKROOK   = "&#9820;";
+  const BLACKKNIGHT = "&#9822;";
+  const BLACKBISHOP = "&#9821;";
+  const BLACKQUEEN  = "&#9819;";
+  const BLACKKING   = "&#9818;";
+  const BLACKPAWN   = "&#9823;";
 
-  const whitePawn   = "&#9817;";
-  const whiteRook   = "&#9814;";
-  const whiteKnight = "&#9816;";
-  const whiteBishop = "&#9815;";
-  const whiteQueen  = "&#9813;";
-  const whiteKing   = "&#9812;";
+  const WHITEPAWN   = "&#9817;";
+  const WHITEROOK   = "&#9814;";
+  const WHITEKNIGHT = "&#9816;";
+  const WHITEBISHOP = "&#9815;";
+  const WHITEQUEEN  = "&#9813;";
+  const WHITEKING   = "&#9812;";
 
   var lastClicked = null;
   var control;
@@ -88,19 +88,19 @@ const chessView = (function(){
       if (rep[i] !== "-"){
         switch(rep.substring(i,i+2)) { // **********
           case "00": squares[sqr].innerHTML = ""; break;
-          case "bp": squares[sqr].innerHTML = blackPawn; break;
-          case "br": squares[sqr].innerHTML = blackRook; break;
-          case "bn": squares[sqr].innerHTML = blackKnight; break;
-          case "bb": squares[sqr].innerHTML = blackBishop; break;
-          case "bq": squares[sqr].innerHTML = blackQueen; break;
-          case "bk": squares[sqr].innerHTML = blackKing; break;
+          case "bp": squares[sqr].innerHTML = BLACKPAWN; break;
+          case "br": squares[sqr].innerHTML = BLACKROOK; break;
+          case "bn": squares[sqr].innerHTML = BLACKKNIGHT; break;
+          case "bb": squares[sqr].innerHTML = BLACKBISHOP; break;
+          case "bq": squares[sqr].innerHTML = BLACKQUEEN; break;
+          case "bk": squares[sqr].innerHTML = BLACKKING; break;
 
-          case "wp": squares[sqr].innerHTML = whitePawn; break;
-          case "wr": squares[sqr].innerHTML = whiteRook; break;
-          case "wn": squares[sqr].innerHTML = whiteKnight; break;
-          case "wb": squares[sqr].innerHTML = whiteBishop; break;
-          case "wq": squares[sqr].innerHTML = whiteQueen; break;
-          case "wk": squares[sqr].innerHTML = whiteKing; break;
+          case "wp": squares[sqr].innerHTML = WHITEPAWN; break;
+          case "wr": squares[sqr].innerHTML = WHITEROOK; break;
+          case "wn": squares[sqr].innerHTML = WHITEKNIGHT; break;
+          case "wb": squares[sqr].innerHTML = WHITEBISHOP; break;
+          case "wq": squares[sqr].innerHTML = WHITEQUEEN; break;
+          case "wk": squares[sqr].innerHTML = WHITEKING; break;
         }
         sqr += 1
       }
@@ -295,6 +295,7 @@ const chessControl = (function(){
     }
     return newBoard;
   }
+
   /**
   * find squares that are under threat
   * @param {Array} moves an array of move objects
@@ -376,7 +377,6 @@ const chessControl = (function(){
       updateModel(thisMove, newBoard);
       lastMove = thisMove;
       updateCanCastle(thisMove);
-      toggleColorToMove();
       if (thisMove.special !== null && thisMove.special.description == "promotion"){
         //still have references to newBoard
         var toIx = translateChessNotationToIndices(thisMove.toSquare);
@@ -386,19 +386,22 @@ const chessControl = (function(){
       }
 
       // let's see if we ajust put opponent in checkmate
-      var opponentsKingLocation = findKing(opponentsColor, newBoard)
+      var opponentsKingLocation = findKing(opponentsColor, newBoard);
       var newValidMovesForActiveColor = getAllValidMoves(activeColor, newBoard);
       var activeColorNowThreatens = getThreatenedSquares(newValidMovesForActiveColor);
       var isInCheckMate = evaluateCheckmate(opponentsColor, newValidMovesForOpponent, newBoard);
       if (isInCheckMate){
         alert("Checkmate!");
         init();
+        return execute;
       }
+      toggleColorToMove();
     }
     return execute;
   }
 
-  function evaluateCheckmate(colortoMove, validMoves, board){
+  function evaluateCheckmate(colorToMove, validMoves, board){
+    debugger
     var opponentsColor = otherColor(colorToMove);
     for (var i=0; i < validMoves.length; i++){
       var testingBoard = copyBoard(board);
@@ -406,7 +409,7 @@ const chessControl = (function(){
       movePiece(thisMove.fromSquare, thisMove.toSquare, thisMove.captureSquare, testingBoard);
       var newValidMovesForOpponent = getAllValidMoves(opponentsColor, testingBoard);
       var newThreatenedSquares = getThreatenedSquares(newValidMovesForOpponent);
-      var colorToMoveKingLocation = findKing(colortoMove, testingBoard);
+      var colorToMoveKingLocation = findKing(colorToMove, testingBoard);
       if (!newThreatenedSquares.includes(colorToMoveKingLocation)){
         return false;
       }
