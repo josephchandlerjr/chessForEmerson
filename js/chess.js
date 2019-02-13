@@ -219,9 +219,15 @@ const chessControl = (function(){
   }
   /**
   * toggles colorToMove between "w" and "b"
+  * if called with an argument, colorToMove will be assigned that argument
+  * @param {String} color color you with to be assigned to colorToMove
   */
-  function toggleColorToMove(){
-    colorToMove = otherColor(colorToMove);
+  function toggleColorToMove(color){
+    if (!color){
+      colorToMove = otherColor(colorToMove);
+    } else {
+      colorToMove = color;
+    }
   }
   /**
   * retrieves board information from Model
@@ -298,7 +304,6 @@ const chessControl = (function(){
 
     var currentBoard = getBoardasArray();
 
-    console.log(getRandomMove(activeColor, currentBoard));
     // find squares that are threatened by opponent
     var validMovesForOpponent = getAllValidMoves(opponentsColor, currentBoard);
     var opponentThreatens = getThreatenedSquares(validMovesForOpponent);
