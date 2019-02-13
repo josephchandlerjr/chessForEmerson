@@ -8,6 +8,7 @@ h1 {
     height: 600px;
     margin: 20px;
     border: 25px solid #333;
+    margin: auto;
 }
 .black {
     float: left;
