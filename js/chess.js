@@ -151,6 +151,18 @@ const chessControl = (function(){
   }
 
   /**
+  * calls getAllValidMoves and randomly selects one using Math.random()
+  * @param {String} activeColor color to move
+  * @param {Array} board array of arrays
+  * @return {Array} [from, to]
+  */
+  function getRandomMove(activeColor, board){
+    var validMoves = getAllValidMoves(activeColor, board);
+    var rand = Math.floor(Math.random() * (validMoves.length));
+    return validMoves[rand];
+  }
+
+  /**
   * toggles between "w" and "b" or "black" and "white"
   @param {string} color
   @return {string} toggled color
