@@ -124,6 +124,7 @@ const chessControl = (function(){
   var canCastle;
   var whiteInCheck;
   var blackInCheck;
+  var self;
 
   /**
   * initializes state variables
@@ -131,6 +132,8 @@ const chessControl = (function(){
   * @param {Object} vObj View Object
   */
   function init(mObj, vObj){
+    self = this;
+    console.log(self);
     model = mObj;
     view = vObj;
     colorToMove = "w";
@@ -321,9 +324,6 @@ const chessControl = (function(){
             newBoard = movePiece(rookLocation, rookTo, null, newBoard);
           }
       } else {
-        //var newValidMovesForOpponent = getAllValidMoves(opponentsColor, newBoard);
-        console.log("newValidMovesForOpponent");
-        console.log(newValidMovesForOpponent);
         var newOpponentThreatens = getThreatenedSquares(newValidMovesForOpponent);
         var activeColorKingLocation = findKing(activeColor, newBoard);
         if (newOpponentThreatens.includes(activeColorKingLocation)){
@@ -351,10 +351,10 @@ const chessControl = (function(){
       var opponentsKingLocation = findKing(opponentsColor, newBoard)
       var newValidMovesForActiveColor = getAllValidMoves(activeColor, newBoard);
       var activeColorNowThreatens = getThreatenedSquares(newValidMovesForActiveColor);
-      console.log("newValidMovesForOpponent");
-      console.log(newValidMovesForOpponent);
       var isInCheckMate = evaluateCheckmate(opponentsColor, newValidMovesForOpponent, newBoard);
-      if (isInCheckMate){alert(`isInCheckMate=${isInCheckMate}`);}
+      if (isInCheckMate){
+        alert("Checkmate!");
+      }
     }
     return execute;
   }
