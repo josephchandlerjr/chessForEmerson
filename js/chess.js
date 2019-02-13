@@ -125,6 +125,7 @@ const chessControl = (function(){
   var whiteInCheck;
   var blackInCheck;
   var self;
+  var automated = {"b": false, "w": false};
 
   /**
   * initializes state variables
