@@ -154,7 +154,7 @@ const chessControl = (function(){
   * calls getAllValidMoves and randomly selects one using Math.random()
   * @param {String} activeColor color to move
   * @param {Array} board array of arrays
-  * @return {Array} [from, to]
+  * @return {Object} a Move object
   */
   function getRandomMove(activeColor, board){
     var validMoves = getAllValidMoves(activeColor, board);
@@ -292,13 +292,13 @@ const chessControl = (function(){
   */
   function requestMove(from, to){
     var execute = false; // indicates if we will actually make this move
-
     // who's who
     var activeColor = colorToMove;
     var opponentsColor = otherColor(activeColor);
 
     var currentBoard = getBoardasArray();
 
+    console.log(getRandomMove(activeColor, currentBoard));
     // find squares that are threatened by opponent
     var validMovesForOpponent = getAllValidMoves(opponentsColor, currentBoard);
     var opponentThreatens = getThreatenedSquares(validMovesForOpponent);
