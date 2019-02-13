@@ -125,7 +125,7 @@ const chessControl = (function(){
   var whiteInCheck;
   var blackInCheck;
   var self;
-  var automated = {"b": false, "w": false};
+  var automated = {"b": true, "w": false};
 
   /**
   * initializes state variables
@@ -228,7 +228,24 @@ const chessControl = (function(){
     } else {
       colorToMove = color;
     }
+    if (automated[colorToMove]){
+      makeAutoMove();
+    }
   }
+
+  /**
+  * calls requestMove with random move of colorToMove
+  */
+  function makeAutoMove(){
+    var currentBoard = getBoardasArray();
+    var activeColor = colorToMove;
+    var result = false
+    while (!result){
+      var moveObject = getRandomMove(activeColor, currentBoard);
+      result = requestMove(moveObject.fromSquare, moveObject.toSquare);
+    }
+  }
+
   /**
   * retrieves board information from Model
   * @return {String} board state as a string
