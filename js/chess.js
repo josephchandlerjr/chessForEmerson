@@ -136,10 +136,9 @@ const chessControl = (function(){
       self = this;
       model = mObj;
       view = vObj;
-
-      model.init(this);
-      view.init(this);
     }
+    model.init(self);
+    view.init(self);
     colorToMove = "w";
     lastMove = new Move("00","00","00","00","00","00");
     canCastle = {
@@ -358,6 +357,7 @@ const chessControl = (function(){
       var isInCheckMate = evaluateCheckmate(opponentsColor, newValidMovesForOpponent, newBoard);
       if (isInCheckMate){
         alert("Checkmate!");
+        init();
       }
     }
     return execute;
