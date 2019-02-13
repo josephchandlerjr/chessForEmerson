@@ -136,6 +136,9 @@ const chessControl = (function(){
       self = this;
       model = mObj;
       view = vObj;
+
+      model.init(this);
+      view.init(this);
     }
     colorToMove = "w";
     lastMove = new Move("00","00","00","00","00","00");
@@ -941,6 +944,6 @@ const chessModel = (function(){
   };
 }());
 
-chessModel.init(chessControl);
+//chessModel.init(chessControl);
 chessControl.init(chessModel, chessView);
-chessView.init(chessControl);
+//chessView.init(chessControl);
