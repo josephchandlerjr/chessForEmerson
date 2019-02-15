@@ -28,6 +28,7 @@ const chessView = (function(){
   * @param {Event} evt
   */
   function onClick(evt){
+    evt.preventDefault();
     var id = evt.target.id;
     if (id === "board"){ return;}  // if is top elem div and not square
     if (lastClicked === null){
@@ -61,7 +62,6 @@ const chessView = (function(){
     control = obj;
     var radioButtons = document.querySelector("#automation-radio-buttons");
     radioButtons.addEventListener("change", onChangeOfAutomationSelection);
-    console.log(radioButtons);
     var board = document.querySelector("#board");
     board.innerHTML = "";
     board.addEventListener("click",onClick,false); // during bubbling phase

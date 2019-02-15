@@ -13,7 +13,9 @@ h1 {
     margin: 20px;
     border: 25px solid #333;
     margin: auto;
+    user-select: none;
 }
+
 .black {
     float: left;
     width: 75px;
