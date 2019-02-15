@@ -35,7 +35,9 @@ const chessView = (function(){
       lastClicked.classList.add("selected");
     } else {
       lastClicked.classList.toggle("selected");
-      control.requestMove(lastClicked.id, id);
+      control.viewRequest({ request : "move",
+                            from : lastClicked.id,
+                            to : id});
       update();
       lastClicked = null;
     }
@@ -112,6 +114,7 @@ const chessView = (function(){
     init : init
   }
 }());
+
 /**
 * IIFE to create the Control object in MVC
 * @return {Object} object with public methods
@@ -148,6 +151,17 @@ const chessControl = (function(){
     whiteInCheck = false;
     blackInCheck = false;
     toggleColorToMove("w");
+  }
+
+  /**
+  * @param {Object} request request.request will describe action requested
+  */
+  function viewRequest(request){
+    if (request.request == "move"){
+      var from = request.from;
+      var to = request.to;
+      requestMove(from, to);
+    }
   }
 
   /**
@@ -400,6 +414,12 @@ const chessControl = (function(){
     return execute;
   }
 
+  /**
+  * Evaluate if a color is in checkmate on a particular board based on valid moves
+  * @param {String} colorToMove
+  * @param {Array} validMoves array of Move objects
+  * @param {Array} board array of arrays
+  */
   function evaluateCheckmate(colorToMove, validMoves, board){
     var opponentsColor = otherColor(colorToMove);
     for (var i=0; i < validMoves.length; i++){
@@ -494,7 +514,7 @@ const chessControl = (function(){
   * @param {Array} board array of arrays representing board
   * @return {Boolean} true if movement of piece is valid
   */
-  function isValidPawnMove( from, fromPiece, to, toPiece, activeColor, board){ // arguments are strings like a2 or h7
+  function isValidPawnMove( from, fromPiece, to, toPiece, activeColor, board){
     var activeColor = fromPiece[0];
     var direction = activeColor === "w" ? "n" : "s";
 
@@ -891,7 +911,8 @@ const chessControl = (function(){
       init : init,
       getBoardAsString: getBoardAsString,
       requestMove: requestMove,
-      otherColor: otherColor
+      otherColor: otherColor,
+      viewRequest: viewRequest
 
     };
 }());
@@ -932,7 +953,7 @@ const chessModel = (function(){
 
   /**
   * update capturedPieces
-  * @param {String} piece piece captured 
+  * @param {String} piece piece captured
   */
   function updateCapturedPieces(piece){
     if (piece !== "00"){
