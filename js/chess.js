@@ -328,11 +328,11 @@ const chessControl = (function(){
 
     // get a list of valid Move objects for activeColor
     // see if requested move is in that list
-    var allValidMovesforActiveColor = getAllValidMoves(activeColor, currentBoard);
+    var validMovesforActiveColor = getAllValidMoves(activeColor, currentBoard);
     var validMovement = false; //
     var thisMove;
-    for (var i=0; i < allValidMovesforActiveColor.length; i++){
-      thisMove = allValidMovesforActiveColor[i];
+    for (var i=0; i < validMovesforActiveColor.length; i++){
+      thisMove = validMovesforActiveColor[i];
       if(thisMove.fromSquare === from && thisMove.toSquare === to){
         validMovement = true;
         break;
