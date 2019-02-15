@@ -15,6 +15,7 @@ h1 {
     margin: auto;
     user-select: none;
     -moz-user-select: none;
+    border-radius: 30px;
 }
 
 .black {
