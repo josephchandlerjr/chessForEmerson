@@ -151,6 +151,10 @@ const chessControl = (function(){
     whiteInCheck = false;
     blackInCheck = false;
     toggleColorToMove("w");
+    if (automated[colorToMove]){
+      makeAutoMove();
+      view.update();
+    }
   }
 
   /**
@@ -160,7 +164,12 @@ const chessControl = (function(){
     if (request.request == "move"){
       var from = request.from;
       var to = request.to;
-      requestMove(from, to);
+      var executed = requestMove(from, to);
+      if (executed) {
+        if (automated[colorToMove]){
+          makeAutoMove();
+        }
+      }
     }
   }
 
@@ -190,6 +199,7 @@ const chessControl = (function(){
     }
     return result;
   }
+
   /**
   * updates canCastle variable based on a move object
   * @param {Object} move a Move object
@@ -214,6 +224,7 @@ const chessControl = (function(){
       }
     }
   }
+
   /**
   * creates move object to be logged
   * @param {String} fromSquare chessnotation showing from square
@@ -231,6 +242,7 @@ const chessControl = (function(){
     this.pieceCaptured = pieceCaptured;
     this.special = special;
   }
+
   /**
   * toggles colorToMove between "w" and "b"
   * if called with an argument, colorToMove will be assigned that argument
@@ -241,9 +253,6 @@ const chessControl = (function(){
       colorToMove = otherColor(colorToMove);
     } else {
       colorToMove = color;
-    }
-    if (automated[colorToMove]){
-      makeAutoMove();
     }
   }
 
