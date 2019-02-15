@@ -401,7 +401,6 @@ const chessControl = (function(){
   }
 
   function evaluateCheckmate(colorToMove, validMoves, board){
-    debugger
     var opponentsColor = otherColor(colorToMove);
     for (var i=0; i < validMoves.length; i++){
       var testingBoard = copyBoard(board);
@@ -425,6 +424,7 @@ const chessControl = (function(){
   function updateModel(move, board){
     model.logMove(move);
     model.updateBoard(board);
+    model.updateCapturedPieces(move.pieceCaptured);
   }
 
 
@@ -906,6 +906,7 @@ const chessModel = (function(){
   var moves;
   var board;
   var control;
+  var capturedPieces;
 
   /**
   * Sets initial state variables
@@ -915,6 +916,7 @@ const chessModel = (function(){
     control = obj;
     board = [[]];
     moves = [];
+    capturedPieces = [];
     states = [];
     states.push(startState);
     for (var i=0;i<startState.length;i+=2){
@@ -926,6 +928,17 @@ const chessModel = (function(){
         board[board.length - 1].push(startState.slice(i,i+2));
         }
     }
+  }
+
+  /**
+  * update capturedPieces
+  * @param {String} piece piece captured 
+  */
+  function updateCapturedPieces(piece){
+    if (piece !== "00"){
+      capturedPieces.push(piece);
+    }
+    console.log(capturedPieces);
   }
   /**
   * returns a copy of the board as an array using slice
@@ -979,6 +992,7 @@ const chessModel = (function(){
     logMove : logMove,
     getMoves : getMoves,
     updateBoard : updateBoard,
+    updateCapturedPieces : updateCapturedPieces
   };
 }());
 
