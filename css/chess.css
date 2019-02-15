@@ -1,3 +1,8 @@
+
+body {
+  background: linear-gradient(#f7bebe, #ada0a8);
+}
+
 h1 {
   color: #bb324a;
   text-align: center;
@@ -16,6 +21,10 @@ h1 {
     user-select: none;
     -moz-user-select: none;
     border-radius: 30px;
+}
+
+#board:hover{
+  cursor: grab;
 }
 
 .black {
