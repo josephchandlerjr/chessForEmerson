@@ -44,11 +44,24 @@ const chessView = (function(){
   }
 
   /**
+  * asks control object to set automation config
+  * @param {Event} event
+  */
+  function onChangeOfAutomationSelection(evt){
+    if (evt){
+      control.viewRequest({request:"automate", color:evt.target.value})
+    }
+  }
+
+  /**
   * Sets control variable, appends divs to #board and calls update
   * @param {Object} obj Control object in MVC
   */
   function init(obj){
     control = obj;
+    var radioButtons = document.querySelector("#automation-radio-buttons");
+    radioButtons.addEventListener("change", onChangeOfAutomationSelection);
+    console.log(radioButtons);
     var board = document.querySelector("#board");
     board.innerHTML = "";
     board.addEventListener("click",onClick,false); // during bubbling phase
@@ -161,7 +174,7 @@ const chessControl = (function(){
   * @param {Object} request request.request will describe action requested
   */
   function viewRequest(request){
-    if (request.request == "move"){
+    if (request.request === "move"){
       var from = request.from;
       var to = request.to;
       var executed = requestMove(from, to);
@@ -169,6 +182,17 @@ const chessControl = (function(){
         if (automated[colorToMove]){
           makeAutoMove();
         }
+      }
+    }
+    if (request.request === "automate"){
+      switch (request.color){
+        case "none" : automated["b"] = false; automated["w"] = false; break;
+        case "white": automated["b"] = false; automated["w"] = true; break;
+        case "black": automated["b"] = true; automated["w"] = false; break;
+      }
+      if (automated[colorToMove]){
+        makeAutoMove();
+        view.update();
       }
     }
   }
@@ -502,7 +526,7 @@ const chessControl = (function(){
     if ( (toPiece !== "00") && (toPiece[0] === fromPiece[0]) ){  //no friendly fire
       return false;
     }
-    //switch(fromPiece.getKind()){
+
     switch(fromPiece[1]){
       case "p": return isValidPawnMove(  from, fromPiece, to, toPiece, activeColor, board);break;
       case "r": return isValidRookMove(  from, fromPiece, to, toPiece, activeColor, board);break;
