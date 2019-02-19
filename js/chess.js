@@ -65,7 +65,6 @@ const chessView = (function(){
     var board = document.querySelector("#board");
     board.innerHTML = "";
     board.addEventListener("click",onClick,false); // during bubbling phase
-    //var color = "white";
     var col = 97;
     var row = 8;
     var fragment = document.createDocumentFragment();
