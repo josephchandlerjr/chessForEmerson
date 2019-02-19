@@ -27,26 +27,27 @@ h1 {
   cursor: grab;
 }
 
-.black {
-    float: left;
-    width: 75px;
-    height: 75px;
-    background-color: #f9a7cf;
-    font-size:50px;
-    text-align:center;
-    display: table-cell;
-    vertical-align:middle;
+.square {
+  float: left;
+  display: inline-block;
+  width: 12.5%;
+  height: 12.5%;
+  background-color: #fff;
+  font-size: 50px;
+  text-align: center;
 }
-.white {
-    float: left;
-    width: 75px;
-    height: 75px;
-    background-color: #fff;
-    font-size:50px;
-    text-align:center;
-    display: table-cell;
-    vertical-align:middle;
-}
+
+.square:nth-of-type(16n+2),
+.square:nth-of-type(16n+4),
+.square:nth-of-type(16n+6),
+.square:nth-of-type(16n+8),
+.square:nth-of-type(16n+9),
+.square:nth-of-type(16n+11),
+.square:nth-of-type(16n+13),
+.square:nth-of-type(16n+15) {
+  background-color: #f9a7cf;
+  }
+
 .selected {
   box-shadow: 0 0 0 3px red inset;
 }
