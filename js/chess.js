@@ -65,13 +65,12 @@ const chessView = (function(){
     var board = document.querySelector("#board");
     board.innerHTML = "";
     board.addEventListener("click",onClick,false); // during bubbling phase
-    var color = "white";
+    //var color = "white";
     var col = 97;
     var row = 8;
     var fragment = document.createDocumentFragment();
     for (var i=1; i < 65; i++){
       var div = document.createElement("div")
-      div.classList.add(color);
       div.classList.add("square");
       div.id = String.fromCharCode(col) + row;
       if (col === 104){
@@ -81,10 +80,6 @@ const chessView = (function(){
         col += 1;
       }
       fragment.appendChild(div);
-      color = control.otherColor(color);
-      if (i % 8 === 0){
-        color = control.otherColor(color);
-      }
     }
     board.append(fragment);
     update();

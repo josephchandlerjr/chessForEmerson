@@ -46,7 +46,7 @@ h1 {
 .square:nth-of-type(16n+13),
 .square:nth-of-type(16n+15) {
   background-color: #f9a7cf;
-  }
+}
 
 .selected {
   box-shadow: 0 0 0 3px red inset;
