@@ -72,6 +72,7 @@ const chessView = (function(){
     for (var i=1; i < 65; i++){
       var div = document.createElement("div")
       div.classList.add(color);
+      div.classList.add("square");
       div.id = String.fromCharCode(col) + row;
       if (col === 104){
         col = 97;
