@@ -74,6 +74,7 @@ const chessView = (function(){
     var radioButtons = document.querySelector("#automation-radio-buttons");
     radioButtons.addEventListener("change", onChangeOfAutomationSelection);
     var board = document.querySelector("#board");
+    board.classList.remove("flipped"); // if board was flipped, unflip
     board.innerHTML = "";
     board.addEventListener("click",onClick,false); // during bubbling phase
     var col = 97;
