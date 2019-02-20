@@ -83,3 +83,7 @@ h1:hover {
 .flipped {
   transform: rotate(180deg);
 }
+.flipped-board {
+  transform: rotate(180deg);
+  transition-duration: 1s;
+}

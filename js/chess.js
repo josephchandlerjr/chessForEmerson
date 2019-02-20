@@ -50,7 +50,7 @@ const chessView = (function(){
   function flipBoard(){
     var board = document.querySelector("#board");
     var squares = document.querySelectorAll(".square");
-    board.classList.toggle("flipped")
+    board.classList.toggle("flipped-board");
     squares.forEach(function(elem){elem.classList.toggle("flipped");});
 
   }
@@ -74,7 +74,7 @@ const chessView = (function(){
     var radioButtons = document.querySelector("#automation-radio-buttons");
     radioButtons.addEventListener("change", onChangeOfAutomationSelection);
     var board = document.querySelector("#board");
-    board.classList.remove("flipped"); // if board was flipped, unflip
+    board.classList.remove("flipped-board"); // if board was flipped, unflip
     board.innerHTML = "";
     board.addEventListener("click",onClick,false); // during bubbling phase
 
