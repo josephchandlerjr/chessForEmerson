@@ -77,6 +77,9 @@ const chessView = (function(){
     board.classList.remove("flipped"); // if board was flipped, unflip
     board.innerHTML = "";
     board.addEventListener("click",onClick,false); // during bubbling phase
+
+    var flipButton = document.querySelector("#flip");
+    flipButton.addEventListener("click",flipBoard);
     var col = 97;
     var row = 8;
     var fragment = document.createDocumentFragment();
@@ -95,8 +98,6 @@ const chessView = (function(){
     board.append(fragment);
     update();
   }
-
-
 
   /*
   * Gets board from Control object and sets innerHTML of divs representing squares
