@@ -79,3 +79,7 @@ h1:hover {
   animation-timing-function: linear;
   animation-iteration-count: 5;
 }
+
+.flipped {
+  transform: rotate(180deg);
+}

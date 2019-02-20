@@ -31,7 +31,7 @@ const chessView = (function(){
     evt.preventDefault();
     var id = evt.target.id;
     if (id === "board"){ return;}  // if is top elem div and not square
-    if (lastClicked === null){
+    if (lastClicked === null && evt.target.textContent !== ""){
       lastClicked = evt.target;
       lastClicked.classList.add("selected");
     } else {
