@@ -21,6 +21,7 @@ h1 {
     user-select: none;
     -moz-user-select: none;
     border-radius: 30px;
+    transition-duration: 2s;
 }
 
 #board:hover{
@@ -85,5 +86,5 @@ h1:hover {
 }
 .flipped-board {
   transform: rotate(180deg);
-  transition-duration: 1s;
+  transition-duration: 2s;
 }
