@@ -34,7 +34,7 @@ const chessView = (function(){
     if (lastClicked === null && evt.target.textContent !== ""){
       lastClicked = evt.target;
       lastClicked.classList.add("selected");
-    } else {
+    } else if (lastClicked !== null){
       lastClicked.classList.toggle("selected");
       control.viewRequest({ request : "move",
                             from : lastClicked.id,
@@ -42,6 +42,17 @@ const chessView = (function(){
       update();
       lastClicked = null;
     }
+  }
+
+  /**
+  * rotate the board and each square 180deg by adding appropriate class
+  */
+  function flipBoard(){
+    var board = document.querySelector("#board");
+    var squares = document.querySelectorAll(".square");
+    board.classList.toggle("flipped")
+    squares.forEach(function(elem){elem.classList.toggle("flipped");});
+
   }
 
   /**
