@@ -444,9 +444,13 @@ const chessControl = (function(){
       var opponentsKingLocation = findKing(opponentsColor, newBoard);
       var newValidMovesForActiveColor = getAllValidMoves(activeColor, newBoard);
       var activeColorNowThreatens = getThreatenedSquares(newValidMovesForActiveColor);
-      var isInCheckMate = evaluateCheckmate(opponentsColor, newValidMovesForOpponent, newBoard);
-      if (isInCheckMate){
-        alert("Checkmate!");
+      var gameOver = noLegalMoves(opponentsColor, newValidMovesForOpponent, newBoard);
+      if (gameOver){
+        if (activeColorNowThreatens.includes(opponentsKingLocation)){
+          alert("Checkmate!");
+        } else {
+          alert("Stalemate!");
+        }
         init();
         return execute;
       }
@@ -461,7 +465,7 @@ const chessControl = (function(){
   * @param {Array} validMoves array of Move objects
   * @param {Array} board array of arrays
   */
-  function evaluateCheckmate(colorToMove, validMoves, board){
+  function noLegalMoves(colorToMove, validMoves, board){
     var opponentsColor = otherColor(colorToMove);
     for (var i=0; i < validMoves.length; i++){
       var testingBoard = copyBoard(board);
