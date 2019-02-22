@@ -13,9 +13,8 @@ h1 {
 }
 
 #board {
-    width: 600px;
-    height: 600px;
-    margin: 20px;
+    width: 500px;
+    height: 500px;
     border: 25px solid #333;
     margin: auto;
     user-select: none;
@@ -36,7 +35,7 @@ h1 {
   background-color: #fff;
   font-size: 3em;
   text-align: center;
-  line-height: 2em;
+  line-height: 1.5em;
 }
 
 .square:nth-of-type(16n+2),
