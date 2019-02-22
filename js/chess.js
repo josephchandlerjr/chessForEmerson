@@ -4,7 +4,6 @@
   * @return {Object} object with public methods
   */
 const chessView = (function(){
-
   //HTML symbols for chess peices
   const BLACKROOK   = "&#9820;";
   const BLACKKNIGHT = "&#9822;";
@@ -31,10 +30,12 @@ const chessView = (function(){
     evt.preventDefault();
     var id = evt.target.id;
     if (id === "board"){ return;}  // if is top elem div and not square
-    if (lastClicked === null && evt.target.textContent !== ""){
-      lastClicked = evt.target;
-      lastClicked.classList.add("selected");
-    } else if (lastClicked !== null){
+    if (lastClicked === null){
+      if (evt.target.textContent !== ""){
+        lastClicked = evt.target;
+        lastClicked.classList.add("selected");
+      }
+    } else {
       lastClicked.classList.toggle("selected");
       control.viewRequest({ request : "move",
                             from : lastClicked.id,
