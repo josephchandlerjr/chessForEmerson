@@ -87,3 +87,7 @@ h1:hover {
   transform: rotate(180deg);
   transition-duration: 2s;
 }
+
+#flip:hover {
+  box-shadow: 0 0 0 3px gold inset;
+}
