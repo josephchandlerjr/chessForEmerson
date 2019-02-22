@@ -394,7 +394,6 @@ const chessControl = (function(){
         break;
       }
     }
-
     // if we found requested move in the list of valid move objects
     // make that move on a copy of the board and ensure that mover is
     // not putting self in check
