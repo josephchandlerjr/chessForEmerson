@@ -235,7 +235,7 @@ const chessControl = (function(){
       var thisMove = validMoves[i];
       movePiece(thisMove.fromSquare, thisMove.toSquare, thisMove.captureSquare, testingBoard);
       var newValidMovesForOpponent = getAllValidMovementsByColor(opponentsColor, testingBoard);
-      var newThreatenedSquares = getThreatenedSquares(newValidMovesForOpponent);
+      var newThreatenedSquares = getThreatenedSquares(newValidMovesForOpponent, testingBoard);
       var colorToMoveKingLocation = findKing(colorToMove, testingBoard);
       if (newThreatenedSquares.includes(colorToMoveKingLocation)){
         continue;
@@ -404,17 +404,39 @@ const chessControl = (function(){
   /**
   * find squares that are under threat
   * @param {Array} moves an array of move objects
+  * @param {Array} board an array of arrays
+  * @return {Array} array of strings representing threatened squares on board
   */
-  function getThreatenedSquares(moves){
+  function getThreatenedSquares(moves, board){
     var result = moves.map(function(obj){
       if (obj.captureSquare != null){
         return obj.captureSquare;
       }});
-    return result.filter(x => x != null);
+    // now include all squares NE or NW of white pawns and
+    // SE or SW of black pawns
+    for (var row=0; row < board.length; row++){
+      for (var col=0; col < board.length; col++){
+        var piece = board[row][col];
+        if (piece[1] === "p"){
+          var square = translateIndicesToChessNotation([row,col]);
+          if (piece[0] === "w"){
+            result.push(getAdjacentSquare(square, "nw"));
+            result.push(getAdjacentSquare(square, "ne"));
+          }
+          if (piece[0] === "b"){
+            result.push(getAdjacentSquare(square, "sw"));
+            result.push(getAdjacentSquare(square, "se"));
+          }
+        }
+      }
+    }
+  // remove null from list
+  result = result.filter(x => x != null);
+  return result;
   };
 
   /**
-  * determins if move is valid and if so executes moves
+  * determines if move is valid and if so executes moves
   * @param {String} from square moving piece from in in chess notation
   * @param {String} to square moving piece to in in chess notation
   * @return {Boolean} true if move executed else false;
@@ -431,7 +453,7 @@ const chessControl = (function(){
 
     // find squares that are threatened by opponent
     var validMovesForOpponent = getAllValidMovementsByColor(opponentsColor, currentBoard);
-    var opponentThreatens = getThreatenedSquares(validMovesForOpponent);
+    var opponentThreatens = getThreatenedSquares(validMovesForOpponent, currentBoard);
 
     // get a list of valid Move objects for activeColor
     // see if requested move is in that list
@@ -469,7 +491,7 @@ const chessControl = (function(){
             newBoard = movePiece(rookLocation, rookTo, null, newBoard);
           }
       } else {
-        var newOpponentThreatens = getThreatenedSquares(newValidMovesForOpponent);
+        var newOpponentThreatens = getThreatenedSquares(newValidMovesForOpponent, newBoard);
         var activeColorKingLocation = findKing(activeColor, newBoard);
         if (newOpponentThreatens.includes(activeColorKingLocation)){
           execute = false;
@@ -494,7 +516,7 @@ const chessControl = (function(){
       // let's see if we ajust put opponent in checkmate
       var opponentsKingLocation = findKing(opponentsColor, newBoard);
       var newValidMovesForActiveColor = getAllValidMovementsByColor(activeColor, newBoard);
-      var activeColorNowThreatens = getThreatenedSquares(newValidMovesForActiveColor);
+      var activeColorNowThreatens = getThreatenedSquares(newValidMovesForActiveColor, newBoard);
       var gameOver = noLegalMoves(opponentsColor, newValidMovesForOpponent, newBoard);
       if (gameOver){
         if (activeColorNowThreatens.includes(opponentsKingLocation)){
@@ -523,7 +545,7 @@ const chessControl = (function(){
       var thisMove = validMoves[i];
       movePiece(thisMove.fromSquare, thisMove.toSquare, thisMove.captureSquare, testingBoard);
       var newValidMovesForOpponent = getAllValidMovementsByColor(opponentsColor, testingBoard);
-      var newThreatenedSquares = getThreatenedSquares(newValidMovesForOpponent);
+      var newThreatenedSquares = getThreatenedSquares(newValidMovesForOpponent, testingBoard);
       var colorToMoveKingLocation = findKing(colorToMove, testingBoard);
       if (!newThreatenedSquares.includes(colorToMoveKingLocation)){
         return false;
