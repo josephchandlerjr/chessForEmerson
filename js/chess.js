@@ -205,24 +205,64 @@ const chessControl = (function(){
       }
     }
   }
-
+  /**
+  * gets all valid moves for both colors
+  * @param board array of arrays
+  * @return {Object} object with two properties, white and black containing valid moves for each color
+  */
   function getAllValidMoves(board){
-    var white = getAllValidMovesByColor("w", board);
-    var whiteThreatends = getThreatenedSquares(white);
-    var black = getAllValidMovesByColor("b", board);
-    var whiteThreatends = getThreatenedSquares(black);
-    aijfjap'fjeajwepfj
-
+    var white = getAllValidMovementsByColor("w", board);
+    console.log("up here");
+    console.log(white);
+    white = removeMovesThatEndangerKing("w", white, board);
+    var black = getAllValidMovementsByColor("b", board);
+    black = removeMovesThatEndangerKing("b", black, board);
+    return {white:white, black:black}
   }
 
   /**
-  * calls getAllValidMovesByColor and randomly selects one using Math.random()
+  * filters our moves that endanger own king
+  * @param {String} colorToMove
+  * @param {Array} validMoves array of Move objects
+  * @param {Array} board array of arrays
+  * @return {Array} array of Move objects
+  */
+  function removeMovesThatEndangerKing(colorToMove, validMoves, board){
+    var result = []
+    var opponentsColor = otherColor(colorToMove);
+    for (var i=0; i < validMoves.length; i++){
+      var testingBoard = copyBoard(board);
+      var thisMove = validMoves[i];
+      movePiece(thisMove.fromSquare, thisMove.toSquare, thisMove.captureSquare, testingBoard);
+      var newValidMovesForOpponent = getAllValidMovementsByColor(opponentsColor, testingBoard);
+      var newThreatenedSquares = getThreatenedSquares(newValidMovesForOpponent);
+      var colorToMoveKingLocation = findKing(colorToMove, testingBoard);
+      if (newThreatenedSquares.includes(colorToMoveKingLocation)){
+        continue;
+      }
+      if(thisMove.special !== null && thisMove.special.description == "castle"){
+        // check if square to left/right is threatened
+        var direction = thisMove.special.direction === "queenside" ? "w" : "e";
+        if (newThreatenedSquares.includes(thisMove.fromSquare) ||
+            newThreatenedSquares.includes(getAdjacentSquare(thisMove.fromSquare, direction)) ||
+            newThreatenedSquares.includes(getNonAdjacentSquare(thisMove.fromSquare, [direction,direction]))){
+              console.log("bam!");
+              continue;
+            }
+      }
+      result.push(thisMove);
+    }
+    return result;
+  }
+
+  /**
+  * calls getAllValidMovementsByColor and randomly selects one using Math.random()
   * @param {String} activeColor color to move
   * @param {Array} board array of arrays
   * @return {Object} a Move object
   */
   function getRandomMove(activeColor, board){
-    var validMoves = getAllValidMovesByColor(activeColor, board);
+    var validMoves = getAllValidMovementsByColor(activeColor, board);
     var rand = Math.floor(Math.random() * (validMoves.length));
     return validMoves[rand];
   }
@@ -380,6 +420,8 @@ const chessControl = (function(){
   * @return {Boolean} true if move executed else false;
   */
   function requestMove(from, to){
+    console.log("validMoves");
+    console.log(getAllValidMoves(getBoardasArray()));
     var execute = false; // indicates if we will actually make this move
     // who's who
     var activeColor = colorToMove;
@@ -388,12 +430,12 @@ const chessControl = (function(){
     var currentBoard = getBoardasArray();
 
     // find squares that are threatened by opponent
-    var validMovesForOpponent = getAllValidMovesByColor(opponentsColor, currentBoard);
+    var validMovesForOpponent = getAllValidMovementsByColor(opponentsColor, currentBoard);
     var opponentThreatens = getThreatenedSquares(validMovesForOpponent);
 
     // get a list of valid Move objects for activeColor
     // see if requested move is in that list
-    var validMovesforActiveColor = getAllValidMovesByColor(activeColor, currentBoard);
+    var validMovesforActiveColor = getAllValidMovementsByColor(activeColor, currentBoard);
     var validMovement = false; //
     var thisMove;
     for (var i=0; i < validMovesforActiveColor.length; i++){
@@ -409,7 +451,7 @@ const chessControl = (function(){
     if (validMovement){
       var newBoard = copyBoard(currentBoard);
       newBoard = movePiece(from, to, thisMove.captureSquare, newBoard);
-      var newValidMovesForOpponent = getAllValidMovesByColor(opponentsColor, newBoard);
+      var newValidMovesForOpponent = getAllValidMovementsByColor(opponentsColor, newBoard);
 
       if(thisMove.special !== null && thisMove.special.description == "castle"){
         // check if square to left/right is threatened
@@ -451,7 +493,7 @@ const chessControl = (function(){
 
       // let's see if we ajust put opponent in checkmate
       var opponentsKingLocation = findKing(opponentsColor, newBoard);
-      var newValidMovesForActiveColor = getAllValidMovesByColor(activeColor, newBoard);
+      var newValidMovesForActiveColor = getAllValidMovementsByColor(activeColor, newBoard);
       var activeColorNowThreatens = getThreatenedSquares(newValidMovesForActiveColor);
       var gameOver = noLegalMoves(opponentsColor, newValidMovesForOpponent, newBoard);
       if (gameOver){
@@ -480,7 +522,7 @@ const chessControl = (function(){
       var testingBoard = copyBoard(board);
       var thisMove = validMoves[i];
       movePiece(thisMove.fromSquare, thisMove.toSquare, thisMove.captureSquare, testingBoard);
-      var newValidMovesForOpponent = getAllValidMovesByColor(opponentsColor, testingBoard);
+      var newValidMovesForOpponent = getAllValidMovementsByColor(opponentsColor, testingBoard);
       var newThreatenedSquares = getThreatenedSquares(newValidMovesForOpponent);
       var colorToMoveKingLocation = findKing(colorToMove, testingBoard);
       if (!newThreatenedSquares.includes(colorToMoveKingLocation)){
@@ -517,7 +559,7 @@ const chessControl = (function(){
   * @param {Array} board to evaluate
   * @return {Array} array of move objects
   */
-  function getAllValidMovesByColor(color,board){
+  function getAllValidMovementsByColor(color,board){
     // simply returns movements that look proper without thought of check status
     // and don't worry about special moves yet.
     var result = [];
