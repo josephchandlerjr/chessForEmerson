@@ -212,8 +212,6 @@ const chessControl = (function(){
   */
   function getAllValidMoves(board){
     var white = getAllValidMovementsByColor("w", board);
-    console.log("up here");
-    console.log(white);
     white = removeMovesThatEndangerKing("w", white, board);
     var black = getAllValidMovementsByColor("b", board);
     black = removeMovesThatEndangerKing("b", black, board);
@@ -246,7 +244,6 @@ const chessControl = (function(){
         if (newThreatenedSquares.includes(thisMove.fromSquare) ||
             newThreatenedSquares.includes(getAdjacentSquare(thisMove.fromSquare, direction)) ||
             newThreatenedSquares.includes(getNonAdjacentSquare(thisMove.fromSquare, [direction,direction]))){
-              console.log("bam!");
               continue;
             }
       }
@@ -442,8 +439,6 @@ const chessControl = (function(){
   * @return {Boolean} true if move executed else false;
   */
   function requestMove(from, to){
-    console.log("validMoves");
-    console.log(getAllValidMoves(getBoardasArray()));
     var execute = false; // indicates if we will actually make this move
     // who's who
     var activeColor = colorToMove;
@@ -839,19 +834,6 @@ const chessControl = (function(){
     return result;
   }
 
-  /**
-  * filter out moves that appear valid but are not because the move would
-  * put the mover in check
-  * @param {String} color color of pieces to move
-  * @param {Array} board to evaluate
-  * @param {Array} validMoves array of from, to pairs that valid movement-wise
-  * @return {Array} array of arrays of valid from, to pairs
-  */
-  function getAllValidActions(color,board, validMoves){
-    // this should exclude moves where mover puts own king in checkmate
-    // use findKing(color); to get king location;
-    // use isThreatened(activeColorKingLocation, currentBoard);
-  }
 
   /**
   * find location of a particular king
