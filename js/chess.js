@@ -169,7 +169,7 @@ const chessControl = (function(){
       view = vObj;
     }
     model.init(self);
-    view.init(self);
+
     lastMove = new Move("00","00","00","00","00","00");
     canCastle = {
       w : {queenside: true, kingside: true},
@@ -184,6 +184,7 @@ const chessControl = (function(){
     }
     // initialize movesMap
     updateMovesMap();
+    view.init(self);
   }
 
   /**
@@ -233,8 +234,7 @@ const chessControl = (function(){
     }
 
     if (request.request === "validMoves"){
-      console.log(request.from);
-      return ["testing", "one", "two"];
+      return movesMap[request.from];
     }
   }
   /**
