@@ -21,7 +21,7 @@ const chessView = (function(){
 
   var lastClicked = null;
   var control;
-
+  var targets;
   /**
   * listener for div elements that make up chess board
   * @param {Event} evt
@@ -34,9 +34,18 @@ const chessView = (function(){
       if (evt.target.textContent !== ""){
         lastClicked = evt.target;
         lastClicked.classList.add("selected");
+        targets = lastClicked.getAttribute("targets").split(" ");
+        for (var i=0; i < targets.length; i++){
+          var targetSquare = document.querySelector("#"+targets[i]);
+          targetSquare.classList.add("selected");
+        }
       }
     } else {
       lastClicked.classList.toggle("selected");
+      for (var i=0; i < targets.length; i++){
+        var targetSquare = document.querySelector("#"+targets[i]);
+        targetSquare.classList.toggle("selected");
+      }
       control.viewRequest({ request : "move",
                             from : lastClicked.id,
                             to : id});
