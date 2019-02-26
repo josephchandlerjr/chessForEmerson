@@ -84,6 +84,11 @@ h1:hover {
   animation-iteration-count: 5;
 }
 
+button {
+  height: 48px;
+  width: 96px;
+}
+
 .flipped {
   transform: rotate(180deg);
 }

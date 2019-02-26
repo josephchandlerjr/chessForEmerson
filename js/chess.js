@@ -21,30 +21,33 @@ const chessView = (function(){
 
   var lastClicked = null;
   var control;
-  var targets;
+  var destinations;
   /**
   * listener for div elements that make up chess board
   * @param {Event} evt
   */
   function onClick(evt){
+    debugger
     evt.preventDefault();
     var id = evt.target.id;
     if (id === "board"){ return;}  // if is top elem div and not square
     if (lastClicked === null){
-      if (evt.target.textContent !== ""){
+      var destinationsAttr = evt.target.getAttribute("destinations");
+      if (destinationsAttr != ""){
         lastClicked = evt.target;
         lastClicked.classList.add("selected");
-        targets = lastClicked.getAttribute("targets").split(" ");
-        for (var i=0; i < targets.length; i++){
-          var targetSquare = document.querySelector("#"+targets[i]);
-          targetSquare.classList.add("target");
-        }
+        destinations = destinationsAttr.split(" ");
+        console.log(destinations);
+          for (var i=0; i < destinations.length; i++){
+            var destSquare = document.querySelector("#"+destinations[i]);
+            destSquare.classList.add("target");
+          }
       }
     } else {
       lastClicked.classList.toggle("selected");
-      for (var i=0; i < targets.length; i++){
-        var targetSquare = document.querySelector("#"+targets[i]);
-        targetSquare.classList.toggle("target");
+      for (var i=0; i < destinations.length; i++){
+        var destSquare = document.querySelector("#"+destinations[i]);
+        destSquare.classList.toggle("target");
       }
       control.viewRequest({ request : "move",
                             from : lastClicked.id,
@@ -136,8 +139,8 @@ const chessView = (function(){
           case "wk": squares[sqr].innerHTML = WHITEKING; break;
         }
         var squareID = squares[sqr].id;
-        var targets = control.viewRequest({request: "validMoves", from: squareID});
-        squares[sqr].setAttribute("targets", targets.join(" "));
+        var destinations = control.viewRequest({request: "validMoves", from: squareID});
+        squares[sqr].setAttribute("destinations", destinations.join(" "));
         sqr += 1
 
       }
