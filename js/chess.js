@@ -126,7 +126,11 @@ const chessView = (function(){
           case "wq": squares[sqr].innerHTML = WHITEQUEEN; break;
           case "wk": squares[sqr].innerHTML = WHITEKING; break;
         }
+        var squareID = squares[sqr].id;
+        var targets = control.viewRequest({request: "validMoves", from: squareID});
+        squares[sqr].setAttribute("targets", targets.join(" "));
         sqr += 1
+
       }
     }
   }
@@ -203,6 +207,11 @@ const chessControl = (function(){
         makeAutoMove();
         view.update();
       }
+    }
+
+    if (request.request === "validMoves"){
+      console.log(request.from);
+      return ["testing", "one", "two"];
     }
   }
   /**
