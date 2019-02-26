@@ -155,6 +155,7 @@ const chessControl = (function(){
   var blackInCheck;
   var self;
   var automated = {"b": true, "w": false};
+  var movesMap = {};
 
   /**
   * initializes state variables
@@ -180,6 +181,27 @@ const chessControl = (function(){
     if (automated[colorToMove]){
       makeAutoMove();
       view.update();
+    }
+    // initialize movesMap
+    updateMovesMap();
+  }
+
+  /**
+  * update movesMap with current board configuration
+  */
+  function updateMovesMap(){
+    var allSquares = getAllSquares();
+    for (var i=0; i < allSquares.length; i++){
+      movesMap[allSquares[i]] = [];
+    }
+    var validMoves = getAllValidMoves(getBoardasArray());
+    for (color in validMoves){
+      for (var i=0; i < validMoves[color].length; i++){
+        var moveObj = validMoves[color][i];
+        if (!movesMap[moveObj.fromSquare].includes(moveObj.toSquare)){
+          movesMap[moveObj.fromSquare].push(moveObj.toSquare);
+        }
+      }
     }
   }
 
