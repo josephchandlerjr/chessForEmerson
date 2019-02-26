@@ -13,8 +13,8 @@ h1 {
 }
 
 #board {
-    width: 56vw;
-    height: 56vw;
+    width: 35vw;
+    height: 35vw;
     border: 25px solid #333;
     margin: auto;
     user-select: none;
@@ -33,7 +33,7 @@ h1 {
   width: 12.5%;
   height: 12.5%;
   background-color: #fff;
-  font-size: 5vw;
+  font-size: 3.7vw;
   text-align: center;
   line-height: 1.5em;
 }

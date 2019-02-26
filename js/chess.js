@@ -37,11 +37,10 @@ const chessView = (function(){
         lastClicked = evt.target;
         lastClicked.classList.add("selected");
         destinations = destinationsAttr.split(" ");
-        console.log(destinations);
-          for (var i=0; i < destinations.length; i++){
-            var destSquare = document.querySelector("#"+destinations[i]);
-            destSquare.classList.add("target");
-          }
+        for (var i=0; i < destinations.length; i++){
+          var destSquare = document.querySelector("#"+destinations[i]);
+          destSquare.classList.add("target");
+        }
       }
     } else {
       lastClicked.classList.toggle("selected");
