@@ -22,12 +22,12 @@ const chessView = (function(){
   var lastClicked = null;
   var control;
   var destinations;
+  var destSquare;
   /**
   * listener for div elements that make up chess board
   * @param {Event} evt
   */
   function onClick(evt){
-    debugger
     evt.preventDefault();
     var id = evt.target.id;
     if (id === "board"){ return;}  // if is top elem div and not square
@@ -38,14 +38,14 @@ const chessView = (function(){
         lastClicked.classList.add("selected");
         destinations = destinationsAttr.split(" ");
         for (var i=0; i < destinations.length; i++){
-          var destSquare = document.querySelector("#"+destinations[i]);
+          destSquare = document.querySelector("#"+destinations[i]);
           destSquare.classList.add("target");
         }
       }
     } else {
       lastClicked.classList.toggle("selected");
       for (var i=0; i < destinations.length; i++){
-        var destSquare = document.querySelector("#"+destinations[i]);
+        destSquare = document.querySelector("#"+destinations[i]);
         destSquare.classList.toggle("target");
       }
       control.viewRequest({ request : "move",
@@ -73,7 +73,7 @@ const chessView = (function(){
   */
   function onChangeOfAutomationSelection(evt){
     if (evt){
-      control.viewRequest({request:"automate", color:evt.target.value})
+      control.viewRequest({request:"automate", color:evt.target.value});
     }
   }
 
@@ -96,7 +96,7 @@ const chessView = (function(){
     var row = 8;
     var fragment = document.createDocumentFragment();
     for (var i=1; i < 65; i++){
-      var div = document.createElement("div")
+      var div = document.createElement("div");
       div.classList.add("square");
       div.id = String.fromCharCode(col) + row;
       if (col === 104){
@@ -118,7 +118,7 @@ const chessView = (function(){
 
     var squares = document.querySelectorAll("#board div");
     var rep = control.getBoardAsString();
-    var sqr = 0
+    var sqr = 0;
     for (var i=0;i<rep.length;i+=2){
       if (rep[i] !== "-"){
         switch(rep.substring(i,i+2)) { // **********
@@ -140,8 +140,7 @@ const chessView = (function(){
         var squareID = squares[sqr].id;
         var destinations = control.viewRequest({request: "validMoves", from: squareID});
         squares[sqr].setAttribute("destinations", destinations.join(" "));
-        sqr += 1
-
+        sqr += 1;
       }
     }
   }
@@ -149,7 +148,7 @@ const chessView = (function(){
   return { // *****Public Methods*****
     update : update,
     init : init
-  }
+  };
 }());
 
 /**
@@ -498,6 +497,7 @@ const chessControl = (function(){
     var validMovesforActiveColor = getAllValidMovementsByColor(activeColor, currentBoard);
     var validMovement = false; //
     var thisMove;
+    
     for (var i=0; i < validMovesforActiveColor.length; i++){
       thisMove = validMovesforActiveColor[i];
       if(thisMove.fromSquare === from && thisMove.toSquare === to){
@@ -671,7 +671,6 @@ const chessControl = (function(){
   * @return {Boolean} true if movement of piece is valid
   */
   function isValidPawnMove( from, fromPiece, to, toPiece, activeColor, board){
-    var activeColor = fromPiece[0];
     var direction = activeColor === "w" ? "n" : "s";
 
     result = false;
