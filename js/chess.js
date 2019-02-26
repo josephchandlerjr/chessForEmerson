@@ -217,6 +217,7 @@ const chessControl = (function(){
         if (automated[colorToMove]){
           makeAutoMove();
         }
+        updateMovesMap();
       }
     }
     if (request.request === "automate"){
