@@ -53,6 +53,10 @@ h1 {
   box-shadow: 0 0 0 3px red inset;
 }
 
+.target {
+  box-shadow: 0 0 0 3px grey inset;
+}
+
 .square:not(.selected):hover {
   box-shadow: 0 0 0 3px gold inset;
 }

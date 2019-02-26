@@ -37,14 +37,14 @@ const chessView = (function(){
         targets = lastClicked.getAttribute("targets").split(" ");
         for (var i=0; i < targets.length; i++){
           var targetSquare = document.querySelector("#"+targets[i]);
-          targetSquare.classList.add("selected");
+          targetSquare.classList.add("target");
         }
       }
     } else {
       lastClicked.classList.toggle("selected");
       for (var i=0; i < targets.length; i++){
         var targetSquare = document.querySelector("#"+targets[i]);
-        targetSquare.classList.toggle("selected");
+        targetSquare.classList.toggle("target");
       }
       control.viewRequest({ request : "move",
                             from : lastClicked.id,
