@@ -139,7 +139,7 @@ const chessView = (function(){
         }
         var squareID = squares[sqr].id;
         var destinations = control.viewRequest({request: "validMoves", from: squareID});
-        squares[sqr].setAttribute("destinations", destinations.join(" "));
+        squares[sqr].setAttribute("destinations", Object.keys(destinations).join(" "));
         sqr += 1;
       }
     }
@@ -203,17 +203,19 @@ const chessControl = (function(){
   function updateMovesMap(){
     var allSquares = getAllSquares();
     for (var i=0; i < allSquares.length; i++){
-      movesMap[allSquares[i]] = [];
+      movesMap[allSquares[i]] = {};
     }
     var validMoves = getAllValidMoves(getBoardasArray());
+    console.log(validMoves);
     for (color in validMoves){
       for (var i=0; i < validMoves[color].length; i++){
         var moveObj = validMoves[color][i];
-        if (!movesMap[moveObj.fromSquare].includes(moveObj.toSquare)){
-          movesMap[moveObj.fromSquare].push(moveObj.toSquare);
+        if (!(moveObj.toSquare in movesMap[moveObj.fromSquare])) {
+          movesMap[moveObj.fromSquare][moveObj.toSquare] = moveObj;
         }
       }
     }
+    console.log(movesMap);
   }
 
   /**
@@ -497,7 +499,6 @@ const chessControl = (function(){
     var validMovesforActiveColor = getAllValidMovementsByColor(activeColor, currentBoard);
     var validMovement = false; //
     var thisMove;
-    
     for (var i=0; i < validMovesforActiveColor.length; i++){
       thisMove = validMovesforActiveColor[i];
       if(thisMove.fromSquare === from && thisMove.toSquare === to){
