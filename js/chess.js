@@ -647,12 +647,12 @@ const chessControl = (function(){
     }
 
     switch(fromPiece[1]){
-      case "p": return isValidPawnMove(  from, fromPiece, to, toPiece, activeColor, board);break;
-      case "r": return isValidRookMove(  from, fromPiece, to, toPiece, activeColor, board);break;
-      case "n": return isValidKnightMove(from, fromPiece, to, toPiece, activeColor, board);break;
-      case "b": return isValidBishopMove(from, fromPiece, to, toPiece, activeColor, board);break;
-      case "q": return isValidQueenMove( from, fromPiece, to, toPiece, activeColor, board);break;
-      case "k": return isValidKingMove(  from, fromPiece, to, toPiece, activeColor, board);break;
+      case "p": return isValidPawnMove(  from, fromPiece, to, toPiece, activeColor, board);
+      case "r": return isValidRookMove(  from, fromPiece, to, toPiece, activeColor, board);
+      case "n": return isValidKnightMove(from, fromPiece, to, toPiece, activeColor, board);
+      case "b": return isValidBishopMove(from, fromPiece, to, toPiece, activeColor, board);
+      case "q": return isValidQueenMove( from, fromPiece, to, toPiece, activeColor, board);
+      case "k": return isValidKingMove(  from, fromPiece, to, toPiece, activeColor, board);
     }
     return false;
   }
