@@ -818,10 +818,16 @@ const chessControl = (function(){
       }
     }
     // are you trying to castle perhaps?
-    if (to === getNonAdjacentSquare(from, ["e","e"]) && canCastle[activeColor]["kingside"]){
+    if (to === getNonAdjacentSquare(from, ["e","e"]) &&
+        getPieceOnSquare(to, board) === "00" &&
+        getPieceOnSquare(getAdjacentSquare(from,"e"), board) == "00" &&
+        canCastle[activeColor]["kingside"]){
       return new Move(from, to, null, fromPiece, toPiece, {description: "castle", color: activeColor, direction: "kingside",});
     }
-    if (to === getNonAdjacentSquare(from, ["w","w"]) && canCastle[activeColor]["queenside"]){
+    if (to === getNonAdjacentSquare(from, ["w","w"]) &&
+      getPieceOnSquare(to, board) === "00" &&
+      getPieceOnSquare(getAdjacentSquare(from,"w"), board) == "00" &&
+      canCastle[activeColor]["queenside"]){
       return new Move(from, to, null, fromPiece, toPiece, {description: "castle", color: activeColor, direction: "queenside"});
     }
     return false;
