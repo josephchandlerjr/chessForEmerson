@@ -498,9 +498,6 @@ const chessControl = (function(){
 
     var currentBoard = getBoardasArray();
 
-    // find squares that are threatened by opponent
-    var opponentThreatens = getThreatenedSquares(movesMap.all[opponentsColor], currentBoard);
-
     // get a list of valid Move objects for activeColor
     // see if requested move is in that list
     var validMovesforActiveColor = movesMap.all[activeColor];
@@ -521,14 +518,13 @@ const chessControl = (function(){
 
       if (thisMove.special !== null){
         if (thisMove.special.description == "castle"){
-          var direction = thisMove.special.direction === "queenside" ? "w" : "e";
+          console.log(thisMove);
           var rookLocation =  thisMove.special.direction === "queenside"? "a"+from[1] : "h"+from[1];
           var rookDirection = thisMove.special.direction === "queenside" ? "e" : "w";
           var rookTo = getAdjacentSquare(to,rookDirection);
           newBoard = movePiece(rookLocation, rookTo, null, newBoard);
         }
         if (thisMove.special.description == "promotion"){
-          //still have references to newBoard
           var toIx = translateChessNotationToIndices(thisMove.toSquare);
           var toRow = toIx[0];
           var toCol = toIx[1];
@@ -545,9 +541,6 @@ const chessControl = (function(){
       // let's see if we ajust put opponent in checkmate or if its stalemate
       var opponentsKingLocation = findKing(opponentsColor, newBoard);
       var newValidMovesForActiveColor = getAllValidMovementsByColor(activeColor, newBoard);
-      console.log(newValidMovesForActiveColor);
-      console.log("equals");
-
       var activeColorNowThreatens = getThreatenedSquares(newValidMovesForActiveColor, newBoard);
       var gameOver = noLegalMoves(opponentsColor, newValidMovesForOpponent, newBoard);
       if (gameOver){
@@ -982,15 +975,10 @@ const chessControl = (function(){
   *  convert column index into chess notation
   * @param {String} square location on board in chess notation
   * @param {direction} direction w, s, e, or w
-  * @return {String} location on board direction of argument in chess notation
+  * @return {String} location on board direction of argument in chess notation,
+  * or null if move is off of the board
   */
   function getAdjacentSquare(square, direction){  // example a1, ne
-    /*
-    returns null if move is off the board
-    */
-    var col = square[0];
-    var row = square[1];
-
     switch(direction){
         case "n" :  newSquare = north(square);
                     break;
