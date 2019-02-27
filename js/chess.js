@@ -232,9 +232,9 @@ const chessControl = (function(){
     }
     if (request.request === "automate"){
       switch (request.color){
-        case "none" : automated["b"] = false; automated["w"] = false; break;
-        case "white": automated["b"] = false; automated["w"] = true; break;
-        case "black": automated["b"] = true; automated["w"] = false; break;
+        case "none" : automated.b = false; automated.w = false; break;
+        case "white": automated.b = false; automated.w = true; break;
+        case "black": automated.b = true; automated.w = false; break;
       }
       if (automated[colorToMove]){
         makeAutoMove();
