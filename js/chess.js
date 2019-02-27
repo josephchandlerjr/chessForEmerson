@@ -494,9 +494,7 @@ const chessControl = (function(){
     var currentBoard = getBoardasArray();
 
     // find squares that are threatened by opponent
-    var validMovesForOpponent = movesMap.all[opponentsColor];
-
-    var opponentThreatens = getThreatenedSquares(validMovesForOpponent, currentBoard);
+    var opponentThreatens = getThreatenedSquares(movesMap.all[opponentsColor], currentBoard);
 
     // get a list of valid Move objects for activeColor
     // see if requested move is in that list
