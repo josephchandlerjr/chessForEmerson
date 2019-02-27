@@ -206,7 +206,6 @@ const chessControl = (function(){
       movesMap[allSquares[i]] = {};
     }
     var validMoves = getAllValidMoves(getBoardasArray());
-    console.log(validMoves);
     for (color in validMoves){
       for (var i=0; i < validMoves[color].length; i++){
         var moveObj = validMoves[color][i];
@@ -215,7 +214,7 @@ const chessControl = (function(){
         }
       }
     }
-    console.log(movesMap);
+    movesMap.all = validMoves;
   }
 
   /**
@@ -227,10 +226,11 @@ const chessControl = (function(){
       var to = request.to;
       var executed = requestMove(from, to);
       if (executed) {
+        updateMovesMap();
         if (automated[colorToMove]){
           makeAutoMove();
+          updateMovesMap();
         }
-        updateMovesMap();
       }
     }
     if (request.request === "automate"){
@@ -259,7 +259,7 @@ const chessControl = (function(){
     white = removeMovesThatEndangerKing("w", white, board);
     var black = getAllValidMovementsByColor("b", board);
     black = removeMovesThatEndangerKing("b", black, board);
-    return {white:white, black:black}
+    return {w:white, b:black}
   }
 
   /**
@@ -492,6 +492,10 @@ const chessControl = (function(){
 
     // find squares that are threatened by opponent
     var validMovesForOpponent = getAllValidMovementsByColor(opponentsColor, currentBoard);
+    console.log(validMovesForOpponent);
+    console.log("equals");
+    console.log(movesMap);
+    console.log(movesMap.all[opponentsColor]);
     var opponentThreatens = getThreatenedSquares(validMovesForOpponent, currentBoard);
 
     // get a list of valid Move objects for activeColor
