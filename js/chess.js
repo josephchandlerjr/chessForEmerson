@@ -508,12 +508,10 @@ const chessControl = (function(){
       }
     }
     // if we found requested move in the list of valid move objects
-    // make that move on a copy of the board and ensure that mover is
-    // not putting self in check
+    // make that move on a copy of the board
     if (validMovement){
       var newBoard = copyBoard(currentBoard);
       newBoard = movePiece(from, to, thisMove.captureSquare, newBoard);
-      var newValidMovesForOpponent = getAllValidMovementsByColor(opponentsColor, newBoard);
 
       if(thisMove.special !== null && thisMove.special.description == "castle"){
         var direction = thisMove.special.direction === "queenside" ? "w" : "e";
@@ -532,6 +530,7 @@ const chessControl = (function(){
         var toCol = toIx[1];
         newBoard[toRow][toCol] = thisMove.special.promoteTo;
       }
+      var newValidMovesForOpponent = getAllValidMovementsByColor(opponentsColor, newBoard);
 
       // let's see if we ajust put opponent in checkmate or if its stalemate
       var opponentsKingLocation = findKing(opponentsColor, newBoard);
@@ -1107,7 +1106,6 @@ const chessModel = (function(){
   */
   function logMove(move){
     moves.push(move);
-    console.log(moves);
   }
 
   function updateBoard(newBoard){
