@@ -205,7 +205,7 @@ const chessControl = (function(){
       movesMap[allSquares[i]] = {};
     }
     var validMoves = getAllValidMoves(getBoardasArray());
-    for (color in validMoves){
+    for (var color in validMoves){
       for (var i=0; i < validMoves[color].length; i++){
         var moveObj = validMoves[color][i];
         if (!(moveObj.toSquare in movesMap[moveObj.fromSquare])) {
