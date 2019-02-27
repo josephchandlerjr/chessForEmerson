@@ -483,7 +483,7 @@ const chessControl = (function(){
   // remove null from list
   result = result.filter(x => x != null);
   return result;
-  ;
+  }
 
   /**
   * determines if move is valid and if so executes moves
