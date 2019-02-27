@@ -227,9 +227,11 @@ const chessControl = (function(){
       var executed = requestMove(from, to);
       if (executed) {
         updateMovesMap();
+        view.update();
         if (automated[colorToMove]){
           makeAutoMove();
           updateMovesMap();
+          view.update();
         }
       }
     }
@@ -241,6 +243,7 @@ const chessControl = (function(){
       }
       if (automated[colorToMove]){
         makeAutoMove();
+        updateMovesMap();
         view.update();
       }
     }
@@ -491,16 +494,13 @@ const chessControl = (function(){
     var currentBoard = getBoardasArray();
 
     // find squares that are threatened by opponent
-    var validMovesForOpponent = getAllValidMovementsByColor(opponentsColor, currentBoard);
-    console.log(validMovesForOpponent);
-    console.log("equals");
-    console.log(movesMap);
-    console.log(movesMap.all[opponentsColor]);
+    var validMovesForOpponent = movesMap.all[opponentsColor];
+
     var opponentThreatens = getThreatenedSquares(validMovesForOpponent, currentBoard);
 
     // get a list of valid Move objects for activeColor
     // see if requested move is in that list
-    var validMovesforActiveColor = getAllValidMovementsByColor(activeColor, currentBoard);
+    var validMovesforActiveColor = movesMap.all[activeColor];
     var validMovement = false; //
     var thisMove;
     for (var i=0; i < validMovesforActiveColor.length; i++){
