@@ -189,8 +189,9 @@ const chessControl = (function(){
     blackInCheck = false;
     toggleColorToMove("w");
     if (automated[colorToMove]){
+      updateMovesMap();
       makeAutoMove();
-      view.update();
+      //view.update();
     }
     // initialize movesMap
     updateMovesMap();
@@ -226,12 +227,8 @@ const chessControl = (function(){
       var to = request.to;
       var executed = requestMove(from, to);
       if (executed) {
-        updateMovesMap();
-        view.update();
         if (automated[colorToMove]){
           makeAutoMove();
-          updateMovesMap();
-          view.update();
         }
       }
     }
@@ -243,8 +240,6 @@ const chessControl = (function(){
       }
       if (automated[colorToMove]){
         makeAutoMove();
-        updateMovesMap();
-        view.update();
       }
     }
 
@@ -547,6 +542,8 @@ const chessControl = (function(){
         return validMovement;
       }
       toggleColorToMove();
+      updateMovesMap();
+      view.update();
     }
     return validMovement;
   }
