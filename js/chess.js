@@ -191,9 +191,7 @@ const chessControl = (function(){
     if (automated[colorToMove]){
       updateMovesMap();
       makeAutoMove();
-      //view.update();
     }
-    // initialize movesMap
     updateMovesMap();
     view.init(self);
   }
@@ -378,7 +376,7 @@ const chessControl = (function(){
   }
 
   /**
-  * calls requestMove with random move of colorToMove
+  * calls requestMove with random move
   */
   function makeAutoMove(){
     var currentBoard = getBoardasArray();
@@ -515,9 +513,6 @@ const chessControl = (function(){
         var rookTo = getAdjacentSquare(to,rookDirection);
         newBoard = movePiece(rookLocation, rookTo, null, newBoard);
       }
-      updateModel(thisMove, newBoard);
-      lastMove = thisMove;
-      updateCanCastle(thisMove);
       if (thisMove.special !== null && thisMove.special.description == "promotion"){
         //still have references to newBoard
         var toIx = translateChessNotationToIndices(thisMove.toSquare);
@@ -525,6 +520,10 @@ const chessControl = (function(){
         var toCol = toIx[1];
         newBoard[toRow][toCol] = thisMove.special.promoteTo;
       }
+      updateModel(thisMove, newBoard);
+      lastMove = thisMove;
+      updateCanCastle(thisMove);
+
       var newValidMovesForOpponent = getAllValidMovementsByColor(opponentsColor, newBoard);
 
       // let's see if we ajust put opponent in checkmate or if its stalemate
