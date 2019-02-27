@@ -342,6 +342,19 @@ const chessControl = (function(){
         canCastle[piece[0]]["kingside"] = false;
       }
     }
+    // what if rook is captured, not moved
+    if (move.toSquare === "a1"){
+      canCastle.w.queenside = false;
+    }
+    if (move.toSquare === "h1"){
+      canCastle.w.kingside = false;
+    }
+    if (move.toSquare === "a8"){
+      canCastle.b.queenside = false;
+    }
+    if (move.toSquare === "h8"){
+      canCastle.b.kingside = false;
+    }
   }
 
   /**
@@ -506,20 +519,23 @@ const chessControl = (function(){
       var newBoard = copyBoard(currentBoard);
       newBoard = movePiece(from, to, thisMove.captureSquare, newBoard);
 
-      if(thisMove.special !== null && thisMove.special.description == "castle"){
-        var direction = thisMove.special.direction === "queenside" ? "w" : "e";
-        var rookLocation =  thisMove.special.direction === "queenside"? "a"+from[1] : "h"+from[1];
-        var rookDirection = thisMove.special.direction === "queenside" ? "e" : "w";
-        var rookTo = getAdjacentSquare(to,rookDirection);
-        newBoard = movePiece(rookLocation, rookTo, null, newBoard);
+      if (thisMove.special !== null){
+        if (thisMove.special.description == "castle"){
+          var direction = thisMove.special.direction === "queenside" ? "w" : "e";
+          var rookLocation =  thisMove.special.direction === "queenside"? "a"+from[1] : "h"+from[1];
+          var rookDirection = thisMove.special.direction === "queenside" ? "e" : "w";
+          var rookTo = getAdjacentSquare(to,rookDirection);
+          newBoard = movePiece(rookLocation, rookTo, null, newBoard);
+        }
+        if (thisMove.special.description == "promotion"){
+          //still have references to newBoard
+          var toIx = translateChessNotationToIndices(thisMove.toSquare);
+          var toRow = toIx[0];
+          var toCol = toIx[1];
+          newBoard[toRow][toCol] = thisMove.special.promoteTo;
+        }
       }
-      if (thisMove.special !== null && thisMove.special.description == "promotion"){
-        //still have references to newBoard
-        var toIx = translateChessNotationToIndices(thisMove.toSquare);
-        var toRow = toIx[0];
-        var toCol = toIx[1];
-        newBoard[toRow][toCol] = thisMove.special.promoteTo;
-      }
+
       updateModel(thisMove, newBoard);
       lastMove = thisMove;
       updateCanCastle(thisMove);
