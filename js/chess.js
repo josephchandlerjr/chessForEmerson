@@ -486,7 +486,6 @@ const chessControl = (function(){
   * @return {Boolean} true if move executed else false;
   */
   function requestMove(from, to){
-    var execute = false; // indicates if we will actually make this move
     // who's who
     var activeColor = colorToMove;
     var opponentsColor = otherColor(activeColor);
@@ -517,32 +516,12 @@ const chessControl = (function(){
       var newValidMovesForOpponent = getAllValidMovementsByColor(opponentsColor, newBoard);
 
       if(thisMove.special !== null && thisMove.special.description == "castle"){
-        // check if square to left/right is threatened
         var direction = thisMove.special.direction === "queenside" ? "w" : "e";
-        if (opponentThreatens.includes(thisMove.fromSquare) ||
-            opponentThreatens.includes(getAdjacentSquare(thisMove.fromSquare, direction)) ||
-            opponentThreatens.includes(getNonAdjacentSquare(thisMove.fromSquare, [direction,direction]))
-          ){
-            execute = false;
-          } else {
-            execute = true;
-            var rookLocation =  thisMove.special.direction === "queenside"? "a"+from[1] : "h"+from[1];
-            var rookDirection = thisMove.special.direction === "queenside" ? "e" : "w";
-            var rookTo = getAdjacentSquare(to,rookDirection);
-            newBoard = movePiece(rookLocation, rookTo, null, newBoard);
-          }
-      } else {
-        var newOpponentThreatens = getThreatenedSquares(newValidMovesForOpponent, newBoard);
-        var activeColorKingLocation = findKing(activeColor, newBoard);
-        if (newOpponentThreatens.includes(activeColorKingLocation)){
-          execute = false;
-        } else {
-          execute = true;
-        }
-      } //end if-else statement
-    }  //end if statement
-
-    if (execute){
+        var rookLocation =  thisMove.special.direction === "queenside"? "a"+from[1] : "h"+from[1];
+        var rookDirection = thisMove.special.direction === "queenside" ? "e" : "w";
+        var rookTo = getAdjacentSquare(to,rookDirection);
+        newBoard = movePiece(rookLocation, rookTo, null, newBoard);
+      }
       updateModel(thisMove, newBoard);
       lastMove = thisMove;
       updateCanCastle(thisMove);
@@ -554,7 +533,7 @@ const chessControl = (function(){
         newBoard[toRow][toCol] = thisMove.special.promoteTo;
       }
 
-      // let's see if we ajust put opponent in checkmate
+      // let's see if we ajust put opponent in checkmate or if its stalemate
       var opponentsKingLocation = findKing(opponentsColor, newBoard);
       var newValidMovesForActiveColor = getAllValidMovementsByColor(activeColor, newBoard);
       var activeColorNowThreatens = getThreatenedSquares(newValidMovesForActiveColor, newBoard);
@@ -566,11 +545,11 @@ const chessControl = (function(){
           alert("Stalemate!");
         }
         init();
-        return execute;
+        return validMovement;
       }
       toggleColorToMove();
     }
-    return execute;
+    return validMovement;
   }
 
   /**
