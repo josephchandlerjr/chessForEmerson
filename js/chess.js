@@ -824,6 +824,7 @@ const chessControl = (function(){
     if (to === getNonAdjacentSquare(from, ["w","w"]) && canCastle[activeColor]["queenside"]){
       return new Move(from, to, null, fromPiece, toPiece, {description: "castle", color: activeColor, direction: "queenside"});
     }
+    return false;
   }
 
   /**
