@@ -51,7 +51,7 @@ const chessView = (function(){
       control.viewRequest({ request : "move",
                             from : lastClicked.id,
                             to : id});
-      update();
+      //update();
       lastClicked = null;
     }
   }
@@ -545,6 +545,9 @@ const chessControl = (function(){
       // let's see if we ajust put opponent in checkmate or if its stalemate
       var opponentsKingLocation = findKing(opponentsColor, newBoard);
       var newValidMovesForActiveColor = getAllValidMovementsByColor(activeColor, newBoard);
+      console.log(newValidMovesForActiveColor);
+      console.log("equals");
+
       var activeColorNowThreatens = getThreatenedSquares(newValidMovesForActiveColor, newBoard);
       var gameOver = noLegalMoves(opponentsColor, newValidMovesForOpponent, newBoard);
       if (gameOver){
@@ -653,6 +656,7 @@ const chessControl = (function(){
     }
     return false;
   }
+
   /**
   * update the model
   * @param {String} from from square in chess notation
@@ -875,7 +879,6 @@ const chessControl = (function(){
     }
     return result;
   }
-
 
   /**
   * find location of a particular king
