@@ -255,7 +255,7 @@ const chessControl = (function(){
     white = removeMovesThatEndangerKing("w", white, board);
     var black = getAllValidMovementsByColor("b", board);
     black = removeMovesThatEndangerKing("b", black, board);
-    return {w:white, b:black}
+    return {w:white, b:black};
   }
 
   /**
@@ -266,7 +266,7 @@ const chessControl = (function(){
   * @return {Array} array of Move objects
   */
   function removeMovesThatEndangerKing(colorToMove, validMoves, board){
-    var result = []
+    var result = [];
     var opponentsColor = otherColor(colorToMove);
     for (var i=0; i < validMoves.length; i++){
       var testingBoard = copyBoard(board);
@@ -394,7 +394,7 @@ const chessControl = (function(){
   function makeAutoMove(){
     var currentBoard = getBoardasArray();
     var activeColor = colorToMove;
-    var result = false
+    var result = false;
     while (!result){
       var moveObject = getRandomMove(activeColor, currentBoard);
       result = requestMove(moveObject.fromSquare, moveObject.toSquare);
