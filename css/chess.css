@@ -36,6 +36,7 @@ h1 {
   font-size: 3.7vw;
   text-align: center;
   line-height: 1.5em;
+  background-size: contain;
 }
 
 .square:nth-of-type(16n+2),
@@ -47,6 +48,48 @@ h1 {
 .square:nth-of-type(16n+13),
 .square:nth-of-type(16n+15) {
   background-color: #f9a7cf;
+}
+
+
+.black-rook{
+  background-image: url("../img/blackRook.png");
+}
+.white-rook{
+  background-image: url("../img/whiteRook.png");
+}
+.black-knight{
+  background-image: url("../img/blackKnight.png");
+}
+.white-knight{
+  background-image: url("../img/whiteKnight.png");
+}
+.black-bishop{
+  background-image: url("../img/blackBishop.png");
+}
+.white-bishop{
+  background-image: url("../img/whiteBishop.png");
+}
+.black-queen{
+  background-image: url("../img/blackQueen.png");
+}
+.white-queen{
+  background-image: url("../img/whiteQueen.png");
+}
+.black-king{
+  background-image: url("../img/blackKing.png");
+}
+.white-king{
+  background-image: url("../img/whiteKing.png");
+}
+.black-pawn{
+  background-image: url("../img/blackPawn.png");
+}
+.white-pawn{
+  background-image: url("../img/whitePawn.png");
+}
+
+.square[id$="1"]{
+  background-color: green;
 }
 
 .selected {
