@@ -15,7 +15,7 @@ const chessView = (function(){
   function onClick(evt){
     evt.preventDefault();
     var id = evt.target.id;
-    if (id === "board"){ return;}  // if is top elem div and not square
+    if (id === "board" || evt.target.tagName === "P"){ return;}  // if is top elem div and not square
     if (lastClicked === null){
       var destinationsAttr = evt.target.getAttribute("destinations");
       if (destinationsAttr != ""){
@@ -86,10 +86,10 @@ const chessView = (function(){
       var file = String.fromCharCode(col);
       div.id = file + row;
       if (file === "a"){
-        div.innerHTML += "<p style='float:left; '>"+row+"</p>";
+        div.innerHTML += "<p class='rank-label'>"+row+"</p>";
       }
       if (row === 1){
-        div.innerHTML += "<p style='position:absolute; right:1px;bottom:0;'>"+file+"</p>";
+        div.innerHTML += "<p class='file-label'>"+file+"</p>";
       }
       if (col === 104){
         col = 97;

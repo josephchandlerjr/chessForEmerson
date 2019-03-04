@@ -138,3 +138,17 @@ button {
 #flip:hover {
   box-shadow: 0 0 0 3px gold inset;
 }
+
+.rank-label {
+  user-select: none;
+  -moz-user-select: none;
+  float:left;
+}
+.file-label {
+  user-select: none;
+  -moz-user-select: none;
+  margin:0;
+  position:absolute;
+  right:1px;
+  bottom:0;
+}
