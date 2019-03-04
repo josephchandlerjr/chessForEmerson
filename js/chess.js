@@ -86,10 +86,10 @@ const chessView = (function(){
       var file = String.fromCharCode(col);
       div.id = file + row;
       if (file === "a"){
-        div.textContent = row;
+        div.innerHTML += "<p style='float:left; '>"+row+"</p>";
       }
       if (row === 1){
-        div.textContent = file;
+        div.innerHTML += "<p style='float:right; '>"+file+"</p>";
       }
       if (col === 104){
         col = 97;
