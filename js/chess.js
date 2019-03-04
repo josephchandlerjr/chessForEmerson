@@ -4,21 +4,6 @@
   * @return {Object} object with public methods
   */
 const chessView = (function(){
-  //HTML symbols for chess peices
-  const BLACKROOK   = "&#9820;";
-  const BLACKKNIGHT = "&#9822;";
-  const BLACKBISHOP = "&#9821;";
-  const BLACKQUEEN  = "&#9819;";
-  const BLACKKING   = "&#9818;";
-  const BLACKPAWN   = "&#9823;";
-
-  const WHITEPAWN   = "&#9817;";
-  const WHITEROOK   = "&#9814;";
-  const WHITEKNIGHT = "&#9816;";
-  const WHITEBISHOP = "&#9815;";
-  const WHITEQUEEN  = "&#9813;";
-  const WHITEKING   = "&#9812;";
-
   var lastClicked = null;
   var control;
   var destinations;
@@ -122,20 +107,20 @@ const chessView = (function(){
     for (var i=0;i<rep.length;i+=2){
       if (rep[i] !== "-"){
         switch(rep.substring(i,i+2)) { // **********
-          case "00": squares[sqr].innerHTML = ""; break;
-          case "bp": squares[sqr].innerHTML = BLACKPAWN; break;
-          case "br": squares[sqr].innerHTML = BLACKROOK; break;
-          case "bn": squares[sqr].innerHTML = BLACKKNIGHT; break;
-          case "bb": squares[sqr].innerHTML = BLACKBISHOP; break;
-          case "bq": squares[sqr].innerHTML = BLACKQUEEN; break;
-          case "bk": squares[sqr].innerHTML = BLACKKING; break;
+          case "00": squares[sqr].setAttribute("piece", ""); break;
+          case "bp": squares[sqr].setAttribute("piece","black-pawn"); break;
+          case "br": squares[sqr].setAttribute("piece","black-rook"); break;
+          case "bn": squares[sqr].setAttribute("piece","black-knight"); break;
+          case "bb": squares[sqr].setAttribute("piece","black-bishop"); break;
+          case "bq": squares[sqr].setAttribute("piece","black-queen"); break;
+          case "bk": squares[sqr].setAttribute("piece","black-king"); break;
 
-          case "wp": squares[sqr].innerHTML = WHITEPAWN; break;
-          case "wr": squares[sqr].innerHTML = WHITEROOK; break;
-          case "wn": squares[sqr].innerHTML = WHITEKNIGHT; break;
-          case "wb": squares[sqr].innerHTML = WHITEBISHOP; break;
-          case "wq": squares[sqr].innerHTML = WHITEQUEEN; break;
-          case "wk": squares[sqr].innerHTML = WHITEKING; break;
+          case "wp": squares[sqr].setAttribute("piece","white-pawn"); break;
+          case "wr": squares[sqr].setAttribute("piece","white-rook"); break;
+          case "wn": squares[sqr].setAttribute("piece","white-knight"); break;
+          case "wb": squares[sqr].setAttribute("piece","white-bishop"); break;
+          case "wq": squares[sqr].setAttribute("piece","white-queen"); break;
+          case "wk": squares[sqr].setAttribute("piece","white-king"); break;
         }
         var squareID = squares[sqr].id;
         var destinations = control.viewRequest({request: "validMoves", from: squareID});

@@ -88,10 +88,6 @@ h1 {
   background-image: url("../img/whitePawn.png");
 }
 
-.square[id$="1"]{
-  background-color: green;
-}
-
 .selected {
   box-shadow: 0 0 0 3px red inset;
 }
