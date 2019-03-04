@@ -51,40 +51,40 @@ h1 {
 }
 
 
-.black-rook{
+.square[piece=black-rook]{
   background-image: url("../img/blackRook.png");
 }
-.white-rook{
+.square[piece=white-rook]{
   background-image: url("../img/whiteRook.png");
 }
-.black-knight{
+.square[piece=black-knight]{
   background-image: url("../img/blackKnight.png");
 }
-.white-knight{
+.square[piece=white-knight]{
   background-image: url("../img/whiteKnight.png");
 }
-.black-bishop{
+.square[piece=black-bishop]{
   background-image: url("../img/blackBishop.png");
 }
-.white-bishop{
+.square[piece=white-bishop]{
   background-image: url("../img/whiteBishop.png");
 }
-.black-queen{
+.square[piece=black-queen]{
   background-image: url("../img/blackQueen.png");
 }
-.white-queen{
+.square[piece=white-queen]{
   background-image: url("../img/whiteQueen.png");
 }
-.black-king{
+.square[piece=black-king]{
   background-image: url("../img/blackKing.png");
 }
-.white-king{
+.square[piece=white-king]{
   background-image: url("../img/whiteKing.png");
 }
-.black-pawn{
+.square[piece=black-pawn]{
   background-image: url("../img/blackPawn.png");
 }
-.white-pawn{
+.square[piece=white-pawn]{
   background-image: url("../img/whitePawn.png");
 }
 
