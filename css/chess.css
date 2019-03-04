@@ -142,7 +142,10 @@ button {
 .rank-label {
   user-select: none;
   -moz-user-select: none;
-  float:left;
+  position:absolute;
+  margin:0;
+  top: 0;
+  left: 0
 }
 .file-label {
   user-select: none;
