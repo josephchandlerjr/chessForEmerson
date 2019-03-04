@@ -89,7 +89,7 @@ const chessView = (function(){
         div.innerHTML += "<p style='float:left; '>"+row+"</p>";
       }
       if (row === 1){
-        div.innerHTML += "<p style='float:right; '>"+file+"</p>";
+        div.innerHTML += "<p style='position:absolute; right:1px;bottom:0;'>"+file+"</p>";
       }
       if (col === 104){
         col = 97;
