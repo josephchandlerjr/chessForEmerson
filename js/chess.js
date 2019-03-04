@@ -83,7 +83,14 @@ const chessView = (function(){
     for (var i=1; i < 65; i++){
       var div = document.createElement("div");
       div.classList.add("square");
-      div.id = String.fromCharCode(col) + row;
+      var file = String.fromCharCode(col);
+      div.id = file + row;
+      if (file === "a"){
+        div.textContent = row;
+      }
+      if (row === 1){
+        div.textContent = file;
+      }
       if (col === 104){
         col = 97;
         row -= 1;
