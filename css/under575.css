@@ -3,9 +3,6 @@
   float: none;
   text-align: center;
 }
-#automation-radio-buttons * {
-  margin: 0 auto;
-}
 
 div#board {
   margin: 48px auto;
