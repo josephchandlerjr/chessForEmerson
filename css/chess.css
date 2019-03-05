@@ -12,13 +12,16 @@ h1 {
   float: left;
 }
 
+#board, #board *,button#flip, #automation-radio-buttons, h1 {
+  user-select: none;
+  -moz-user-select: none;
+}
+
 #board {
     width: 35vw;
     height: 35vw;
     border: 25px solid #333;
     margin: auto;
-    user-select: none;
-    -moz-user-select: none;
     border-radius: 30px;
     transition-duration: 2s;
 }
@@ -140,16 +143,12 @@ button {
 }
 
 .rank-label {
-  user-select: none;
-  -moz-user-select: none;
   position:absolute;
   margin:0;
   top: 0;
   left: 0
 }
 .file-label {
-  user-select: none;
-  -moz-user-select: none;
   margin:0;
   position:absolute;
   right:1px;

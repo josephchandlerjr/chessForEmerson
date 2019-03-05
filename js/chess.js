@@ -48,7 +48,9 @@ const chessView = (function(){
     var board = document.querySelector("#board");
     var squares = document.querySelectorAll(".square");
     board.classList.toggle("flipped-board");
-    squares.forEach(function(elem){elem.classList.toggle("flipped");});
+    squares.forEach(function(elem){
+      elem.classList.toggle("flipped");
+    });
 
   }
 
