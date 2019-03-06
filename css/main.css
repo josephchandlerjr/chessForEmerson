@@ -20,9 +20,7 @@ h1 {
 #board {
     width: 35vw;
     height: 35vw;
-    border: 25px solid #333;
     margin: auto;
-    border-radius: 30px;
     transition-duration: 2s;
 }
 
