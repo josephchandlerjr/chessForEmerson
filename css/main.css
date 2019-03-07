@@ -34,7 +34,7 @@ table {
   border-collapse: collapse;
 }
 
-.square, .file-label, .rank-label {
+.square, .file-label, .rank-label{
   float: left;
   display: inline-block;
   width: 9%;
@@ -42,7 +42,6 @@ table {
   text-align: center;
   background-color: #fff;
   color: rgba(0, 0, 0, 0.5);
-  background-size: contain;
   padding: 0;
 }
 
@@ -53,43 +52,41 @@ tr:nth-child(odd) td:nth-child(even).square, tr:nth-child(even) td:nth-child(odd
   background: white;
 }
 
-
 .square[piece=black-rook]{
-  background-image: url("../img/blackRook.png");
+  content: url("../img/blackRook.png");
 }
 .square[piece=white-rook]{
-  background-image: url("../img/whiteRook.png");
+  content: url("../img/whiteRook.png");
 }
-.square[piece=black-knight]{
-  background-image: url("../img/blackKnight.png");
+.square[piece=black-knight] {
+  content: url("../img/blackKnight.png");
 }
-.square[piece=white-knight]{
-  background-image: url("../img/whiteKnight.png");
+.square[piece=white-knight] {
+  content: url("../img/whiteKnight.png");
 }
-.square[piece=black-bishop]{
-  background-color: red;
-  background-image: url("../img/blackBishop.png");
+.square[piece=black-bishop] {
+  content: url("../img/blackBishop.png");
 }
-.square[piece=white-bishop]{
-  background-image: url("../img/whiteBishop.png");
+.square[piece=white-bishop] {
+  content: url("../img/whiteBishop.png");
 }
-.square[piece=black-queen]{
-  background-image: url("../img/blackQueen.png");
+.square[piece=black-queen] {
+  content: url("../img/blackQueen.png");
 }
-.square[piece=white-queen]{
-  background-image: url("../img/whiteQueen.png");
+.square[piece=white-queen] {
+  content: url("../img/whiteQueen.png");
 }
-.square[piece=black-king]{
-  background-image: url("../img/blackKing.png");
+.square[piece=black-king] {
+  content: url("../img/blackKing.png");
 }
-.square[piece=white-king]{
-  background-image: url("../img/whiteKing.png");
+.square[piece=white-king] {
+  content: url("../img/whiteKing.png");
 }
-.square[piece=black-pawn]{
-  background-image: url("../img/blackPawn.png");
+.square[piece=black-pawn] {
+  content: url("../img/blackPawn.png");
 }
-.square[piece=white-pawn]{
-  background-image: url("../img/whitePawn.png");
+.square[piece=white-pawn] {
+  content: url("../img/whitePawn.png");
 }
 
 .selected {

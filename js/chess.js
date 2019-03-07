@@ -15,7 +15,8 @@ const chessView = (function(){
   function onClick(evt){
     evt.preventDefault();
     var id = evt.target.id;
-    if (id === "board" || evt.target.tagName === "P"){ return;}  // if is top elem div and not square
+    console.log(evt.target.className);
+    if (!evt.target.classList.contains("square") ){ return;}  // if is top elem div and not square
     if (lastClicked === null){
       var destinationsAttr = evt.target.getAttribute("destinations");
       if (destinationsAttr != ""){
@@ -33,6 +34,7 @@ const chessView = (function(){
         destSquare = document.querySelector("#"+destinations[i]);
         destSquare.classList.toggle("target");
       }
+      console.log("down here");
       control.viewRequest({ request : "move",
                             from : lastClicked.id,
                             to : id});
@@ -92,7 +94,6 @@ const chessView = (function(){
         for (let i=0; i<8;i++){
             td = document.createElement("td");
             td.classList.add("square");
-            td.innerHTML = "<div class='piece-image'></div>";
             let file = String.fromCharCode(col);
             td.id = file + row;
             tr.appendChild(td);
@@ -121,7 +122,6 @@ const chessView = (function(){
   function update(){
 
     var squares = document.querySelectorAll("#board .square");
-    console.log(squares);
     var rep = control.getBoardAsString();
     var sqr = 0;
     for (var i=0;i<rep.length;i+=2){
@@ -143,9 +143,7 @@ const chessView = (function(){
           case "wk": squares[sqr].setAttribute("piece","white-king"); break;
         }
         var squareID = squares[sqr].id;
-        console.log(squareID);
         var destinations = control.viewRequest({request: "validMoves", from: squareID});
-        console.log(destinations);
         squares[sqr].setAttribute("destinations", Object.keys(destinations).join(" "));
         sqr += 1;
       }
@@ -200,7 +198,6 @@ const chessControl = (function(){
       makeAutoMove();
     }
     updateMovesMap();
-    console.log(view);
     view.init(self);
   }
 
