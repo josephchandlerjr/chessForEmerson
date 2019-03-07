@@ -28,20 +28,22 @@ h1 {
   cursor: grab;
 }
 
-
-
 table {
   border-collapse: collapse;
 }
 
 .square, .file-label, .rank-label{
   float: left;
-  width: 9%;
+  width: 10%;
   height: 100%;
   text-align: center;
   background-color: #fff;
   color: rgba(0, 0, 0, 0.5);
   padding: 0;
+}
+
+tr:first-of-type, tr:last-of-type {
+  height: 2%;
 }
 
 tr:nth-child(even) td:nth-child(even).square, tr:nth-child(odd) td:nth-child(odd).square {

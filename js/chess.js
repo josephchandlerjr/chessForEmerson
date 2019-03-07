@@ -88,7 +88,7 @@ const chessView = (function(){
       tr.innerHTML = "";
     	if (ix < list.length-1 && ix > 0){
       	let td = document.createElement("td");
-        rank = 8-ix;
+        rank = 9-ix;
         td.classList.add("rank-label");
         td.textContent = rank;
         tr.appendChild(td);
