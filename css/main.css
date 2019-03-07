@@ -36,7 +36,6 @@ table {
 
 .square, .file-label, .rank-label{
   float: left;
-  display: inline-block;
   width: 9%;
   height: 100%;
   text-align: center;
