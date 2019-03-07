@@ -28,15 +28,22 @@ h1 {
   cursor: grab;
 }
 
+
+
+table {
+  border-collapse: collapse;
+}
+
 .square, .file-label, .rank-label {
   float: left;
   display: inline-block;
-  width: 20px;
-  height: 20px;
+  width: 9%;
+  height: 100%;
   text-align: center;
   background-color: #fff;
   color: rgba(0, 0, 0, 0.5);
   background-size: contain;
+  padding: 0;
 }
 
 tr:nth-child(even) td:nth-child(even).square, tr:nth-child(odd) td:nth-child(odd).square {
@@ -60,6 +67,7 @@ tr:nth-child(odd) td:nth-child(even).square, tr:nth-child(even) td:nth-child(odd
   background-image: url("../img/whiteKnight.png");
 }
 .square[piece=black-bishop]{
+  background-color: red;
   background-image: url("../img/blackBishop.png");
 }
 .square[piece=white-bishop]{
@@ -134,17 +142,4 @@ button {
 
 #flip:hover {
   box-shadow: 0 0 0 3px gold inset;
-}
-
-.rank-label {
-  position:absolute;
-  margin:0;
-  top: 0;
-  left: 0
-}
-.file-label {
-  margin:0;
-  position:absolute;
-  right:1px;
-  bottom:0;
 }

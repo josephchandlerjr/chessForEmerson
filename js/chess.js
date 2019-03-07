@@ -72,36 +72,44 @@ const chessView = (function(){
     control = obj;
     var radioButtons = document.querySelector("#automation-radio-buttons");
     radioButtons.addEventListener("change", onChangeOfAutomationSelection);
-    var board = document.querySelector("#board");
+    let board = document.querySelector("#board");
     board.classList.remove("flipped-board"); // if board was flipped, unflip
-    board.innerHTML = "";
     board.addEventListener("click",onClick,false); // during bubbling phase
 
     var flipButton = document.querySelector("#flip");
     flipButton.addEventListener("click",flipBoard);
-    var col = 97;
-    var row = 8;
-    var fragment = document.createDocumentFragment();
-    for (var i=1; i < 65; i++){
-      var div = document.createElement("div");
-      div.classList.add("square");
-      var file = String.fromCharCode(col);
-      div.id = file + row;
-      if (file === "a"){
-        div.innerHTML += "<p class='rank-label'>"+row+"</p>";
-      }
-      if (row === 1){
-        div.innerHTML += "<p class='file-label'>"+file+"</p>";
-      }
-      if (col === 104){
-        col = 97;
-        row -= 1;
-      } else {
-        col += 1;
-      }
-      fragment.appendChild(div);
-    }
-    board.append(fragment);
+
+    let trs = board.querySelectorAll("tr");
+    let col = 97;
+    let row = 8;
+    trs.forEach(function(tr,ix,list){
+  	if (ix < list.length-1){
+    	let td = document.createElement("td");
+      td.classList.add("rank-label");
+      td.textContent = 8-ix;
+      tr.appendChild(td);
+      for (let i=0; i<8;i++){
+          td = document.createElement("td");
+          td.classList.add("square");
+          let file = String.fromCharCode(col);
+          td.id = file + row;
+          tr.appendChild(td);
+          if (col === 104){
+              col = 97;
+              row -= 1;
+            } else {
+              col += 1;
+            }
+          }
+        } else {
+       		for (let i=0; i<9;i++){
+            td = document.createElement("td");
+            td.classList.add("file-label");
+            td.textContent = " abcdefgh".charAt(i);
+            tr.appendChild(td);
+        	 }
+          }
+    });
     update();
   }
 
@@ -110,7 +118,8 @@ const chessView = (function(){
   */
   function update(){
 
-    var squares = document.querySelectorAll("#board div");
+    var squares = document.querySelectorAll("#board .square");
+    console.log(squares);
     var rep = control.getBoardAsString();
     var sqr = 0;
     for (var i=0;i<rep.length;i+=2){
@@ -132,7 +141,9 @@ const chessView = (function(){
           case "wk": squares[sqr].setAttribute("piece","white-king"); break;
         }
         var squareID = squares[sqr].id;
+        console.log(squareID);
         var destinations = control.viewRequest({request: "validMoves", from: squareID});
+        console.log(destinations);
         squares[sqr].setAttribute("destinations", Object.keys(destinations).join(" "));
         sqr += 1;
       }
@@ -187,6 +198,7 @@ const chessControl = (function(){
       makeAutoMove();
     }
     updateMovesMap();
+    console.log(view);
     view.init(self);
   }
 
