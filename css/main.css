@@ -29,12 +29,14 @@ h1 {
 }
 
 table {
+  width: 100%
   border-collapse: collapse;
+  border-spacing: 0;
 }
 
 .square, .file-label, .rank-label{
   float: left;
-  width: 10%;
+  width: 11%;
   height: 100%;
   text-align: center;
   background-color: #fff;
@@ -45,6 +47,11 @@ table {
 tr:first-of-type, tr:last-of-type {
   height: 2%;
 }
+
+tr td:first-of-type, tr td:last-of-type {
+  width: 5%;
+}
+
 
 tr:nth-child(even) td:nth-child(even).square, tr:nth-child(odd) td:nth-child(odd).square {
   background: #f9a7cf;
