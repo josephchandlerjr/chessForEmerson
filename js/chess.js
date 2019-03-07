@@ -14,23 +14,23 @@ const chessView = (function(){
   */
   function onClick(evt){
     evt.preventDefault();
-    var id = evt.target.id;
+    let id = evt.target.id;
     console.log(evt.target.className);
     if (!evt.target.classList.contains("square") ){ return;}  // if is top elem div and not square
     if (lastClicked === null){
-      var destinationsAttr = evt.target.getAttribute("destinations");
+      let destinationsAttr = evt.target.getAttribute("destinations");
       if (destinationsAttr != ""){
         lastClicked = evt.target;
         lastClicked.classList.add("selected");
         destinations = destinationsAttr.split(" ");
-        for (var i=0; i < destinations.length; i++){
+        for (let i=0; i < destinations.length; i++){
           destSquare = document.querySelector("#"+destinations[i]);
           destSquare.classList.add("target");
         }
       }
     } else {
       lastClicked.classList.toggle("selected");
-      for (var i=0; i < destinations.length; i++){
+      for (let i=0; i < destinations.length; i++){
         destSquare = document.querySelector("#"+destinations[i]);
         destSquare.classList.toggle("target");
       }
@@ -48,7 +48,8 @@ const chessView = (function(){
   */
   function flipBoard(){
     var board = document.querySelector("#board");
-    var squares = document.querySelectorAll(".square");
+    var squares = document.querySelectorAll(".square, .rank-label, .file-label");
+    console.log(squares);
     board.classList.toggle("flipped-board");
     squares.forEach(function(elem){
       elem.classList.toggle("flipped");
@@ -84,12 +85,14 @@ const chessView = (function(){
     let trs = board.querySelectorAll("tr");
     let col = 97;
     let row = 8;
+    let rank = "";
     trs.forEach(function(tr,ix,list){
       tr.innerHTML = "";
-    	if (ix < list.length-1){
+    	if (ix < list.length-1 && ix > 0){
       	let td = document.createElement("td");
+        rank = 8-ix;
         td.classList.add("rank-label");
-        td.textContent = 8-ix;
+        td.textContent = rank;
         tr.appendChild(td);
         for (let i=0; i<8;i++){
             td = document.createElement("td");
@@ -105,6 +108,7 @@ const chessView = (function(){
               }
             }
           } else {
+            rank = "";
          		for (let i=0; i<9;i++){
               td = document.createElement("td");
               td.classList.add("file-label");
@@ -112,6 +116,10 @@ const chessView = (function(){
               tr.appendChild(td);
           	 }
             }
+            td = document.createElement("td");
+            td.classList.add("rank-label");
+            td.textContent = rank;
+            tr.appendChild(td);
     });
     update();
   }
