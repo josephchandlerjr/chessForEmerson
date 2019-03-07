@@ -83,32 +83,34 @@ const chessView = (function(){
     let col = 97;
     let row = 8;
     trs.forEach(function(tr,ix,list){
-  	if (ix < list.length-1){
-    	let td = document.createElement("td");
-      td.classList.add("rank-label");
-      td.textContent = 8-ix;
-      tr.appendChild(td);
-      for (let i=0; i<8;i++){
-          td = document.createElement("td");
-          td.classList.add("square");
-          let file = String.fromCharCode(col);
-          td.id = file + row;
-          tr.appendChild(td);
-          if (col === 104){
-              col = 97;
-              row -= 1;
-            } else {
-              col += 1;
-            }
-          }
-        } else {
-       		for (let i=0; i<9;i++){
+      tr.innerHTML = "";
+    	if (ix < list.length-1){
+      	let td = document.createElement("td");
+        td.classList.add("rank-label");
+        td.textContent = 8-ix;
+        tr.appendChild(td);
+        for (let i=0; i<8;i++){
             td = document.createElement("td");
-            td.classList.add("file-label");
-            td.textContent = " abcdefgh".charAt(i);
+            td.classList.add("square");
+            td.innerHTML = "<div class='piece-image'></div>";
+            let file = String.fromCharCode(col);
+            td.id = file + row;
             tr.appendChild(td);
-        	 }
-          }
+            if (col === 104){
+                col = 97;
+                row -= 1;
+              } else {
+                col += 1;
+              }
+            }
+          } else {
+         		for (let i=0; i<9;i++){
+              td = document.createElement("td");
+              td.classList.add("file-label");
+              td.textContent = " abcdefgh".charAt(i);
+              tr.appendChild(td);
+          	 }
+            }
     });
     update();
   }
