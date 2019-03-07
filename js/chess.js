@@ -15,7 +15,6 @@ const chessView = (function(){
   function onClick(evt){
     evt.preventDefault();
     let id = evt.target.id;
-    console.log(evt.target.className);
     if (!evt.target.classList.contains("square") ){ return;}  // if is top elem div and not square
     if (lastClicked === null){
       let destinationsAttr = evt.target.getAttribute("destinations");
@@ -34,7 +33,6 @@ const chessView = (function(){
         destSquare = document.querySelector("#"+destinations[i]);
         destSquare.classList.toggle("target");
       }
-      console.log("down here");
       control.viewRequest({ request : "move",
                             from : lastClicked.id,
                             to : id});
