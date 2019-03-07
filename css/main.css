@@ -28,26 +28,22 @@ h1 {
   cursor: grab;
 }
 
-.square {
+.square, .file-label, .rank-label {
   float: left;
   display: inline-block;
-  width: 12.5%;
-  height: 12.5%;
+  width: 20px;
+  height: 20px;
+  text-align: center;
   background-color: #fff;
-  color: rgba(0,0,0,0.5);
+  color: rgba(0, 0, 0, 0.5);
   background-size: contain;
-  position: relative;
 }
 
-.square:nth-of-type(16n+2),
-.square:nth-of-type(16n+4),
-.square:nth-of-type(16n+6),
-.square:nth-of-type(16n+8),
-.square:nth-of-type(16n+9),
-.square:nth-of-type(16n+11),
-.square:nth-of-type(16n+13),
-.square:nth-of-type(16n+15) {
-  background-color: #f9a7cf;
+tr:nth-child(even) td:nth-child(even).square, tr:nth-child(odd) td:nth-child(odd).square {
+  background: #f9a7cf;
+}
+tr:nth-child(odd) td:nth-child(even).square, tr:nth-child(even) td:nth-child(odd).square {
+  background: white;
 }
 
 
