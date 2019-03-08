@@ -6,6 +6,34 @@ body {
 h1 {
   color: #bb324a;
   text-align: center;
+  transform-origin: center;
+}
+
+h1:hover {
+  animation-name: rotate;
+  animation-duration: 0.6s;
+  animation-timing-function: linear;
+  animation-iteration-count: 5;
+}
+
+button {
+  height: 48px;
+  width: 96px;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 #automation-radio-buttons{
@@ -17,6 +45,15 @@ h1 {
   -moz-user-select: none;
 }
 
+/*
+*
+*
+*   Board
+*
+*
+*
+*/
+
 #board {
     width: 35vw;
     height: 35vw;
@@ -26,12 +63,6 @@ h1 {
 
 #board:hover{
   cursor: grab;
-}
-
-table {
-  width: 100%
-  border-collapse: collapse;
-  border-spacing: 0;
 }
 
 .square, .file-label, .rank-label{
@@ -48,8 +79,13 @@ tr:first-of-type, tr:last-of-type {
   height: 2%;
 }
 
-tr td:first-of-type, tr td:last-of-type {
+tr:first-of-type td, tr:last-of-type td{
+  background-color: #e88989;
+}
+
+tr td:first-of-type, tr td:last-of-type{
   width: 5%;
+  background-color: #e88989;
 }
 
 
@@ -107,34 +143,6 @@ tr:nth-child(odd) td:nth-child(even).square, tr:nth-child(even) td:nth-child(odd
 
 .square:not(.selected):hover {
   box-shadow: 0 0 0 3px gold inset;
-}
-
-@keyframes rotate {
-  0% {
-    transform: rotate(0deg);
-  }
-
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-h1 {
-  color: #bb324a;
-  text-align: center;
-  transform-origin: center;
-}
-
-h1:hover {
-  animation-name: rotate;
-  animation-duration: 0.6s;
-  animation-timing-function: linear;
-  animation-iteration-count: 5;
-}
-
-button {
-  height: 48px;
-  width: 96px;
 }
 
 .flipped {
