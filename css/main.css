@@ -21,10 +21,30 @@ button {
   width: 96px;
 }
 
+#board-container {
+  width: 50vw;
+  margin: auto;
+}
+
 table {
   border-collapse: collapse;
-  border-spacing: 0;
+  table-layout: fixed;
+  width: 100%;
+  transition-duration: 2s;
 }
+
+th {
+  width: 10%;
+  padding-bottom: 10%;
+  text-align: center;
+  vertical-align: center;
+  background-color: #ad3283;
+}
+
+td img {
+  width: 100%;
+}
+
 
 @keyframes rotate {
   0% {
@@ -54,38 +74,25 @@ table {
 *
 */
 
-#board {
-    width: 35vw;
-    height: 35vw;
-    margin: auto;
-    transition-duration: 2s;
-}
+
 
 #board:hover{
   cursor: grab;
 }
 
-.square, .file-label, .rank-label{
-  float: left;
-  width: 11%;
-  height: 100%;
+.square{
   text-align: center;
   background-color: #fff;
   color: rgba(0, 0, 0, 0.5);
-  padding: 0;
 }
 
-tr:first-of-type, tr:last-of-type {
-  height: 2%;
-}
 
 tr:first-of-type td, tr:last-of-type td{
-  background-color: #e88989;
+  background-color: #ad3283;
 }
 
 tr td:first-of-type, tr td:last-of-type{
-  width: 5%;
-  background-color: #e88989;
+  background-color: #ad3283;
 }
 
 
@@ -94,43 +101,6 @@ tr:nth-child(even) td:nth-child(even).square, tr:nth-child(odd) td:nth-child(odd
 }
 tr:nth-child(odd) td:nth-child(even).square, tr:nth-child(even) td:nth-child(odd).square {
   background: white;
-}
-
-.square[piece=black-rook]{
-  content: url("../img/blackRook.png");
-}
-.square[piece=white-rook]{
-  content: url("../img/whiteRook.png");
-}
-.square[piece=black-knight] {
-  content: url("../img/blackKnight.png");
-}
-.square[piece=white-knight] {
-  content: url("../img/whiteKnight.png");
-}
-.square[piece=black-bishop] {
-  content: url("../img/blackBishop.png");
-}
-.square[piece=white-bishop] {
-  content: url("../img/whiteBishop.png");
-}
-.square[piece=black-queen] {
-  content: url("../img/blackQueen.png");
-}
-.square[piece=white-queen] {
-  content: url("../img/whiteQueen.png");
-}
-.square[piece=black-king] {
-  content: url("../img/blackKing.png");
-}
-.square[piece=white-king] {
-  content: url("../img/whiteKing.png");
-}
-.square[piece=black-pawn] {
-  content: url("../img/blackPawn.png");
-}
-.square[piece=white-pawn] {
-  content: url("../img/whitePawn.png");
 }
 
 .selected {

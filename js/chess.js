@@ -14,12 +14,14 @@ const chessView = (function(){
   */
   function onClick(evt){
     evt.preventDefault();
-    let id = evt.target.id;
-    if (!evt.target.classList.contains("square") ){ return;}  // if is top elem div and not square
+    let target = evt.target.tagName === "IMG" ? evt.target.parentNode : evt.target;
+    console.log(evt.target.tagName);
+    let id = target.id;
+    if (!target.classList.contains("square") ){ return;}  // if is top elem div and not square
     if (lastClicked === null){
-      let destinationsAttr = evt.target.getAttribute("destinations");
+      let destinationsAttr = target.getAttribute("destinations");
       if (destinationsAttr != ""){
-        lastClicked = evt.target;
+        lastClicked = target;
         lastClicked.classList.add("selected");
         destinations = destinationsAttr.split(" ");
         for (let i=0; i < destinations.length; i++){
@@ -47,7 +49,6 @@ const chessView = (function(){
   function flipBoard(){
     var board = document.querySelector("#board");
     var squares = document.querySelectorAll(".square, .rank-label, .file-label");
-    console.log(squares);
     board.classList.toggle("flipped-board");
     squares.forEach(function(elem){
       elem.classList.toggle("flipped");
@@ -80,23 +81,24 @@ const chessView = (function(){
     var flipButton = document.querySelector("#flip");
     flipButton.addEventListener("click",flipBoard);
 
-    let trs = board.querySelectorAll("tr");
+    let trs = board.querySelectorAll("tr,th");
     let col = 97;
     let row = 8;
     let rank = "";
     trs.forEach(function(tr,ix,list){
       tr.innerHTML = "";
     	if (ix < list.length-1 && ix > 0){
-      	let td = document.createElement("td");
+      	let th = document.createElement("th");
         rank = 9-ix;
-        td.classList.add("rank-label");
-        td.textContent = rank;
-        tr.appendChild(td);
+        th.classList.add("rank-label");
+        th.textContent = rank;
+        tr.appendChild(th);
         for (let i=0; i<8;i++){
             td = document.createElement("td");
             td.classList.add("square");
             let file = String.fromCharCode(col);
             td.id = file + row;
+            td.innerHTML = "<img src=''>";
             tr.appendChild(td);
             if (col === 104){
                 col = 97;
@@ -108,16 +110,16 @@ const chessView = (function(){
           } else {
             rank = "";
          		for (let i=0; i<9;i++){
-              td = document.createElement("td");
+              td = document.createElement("th");
               td.classList.add("file-label");
               td.textContent = " abcdefgh".charAt(i);
               tr.appendChild(td);
           	 }
             }
-            td = document.createElement("td");
-            td.classList.add("rank-label");
-            td.textContent = rank;
-            tr.appendChild(td);
+            th = document.createElement("th");
+            th.classList.add("rank-label");
+            th.textContent = rank;
+            tr.appendChild(th);
     });
     update();
   }
@@ -132,21 +134,22 @@ const chessView = (function(){
     var sqr = 0;
     for (var i=0;i<rep.length;i+=2){
       if (rep[i] !== "-"){
+        let img = squares[sqr].querySelector("img");
         switch(rep.substring(i,i+2)) { // **********
-          case "00": squares[sqr].setAttribute("piece", ""); break;
-          case "bp": squares[sqr].setAttribute("piece","black-pawn"); break;
-          case "br": squares[sqr].setAttribute("piece","black-rook"); break;
-          case "bn": squares[sqr].setAttribute("piece","black-knight"); break;
-          case "bb": squares[sqr].setAttribute("piece","black-bishop"); break;
-          case "bq": squares[sqr].setAttribute("piece","black-queen"); break;
-          case "bk": squares[sqr].setAttribute("piece","black-king"); break;
+          case "00": img.setAttribute("src", ""); break;
+          case "bp": img.setAttribute("src","img/blackPawn.png"); break;
+          case "br": img.setAttribute("src","img/blackRook.png"); break;
+          case "bn": img.setAttribute("src","img/blackKnight.png"); break;
+          case "bb": img.setAttribute("src","img/blackBishop.png"); break;
+          case "bq": img.setAttribute("src","img/blackQueen.png"); break;
+          case "bk": img.setAttribute("src","img/blackKing.png"); break;
 
-          case "wp": squares[sqr].setAttribute("piece","white-pawn"); break;
-          case "wr": squares[sqr].setAttribute("piece","white-rook"); break;
-          case "wn": squares[sqr].setAttribute("piece","white-knight"); break;
-          case "wb": squares[sqr].setAttribute("piece","white-bishop"); break;
-          case "wq": squares[sqr].setAttribute("piece","white-queen"); break;
-          case "wk": squares[sqr].setAttribute("piece","white-king"); break;
+          case "wp": img.setAttribute("src","img/whitePawn.png"); break;
+          case "wr": img.setAttribute("src","img/whiteRook.png"); break;
+          case "wn": img.setAttribute("src","img/whiteKnight.png"); break;
+          case "wb": img.setAttribute("src","img/whiteBishop.png"); break;
+          case "wq": img.setAttribute("src","img/whiteQueen.png"); break;
+          case "wk": img.setAttribute("src","img/whiteKing.png"); break;
         }
         var squareID = squares[sqr].id;
         var destinations = control.viewRequest({request: "validMoves", from: squareID});
