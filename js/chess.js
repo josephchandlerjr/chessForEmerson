@@ -15,7 +15,6 @@ const chessView = (function(){
   function onClick(evt){
     evt.preventDefault();
     let target = evt.target.tagName === "IMG" ? evt.target.parentNode : evt.target;
-    console.log(evt.target.tagName);
     let id = target.id;
     if (!target.classList.contains("square") ){ return;}  // if is top elem div and not square
     if (lastClicked === null){
@@ -161,6 +160,7 @@ const chessView = (function(){
     let colorToMove = statusObj.colorToMove;
     let gameOver = statusObj.gameOver;
     let isCheckmate = statusObj.isCheckmate;
+    console.log(statusObj);
     if (!gameOver){
       document.querySelector("#status").textContent = colorToMove + " to move.";
     } else {
@@ -246,12 +246,15 @@ const chessControl = (function(){
   * @param {Object} request request.request will describe action requested
   */
   function viewRequest(request){
+    if (gameOver) {
+      return false;
+    }
     if (request.request === "move"){
       var from = request.from;
       var to = request.to;
       var executed = requestMove(from, to);
       if (executed) {
-        if (automated[colorToMove]){
+        if (automated[colorToMove] && !gameOver){
           makeAutoMove();
         }
       }
@@ -269,7 +272,7 @@ const chessControl = (function(){
         case "black": automated.b = true; automated.w = false; break;
       }
       if (automated[colorToMove]){
-        makeAutoMove();
+        makedeste();
       }
     }
 
@@ -574,19 +577,11 @@ const chessControl = (function(){
       var opponentsKingLocation = findKing(opponentsColor, newBoard);
       var newValidMovesForActiveColor = getAllValidMovementsByColor(activeColor, newBoard);
       var activeColorNowThreatens = getThreatenedSquares(newValidMovesForActiveColor, newBoard);
-      var gameOver = noLegalMoves(opponentsColor, newValidMovesForOpponent, newBoard);
+      gameOver = noLegalMoves(opponentsColor, newValidMovesForOpponent, newBoard);
+      console.log("game over is" + gameOver);
       if (gameOver){
         isCheckmate = activeColorNowThreatens.includes(opponentsKingLocation);
-        if (isCheckmate){
-          //alert("Checkmate!");
-        } else {
-          //alert("Draw!");
-        }
-        //init();
-        view.update();
-        return validMovement;
       }
-      console.log("here");
       toggleColorToMove();
       updateMovesMap();
       view.update();
