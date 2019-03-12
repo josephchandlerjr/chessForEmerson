@@ -92,10 +92,7 @@ const chessView = (function(){
     let col = 97;
     let row = 8;
     let rank = "";
-    console.log(trs);
-    console.log("again");
     trs.forEach(function(tr,ix,list){
-      console.log(ix);
       tr.innerHTML = "";
     	if (ix < list.length-1 && ix > 0){
       	let th = document.createElement("th");
@@ -172,11 +169,11 @@ const chessView = (function(){
     let colorToMove = statusObj.colorToMove;
     let gameOver = statusObj.gameOver;
     let isCheckmate = statusObj.isCheckmate;
-    console.log(statusObj);
+    let status = document.querySelector("#status");
     if (!gameOver){
-      document.querySelector("#status").textContent = colorToMove + " to move.";
+      status.textContent = colorToMove + " to move.";
     } else {
-      document.querySelector("#status").textContent = "DONE";
+      status.textContent = "DONE";
     }
   }
 
@@ -594,7 +591,6 @@ const chessControl = (function(){
       var newValidMovesForActiveColor = getAllValidMovementsByColor(activeColor, newBoard);
       var activeColorNowThreatens = getThreatenedSquares(newValidMovesForActiveColor, newBoard);
       gameOver = noLegalMoves(opponentsColor, newValidMovesForOpponent, newBoard);
-      console.log("game over is" + gameOver);
       if (gameOver){
         isCheckmate = activeColorNowThreatens.includes(opponentsKingLocation);
       }
