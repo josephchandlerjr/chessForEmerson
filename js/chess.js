@@ -128,7 +128,6 @@ const chessView = (function(){
   * Gets board from Control object and sets innerHTML of divs representing squares
   */
   function update(){
-
     var squares = document.querySelectorAll("#board .square");
     var rep = control.getBoardAsString();
     var sqr = 0;
@@ -158,6 +157,10 @@ const chessView = (function(){
         sqr += 1;
       }
     }
+    let statusObj = control.viewRequest({ request : "status");
+    let colorToMove = statusObj.colorToMove;
+    let gameOver = statusObj.gameOver;
+    let isCheckmate = statusObj.isCheckmate;
   }
 
   return { // *****Public Methods*****
