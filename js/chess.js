@@ -246,6 +246,12 @@ const chessControl = (function(){
   * @param {Object} request request.request will describe action requested
   */
   function viewRequest(request){
+    if (request.request === "status"){
+      return {colorToMove: colorToMove,
+              gameOver: gameOver,
+              isCheckmate: isCheckmate
+            };
+    }
     if (gameOver) {
       return false;
     }
@@ -259,12 +265,7 @@ const chessControl = (function(){
         }
       }
     }
-    if (request.request === "status"){
-      return {colorToMove: colorToMove,
-              gameOver: gameOver,
-              isCheckmate: isCheckmate
-            };
-    }
+
     if (request.request === "automate"){
       switch (request.color){
         case "none" : automated.b = false; automated.w = false; break;
