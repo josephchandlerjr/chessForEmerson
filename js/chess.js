@@ -558,9 +558,8 @@ const chessControl = (function(){
       var opponentsKingLocation = findKing(opponentsColor, newBoard);
       var newValidMovesForActiveColor = getAllValidMovementsByColor(activeColor, newBoard);
       var activeColorNowThreatens = getThreatenedSquares(newValidMovesForActiveColor, newBoard);
-      var noMoves = noLegalMoves(opponentsColor, newValidMovesForOpponent, newBoard);
-      if (noMoves){
-        gameOver = true;
+      var gameOver = noLegalMoves(opponentsColor, newValidMovesForOpponent, newBoard);
+      if (gameOver){
         if (activeColorNowThreatens.includes(opponentsKingLocation)){
           alert("Checkmate!");
         } else {
