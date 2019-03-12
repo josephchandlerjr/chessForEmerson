@@ -181,6 +181,7 @@ const chessControl = (function(){
   var self;
   var automated = {"b": true, "w": false};
   var movesMap = {};
+  var gameOver;
 
   /**
   * initializes state variables
