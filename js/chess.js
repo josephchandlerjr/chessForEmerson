@@ -160,7 +160,6 @@ const chessView = (function(){
         }
         var squareID = squares[sqr].id;
         var destinations = control.viewRequest({request: "validMoves", from: squareID});
-            debugger
         squares[sqr].setAttribute("destinations", Object.keys(destinations).join(" "));
         sqr += 1;
       }
@@ -172,8 +171,10 @@ const chessView = (function(){
     let status = document.querySelector("#status");
     if (!gameOver){
       status.textContent = colorToMove + " to move.";
+    } else if (isCheckmate){
+      status.textContent = "Checkmate!";
     } else {
-      status.textContent = "DONE";
+      status.textContent = "Draw!";
     }
   }
 
