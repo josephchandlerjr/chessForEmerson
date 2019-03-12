@@ -10,26 +10,7 @@
   </head>
   <body>
     <h1>Emerson's Chess Game</h1>
-      <div id="automation-radio-buttons">
-        <h3>Computer Plays</h3>
-        <div>
-          <input type="radio" id="black-automated" name="automate" value="black"
-          checked>
-          <label for="black-automated">Black</label>
-        </div>
-
-        <div>
-          <input type="radio" id="white-automated" name="automate" value="white">
-          <label for="white-automated">White</label>
-        </div>
-
-        <div>
-          <input type="radio" id="none-automated" name="automate" value="none">
-          <label for="none-automated">None</label>
-        </div>
-        <button id="flip" type="button"> Flip Board </button>
-      </div>
-      <div id="board-container">
+    <div id="board-container">
       <table id="board">
         <thead>
         <tr></tr>
@@ -42,9 +23,28 @@
         <tr></tr>
         <tr></tr>
         <tr></tr>
-        <tr style="height:2%;"></tr>
+        <tr></tr>
       </table>
     </div>
+    <div id="automation-radio-buttons">
+      <h3>Computer Plays</h3>
+      <div>
+        <input type="radio" id="black-automated" name="automate" value="black"
+        checked>
+        <label for="black-automated">Black</label>
+      </div>
+
+      <div>
+        <input type="radio" id="white-automated" name="automate" value="white">
+        <label for="white-automated">White</label>
+      </div>
+
+      <div>
+        <input type="radio" id="none-automated" name="automate" value="none">
+        <label for="none-automated">None</label>
+      </div>
+      <button id="flip" type="button"> Flip Board </button>
+      </div>
     <script src="js/chess.js"></script>
   </body>
 </html>

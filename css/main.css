@@ -39,9 +39,12 @@ th {
   text-align: center;
   vertical-align: center;
   background-color: #ad3283;
+  border-spacing: 0;
 }
+
 td {
-  height: 50px;
+  height: 55px;
+  padding: 0;
 }
 
 th:first-of-type, th:last-of-type {
@@ -50,6 +53,7 @@ th:first-of-type, th:last-of-type {
 
 td img {
   width: 100%;
+  height: 90%;
 }
 
 @keyframes rotate {
@@ -63,7 +67,8 @@ td img {
 }
 
 #automation-radio-buttons{
-  float: left;
+  position: absolute;
+  top: 0;
 }
 
 #board, #board *,button#flip, #automation-radio-buttons, h1 {

@@ -135,8 +135,9 @@ const chessView = (function(){
     for (var i=0;i<rep.length;i+=2){
       if (rep[i] !== "-"){
         let img = squares[sqr].querySelector("img");
+        img.setAttribute("style", "");
         switch(rep.substring(i,i+2)) { // **********
-          case "00": img.setAttribute("src", ""); break;
+          case "00": img.setAttribute("style", "display:none;"); break;
           case "bp": img.setAttribute("src","img/blackPawn.png"); break;
           case "br": img.setAttribute("src","img/blackRook.png"); break;
           case "bn": img.setAttribute("src","img/blackKnight.png"); break;
