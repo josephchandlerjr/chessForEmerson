@@ -562,10 +562,11 @@ const chessControl = (function(){
       var activeColorNowThreatens = getThreatenedSquares(newValidMovesForActiveColor, newBoard);
       var gameOver = noLegalMoves(opponentsColor, newValidMovesForOpponent, newBoard);
       if (gameOver){
-        if (activeColorNowThreatens.includes(opponentsKingLocation)){
+        isCheckmate = activeColorNowThreatens.includes(opponentsKingLocation);
+        if (isCheckmate){
           alert("Checkmate!");
         } else {
-          alert("Stalemate!");
+          alert("Draw!");
         }
         init();
         return validMovement;
