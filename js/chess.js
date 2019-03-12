@@ -161,7 +161,11 @@ const chessView = (function(){
     let colorToMove = statusObj.colorToMove;
     let gameOver = statusObj.gameOver;
     let isCheckmate = statusObj.isCheckmate;
-    document.querySelector("#status").textContent = "booyaa";
+    if (!gameOver){
+      document.querySelector("#status").textContent = colorToMove + " to move.";
+    } else {
+      document.querySelector("#status").textContent = "DONE";
+    }
   }
 
   return { // *****Public Methods*****
@@ -253,9 +257,9 @@ const chessControl = (function(){
       }
     }
     if (request.request === "status"){
-      return {colorToMove: null,
-              gameOver: null,
-              isCheckmate: null
+      return {colorToMove: colorToMove,
+              gameOver: gameOver,
+              isCheckmate: isCheckmate
             };
     }
     if (request.request === "automate"){
@@ -574,13 +578,15 @@ const chessControl = (function(){
       if (gameOver){
         isCheckmate = activeColorNowThreatens.includes(opponentsKingLocation);
         if (isCheckmate){
-          alert("Checkmate!");
+          //alert("Checkmate!");
         } else {
-          alert("Draw!");
+          //alert("Draw!");
         }
-        init();
+        //init();
+        view.update();
         return validMovement;
       }
+      console.log("here");
       toggleColorToMove();
       updateMovesMap();
       view.update();
