@@ -195,7 +195,7 @@ const chessControl = (function(){
       view = vObj;
     }
     model.init(self);
-
+    gameOver = false;
     lastMove = new Move("00","00","00","00","00","00");
     canCastle = {
       w : {queenside: true, kingside: true},
