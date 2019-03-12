@@ -157,7 +157,7 @@ const chessView = (function(){
         sqr += 1;
       }
     }
-    let statusObj = control.viewRequest({ request : "status");
+    let statusObj = control.viewRequest({ request : "status"});
     let colorToMove = statusObj.colorToMove;
     let gameOver = statusObj.gameOver;
     let isCheckmate = statusObj.isCheckmate;
@@ -250,6 +250,12 @@ const chessControl = (function(){
           makeAutoMove();
         }
       }
+    }
+    if (request.request === "status"){
+      return {colorToMove: null,
+              gameOver: null,
+              isCheckmate: null
+            };
     }
     if (request.request === "automate"){
       switch (request.color){
