@@ -182,6 +182,7 @@ const chessControl = (function(){
   var automated = {"b": true, "w": false};
   var movesMap = {};
   var gameOver;
+  var isCheckmate;
 
   /**
   * initializes state variables
