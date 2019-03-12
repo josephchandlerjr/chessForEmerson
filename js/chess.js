@@ -52,7 +52,13 @@ const chessView = (function(){
     squares.forEach(function(elem){
       elem.classList.toggle("flipped");
     });
+  }
 
+  /**
+  * rest board. Listener for reset button
+  */
+  function reset(){
+    control.viewRequest({request: "reset"});
   }
 
   /**
@@ -71,6 +77,8 @@ const chessView = (function(){
   */
   function init(obj){
     control = obj;
+    var resetButton = document.querySelector("#reset");
+    resetButton.addEventListener("click",reset);
     var radioButtons = document.querySelector("#automation-radio-buttons");
     radioButtons.addEventListener("change", onChangeOfAutomationSelection);
     let board = document.querySelector("#board");
@@ -80,11 +88,14 @@ const chessView = (function(){
     var flipButton = document.querySelector("#flip");
     flipButton.addEventListener("click",flipBoard);
 
-    let trs = board.querySelectorAll("tr,th");
+    let trs = board.querySelectorAll("tr");
     let col = 97;
     let row = 8;
     let rank = "";
+    console.log(trs);
+    console.log("again");
     trs.forEach(function(tr,ix,list){
+      console.log(ix);
       tr.innerHTML = "";
     	if (ix < list.length-1 && ix > 0){
       	let th = document.createElement("th");
@@ -130,7 +141,7 @@ const chessView = (function(){
     var squares = document.querySelectorAll("#board .square");
     var rep = control.getBoardAsString();
     var sqr = 0;
-    for (var i=0;i<rep.length;i+=2){
+    for (let i=0;i<rep.length;i+=2){
       if (rep[i] !== "-"){
         let img = squares[sqr].querySelector("img");
         img.setAttribute("style", "");
@@ -152,6 +163,7 @@ const chessView = (function(){
         }
         var squareID = squares[sqr].id;
         var destinations = control.viewRequest({request: "validMoves", from: squareID});
+            debugger
         squares[sqr].setAttribute("destinations", Object.keys(destinations).join(" "));
         sqr += 1;
       }
@@ -203,7 +215,6 @@ const chessControl = (function(){
       model = mObj;
       view = vObj;
     }
-    model.init(self);
     gameOver = false;
     isCheckmate = false;
     lastMove = new Move("00","00","00","00","00","00");
@@ -213,6 +224,7 @@ const chessControl = (function(){
     };
     whiteInCheck = false;
     blackInCheck = false;
+    model.init(self)
     toggleColorToMove("w");
     if (automated[colorToMove]){
       updateMovesMap();
@@ -251,6 +263,9 @@ const chessControl = (function(){
               gameOver: gameOver,
               isCheckmate: isCheckmate
             };
+    }
+    if (request.request === "reset"){
+      init();
     }
     if (gameOver) {
       return false;
