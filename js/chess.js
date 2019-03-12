@@ -161,6 +161,7 @@ const chessView = (function(){
     let colorToMove = statusObj.colorToMove;
     let gameOver = statusObj.gameOver;
     let isCheckmate = statusObj.isCheckmate;
+    document.querySelector("#status").textContent = "booyaa";
   }
 
   return { // *****Public Methods*****
