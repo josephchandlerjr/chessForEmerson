@@ -14,15 +14,11 @@ const chessView = (function(){
   * @param {Event} evt
   */
   function mouseDown(evt){
-    if(lastClicked !== null){
-      return;
-    }
     evt.preventDefault();
     let target = evt.target.tagName === "IMG" ? evt.target.parentNode : evt.target;
     let id = target.id;
     let destinationsAttr = target.getAttribute("destinations");
     if (!target.classList.contains("square") || destinationsAttr === "" ){ return;}
-
     lastClicked = target;
     lastClicked.classList.add("selected");
     destinations = destinationsAttr.split(" ");
@@ -52,7 +48,21 @@ const chessView = (function(){
       lastClicked = null;
     }
   }
-  
+
+  /**
+  * listener for div elements that make up chess board
+  * @param {Event} evt
+  */
+  function mouseLeave(evt){
+    console.log("goodbye")
+    lastClicked = null;
+    let squares = document.querySelectorAll(".square");
+    for (let i=0; i < squares.length; i++){
+      squares[i].classList.remove("target");
+      squares[i].classList.remove("selected");
+    }
+  }
+
   /**
   * rotate the board and each square 180deg by adding appropriate class
   */
@@ -96,6 +106,7 @@ const chessView = (function(){
     board.classList.remove("flipped-board"); // if board was flipped, unflip
     board.addEventListener("mouseup",mouseUp,false); // during bubbling phase
     board.addEventListener("mousedown",mouseDown,false);
+    board.addEventListener("mouseleave",mouseLeave,false);
 
     let flipButton = document.querySelector("#flip");
     flipButton.addEventListener("click",flipBoard);
