@@ -1116,7 +1116,7 @@ const chessModel = (function(){
     capturedPieces = [];
     states = [];
     states.push(startState);
-    for (var i=0;i<startState.length;i+=2){
+    for (let i=0;i<startState.length;i+=2){
       if (startState[i] === "-"){
         board.push([]);
         } else if (startState[i] === "0"){
@@ -1170,11 +1170,11 @@ const chessModel = (function(){
   * @return {String} string representing board
   */
   function toString(){
-    var result = "";
-    var piece = 0;
-    for (var row=0; row < board.length; row++){
+    let result = "";
+    let piece = 0;
+    for (let row=0; row < board.length; row++){
       if (row !== 0){result += "--";}
-      for (var col=0; col < board.length; col++){
+      for (let col=0; col < board.length; col++){
         piece = board[row][col];
         result += piece;
       }
