@@ -4,10 +4,10 @@
   * @return {Object} object with public methods
   */
 const chessView = (function(){
-  var lastClicked = null;
-  var control;
-  var destinations;
-  var destSquare;
+  let lastClicked = null;
+  let control;
+  let destinations;
+  let destSquare;
   /**
   * listener for div elements that make up chess board
   * @param {Event} evt
@@ -46,8 +46,8 @@ const chessView = (function(){
   * rotate the board and each square 180deg by adding appropriate class
   */
   function flipBoard(){
-    var board = document.querySelector("#board");
-    var squares = document.querySelectorAll(".square, .rank-label, .file-label");
+    let board = document.querySelector("#board");
+    let squares = document.querySelectorAll(".square, .rank-label, .file-label");
     board.classList.toggle("flipped-board");
     squares.forEach(function(elem){
       elem.classList.toggle("flipped");
@@ -72,20 +72,20 @@ const chessView = (function(){
   }
 
   /**
-  * Sets control variable, appends divs to #board and calls update
+  * Sets control letiable, appends divs to #board and calls update
   * @param {Object} obj Control object in MVC
   */
   function init(obj){
     control = obj;
-    var resetButton = document.querySelector("#reset");
+    let resetButton = document.querySelector("#reset");
     resetButton.addEventListener("click",reset);
-    var radioButtons = document.querySelector("#automation-radio-buttons");
+    let radioButtons = document.querySelector("#automation-radio-buttons");
     radioButtons.addEventListener("change", onChangeOfAutomationSelection);
     let board = document.querySelector("#board");
     board.classList.remove("flipped-board"); // if board was flipped, unflip
     board.addEventListener("click",onClick,false); // during bubbling phase
 
-    var flipButton = document.querySelector("#flip");
+    let flipButton = document.querySelector("#flip");
     flipButton.addEventListener("click",flipBoard);
 
     let trs = board.querySelectorAll("tr");
@@ -135,9 +135,9 @@ const chessView = (function(){
   * Gets board from Control object and sets innerHTML of divs representing squares
   */
   function update(){
-    var squares = document.querySelectorAll("#board .square");
-    var rep = control.getBoardAsString();
-    var sqr = 0;
+    let squares = document.querySelectorAll("#board .square");
+    let rep = control.getBoardAsString();
+    let sqr = 0;
     for (let i=0;i<rep.length;i+=2){
       if (rep[i] !== "-"){
         let img = squares[sqr].querySelector("img");
@@ -158,8 +158,8 @@ const chessView = (function(){
           case "wq": img.setAttribute("src","img/whiteQueen.png"); break;
           case "wk": img.setAttribute("src","img/whiteKing.png"); break;
         }
-        var squareID = squares[sqr].id;
-        var destinations = control.viewRequest({request: "validMoves", from: squareID});
+        let squareID = squares[sqr].id;
+        let destinations = control.viewRequest({request: "validMoves", from: squareID});
         squares[sqr].setAttribute("destinations", Object.keys(destinations).join(" "));
         sqr += 1;
       }
@@ -189,18 +189,18 @@ const chessView = (function(){
 * @return {Object} object with public methods
 */
 const chessControl = (function(){
-  var model;
-  var view;
-  var colorToMove;
-  var lastMove;
-  var canCastle;
-  var whiteInCheck;
-  var blackInCheck;
-  var self;
-  var automated = {"b": true, "w": false};
-  var movesMap = {};
-  var gameOver;
-  var isCheckmate;
+  let model;
+  let view;
+  let colorToMove;
+  let lastMove;
+  let canCastle;
+  let whiteInCheck;
+  let blackInCheck;
+  let self;
+  let automated = {"b": true, "w": false};
+  let movesMap = {};
+  let gameOver;
+  let isCheckmate;
 
   /**
   * initializes state variables
@@ -236,14 +236,14 @@ const chessControl = (function(){
   * update movesMap with current board configuration
   */
   function updateMovesMap(){
-    var allSquares = getAllSquares();
-    for (var i=0; i < allSquares.length; i++){
+    let allSquares = getAllSquares();
+    for (let i=0; i < allSquares.length; i++){
       movesMap[allSquares[i]] = {};
     }
-    var validMoves = getAllValidMoves(getBoardasArray());
-    for (var color in validMoves){
-      for (var i=0; i < validMoves[color].length; i++){
-        var moveObj = validMoves[color][i];
+    let validMoves = getAllValidMoves(getBoardasArray());
+    for (let color in validMoves){
+      for (let i=0; i < validMoves[color].length; i++){
+        let moveObj = validMoves[color][i];
         if (!(moveObj.toSquare in movesMap[moveObj.fromSquare])) {
           movesMap[moveObj.fromSquare][moveObj.toSquare] = moveObj;
         }
@@ -269,9 +269,9 @@ const chessControl = (function(){
       return false;
     }
     if (request.request === "move"){
-      var from = request.from;
-      var to = request.to;
-      var executed = requestMove(from, to);
+      let from = request.from;
+      let to = request.to;
+      let executed = requestMove(from, to);
       if (executed) {
         if (automated[colorToMove] && !gameOver){
           makeAutoMove();
@@ -286,7 +286,7 @@ const chessControl = (function(){
         case "black": automated.b = true; automated.w = false; break;
       }
       if (automated[colorToMove]){
-        makedeste();
+        makeAutoMove();
       }
     }
 
@@ -300,9 +300,9 @@ const chessControl = (function(){
   * @return {Object} object with two properties, white and black containing valid moves for each color
   */
   function getAllValidMoves(board){
-    var white = getAllValidMovementsByColor("w", board);
+    let white = getAllValidMovementsByColor("w", board);
     white = removeMovesThatEndangerKing("w", white, board);
-    var black = getAllValidMovementsByColor("b", board);
+    let black = getAllValidMovementsByColor("b", board);
     black = removeMovesThatEndangerKing("b", black, board);
     return {w:white, b:black};
   }
@@ -315,21 +315,21 @@ const chessControl = (function(){
   * @return {Array} array of Move objects
   */
   function removeMovesThatEndangerKing(colorToMove, validMoves, board){
-    var result = [];
-    var opponentsColor = otherColor(colorToMove);
-    for (var i=0; i < validMoves.length; i++){
-      var testingBoard = copyBoard(board);
-      var thisMove = validMoves[i];
+    let result = [];
+    let opponentsColor = otherColor(colorToMove);
+    for (let i=0; i < validMoves.length; i++){
+      let testingBoard = copyBoard(board);
+      let thisMove = validMoves[i];
       movePiece(thisMove.fromSquare, thisMove.toSquare, thisMove.captureSquare, testingBoard);
-      var newValidMovesForOpponent = getAllValidMovementsByColor(opponentsColor, testingBoard);
-      var newThreatenedSquares = getThreatenedSquares(newValidMovesForOpponent, testingBoard);
-      var colorToMoveKingLocation = findKing(colorToMove, testingBoard);
+      let newValidMovesForOpponent = getAllValidMovementsByColor(opponentsColor, testingBoard);
+      let newThreatenedSquares = getThreatenedSquares(newValidMovesForOpponent, testingBoard);
+      let colorToMoveKingLocation = findKing(colorToMove, testingBoard);
       if (newThreatenedSquares.includes(colorToMoveKingLocation)){
         continue;
       }
       if(thisMove.special !== null && thisMove.special.description == "castle"){
         // check if square to left/right is threatened
-        var direction = thisMove.special.direction === "queenside" ? "w" : "e";
+        let direction = thisMove.special.direction === "queenside" ? "w" : "e";
         if (newThreatenedSquares.includes(thisMove.fromSquare) ||
             newThreatenedSquares.includes(getAdjacentSquare(thisMove.fromSquare, direction)) ||
             newThreatenedSquares.includes(getNonAdjacentSquare(thisMove.fromSquare, [direction,direction]))){
@@ -348,8 +348,8 @@ const chessControl = (function(){
   * @return {Object} a Move object
   */
   function getRandomMove(activeColor, board){
-    var validMoves = getAllValidMovementsByColor(activeColor, board);
-    var rand = Math.floor(Math.random() * (validMoves.length));
+    let validMoves = getAllValidMovementsByColor(activeColor, board);
+    let rand = Math.floor(Math.random() * (validMoves.length));
     return validMoves[rand];
   }
 
@@ -359,7 +359,7 @@ const chessControl = (function(){
   @return {string} toggled color
   */
   function otherColor(color){
-    var result;
+    let result;
     if (color.length > 1){
       result = color === "white" ? "black" : "white";
     } else {
@@ -373,8 +373,8 @@ const chessControl = (function(){
   * @param {Object} move a Move object
   */
   function updateCanCastle(move){
-    var piece = move.pieceMoved;
-    var square = move.fromSquare;
+    let piece = move.pieceMoved;
+    let square = move.fromSquare;
     if (piece === "wk"){
       canCastle.w.queenside = false;
       canCastle.w.kingside = false;
@@ -441,11 +441,11 @@ const chessControl = (function(){
   * calls requestMove with random move
   */
   function makeAutoMove(){
-    var currentBoard = getBoardasArray();
-    var activeColor = colorToMove;
-    var result = false;
+    let currentBoard = getBoardasArray();
+    let activeColor = colorToMove;
+    let result = false;
     while (!result){
-      var moveObject = getRandomMove(activeColor, currentBoard);
+      let moveObject = getRandomMove(activeColor, currentBoard);
       result = requestMove(moveObject.fromSquare, moveObject.toSquare);
     }
   }
@@ -467,21 +467,21 @@ const chessControl = (function(){
   */
   function movePiece(from, to, captureSquare, board){  // example C2 to C4
     board = board.slice(); // just in case
-    var fromIx = translateChessNotationToIndices(from);
-    var fromRow = fromIx[0];
-    var fromCol = fromIx[1];
+    let fromIx = translateChessNotationToIndices(from);
+    let fromRow = fromIx[0];
+    let fromCol = fromIx[1];
 
-    var toIx = translateChessNotationToIndices(to);
-    var toRow = toIx[0];
-    var toCol = toIx[1];
+    let toIx = translateChessNotationToIndices(to);
+    let toRow = toIx[0];
+    let toCol = toIx[1];
 
-    var piece = board[fromRow][fromCol];
+    let piece = board[fromRow][fromCol];
     board[fromRow][fromCol] = "00";
     board[toRow][toCol] = piece;
     if (captureSquare !== null && captureSquare !== to){ // really only true for pawns
-      var captureSquareIx = translateChessNotationToIndices(captureSquare);
-      var captureSquareRow = captureSquareIx[0];
-      var captureSquareCol = captureSquareIx[1];
+      let captureSquareIx = translateChessNotationToIndices(captureSquare);
+      let captureSquareRow = captureSquareIx[0];
+      let captureSquareCol = captureSquareIx[1];
       board[captureSquareRow][captureSquareCol] = "00";
     }
     return board;
@@ -493,8 +493,8 @@ const chessControl = (function(){
   * @return {Array} deep copy of board array
   /*/
   function copyBoard(board){
-    var newBoard = [];
-    for (var i=0;i < board.length; i++){
+    let newBoard = [];
+    for (let i=0;i < board.length; i++){
       newBoard.push(board[i].slice());
     }
     return newBoard;
@@ -507,17 +507,17 @@ const chessControl = (function(){
   * @return {Array} array of strings representing threatened squares on board
   */
   function getThreatenedSquares(moves, board){
-    var result = moves.map(function(obj){
+    let result = moves.map(function(obj){
       if (obj.captureSquare != null){
         return obj.captureSquare;
       }});
     // now include all squares NE or NW of white pawns and
     // SE or SW of black pawns
-    for (var row=0; row < board.length; row++){
-      for (var col=0; col < board.length; col++){
-        var piece = board[row][col];
+    for (let row=0; row < board.length; row++){
+      for (let col=0; col < board.length; col++){
+        let piece = board[row][col];
         if (piece[1] === "p"){
-          var square = translateIndicesToChessNotation([row,col]);
+          let square = translateIndicesToChessNotation([row,col]);
           if (piece[0] === "w"){
             result.push(getAdjacentSquare(square, "nw"));
             result.push(getAdjacentSquare(square, "ne"));
