@@ -542,17 +542,17 @@ const chessControl = (function(){
   */
   function requestMove(from, to){
     // who's who
-    var activeColor = colorToMove;
-    var opponentsColor = otherColor(activeColor);
+    let activeColor = colorToMove;
+    let opponentsColor = otherColor(activeColor);
 
-    var currentBoard = getBoardasArray();
+    let currentBoard = getBoardasArray();
 
     // get a list of valid Move objects for activeColor
     // see if requested move is in that list
-    var validMovesforActiveColor = movesMap.all[activeColor];
-    var validMovement = false; //
-    var thisMove;
-    for (var i=0; i < validMovesforActiveColor.length; i++){
+    let validMovesforActiveColor = movesMap.all[activeColor];
+    let validMovement = false; //
+    let thisMove;
+    for (let i=0; i < validMovesforActiveColor.length; i++){
       thisMove = validMovesforActiveColor[i];
       if(thisMove.fromSquare === from && thisMove.toSquare === to){
         validMovement = true;
@@ -562,21 +562,21 @@ const chessControl = (function(){
     // if we found requested move in the list of valid move objects
     // make that move on a copy of the board
     if (validMovement){
-      var newBoard = copyBoard(currentBoard);
+      let newBoard = copyBoard(currentBoard);
       newBoard = movePiece(from, to, thisMove.captureSquare, newBoard);
 
       if (thisMove.special !== null){
         if (thisMove.special.description == "castle"){
           console.log(thisMove);
-          var rookLocation =  thisMove.special.direction === "queenside"? "a"+from[1] : "h"+from[1];
-          var rookDirection = thisMove.special.direction === "queenside" ? "e" : "w";
-          var rookTo = getAdjacentSquare(to,rookDirection);
+          let rookLocation =  thisMove.special.direction === "queenside"? "a"+from[1] : "h"+from[1];
+          let rookDirection = thisMove.special.direction === "queenside" ? "e" : "w";
+          let rookTo = getAdjacentSquare(to,rookDirection);
           newBoard = movePiece(rookLocation, rookTo, null, newBoard);
         }
         if (thisMove.special.description == "promotion"){
-          var toIx = translateChessNotationToIndices(thisMove.toSquare);
-          var toRow = toIx[0];
-          var toCol = toIx[1];
+          let toIx = translateChessNotationToIndices(thisMove.toSquare);
+          let toRow = toIx[0];
+          let toCol = toIx[1];
           newBoard[toRow][toCol] = thisMove.special.promoteTo;
         }
       }
@@ -585,12 +585,12 @@ const chessControl = (function(){
       lastMove = thisMove;
       updateCanCastle(thisMove);
 
-      var newValidMovesForOpponent = getAllValidMovementsByColor(opponentsColor, newBoard);
+      let newValidMovesForOpponent = getAllValidMovementsByColor(opponentsColor, newBoard);
 
       // let's see if we ajust put opponent in checkmate or if its stalemate
-      var opponentsKingLocation = findKing(opponentsColor, newBoard);
-      var newValidMovesForActiveColor = getAllValidMovementsByColor(activeColor, newBoard);
-      var activeColorNowThreatens = getThreatenedSquares(newValidMovesForActiveColor, newBoard);
+      let opponentsKingLocation = findKing(opponentsColor, newBoard);
+      let newValidMovesForActiveColor = getAllValidMovementsByColor(activeColor, newBoard);
+      let activeColorNowThreatens = getThreatenedSquares(newValidMovesForActiveColor, newBoard);
       gameOver = noLegalMoves(opponentsColor, newValidMovesForOpponent, newBoard);
       if (gameOver){
         isCheckmate = activeColorNowThreatens.includes(opponentsKingLocation);
@@ -609,14 +609,14 @@ const chessControl = (function(){
   * @param {Array} board array of arrays
   */
   function noLegalMoves(colorToMove, validMoves, board){
-    var opponentsColor = otherColor(colorToMove);
-    for (var i=0; i < validMoves.length; i++){
-      var testingBoard = copyBoard(board);
-      var thisMove = validMoves[i];
+    let opponentsColor = otherColor(colorToMove);
+    for (let i=0; i < validMoves.length; i++){
+      let testingBoard = copyBoard(board);
+      let thisMove = validMoves[i];
       movePiece(thisMove.fromSquare, thisMove.toSquare, thisMove.captureSquare, testingBoard);
-      var newValidMovesForOpponent = getAllValidMovementsByColor(opponentsColor, testingBoard);
-      var newThreatenedSquares = getThreatenedSquares(newValidMovesForOpponent, testingBoard);
-      var colorToMoveKingLocation = findKing(colorToMove, testingBoard);
+      let newValidMovesForOpponent = getAllValidMovementsByColor(opponentsColor, testingBoard);
+      let newThreatenedSquares = getThreatenedSquares(newValidMovesForOpponent, testingBoard);
+      let colorToMoveKingLocation = findKing(colorToMove, testingBoard);
       if (!newThreatenedSquares.includes(colorToMoveKingLocation)){
         return false;
       }
@@ -654,10 +654,10 @@ const chessControl = (function(){
   function getAllValidMovementsByColor(color,board){
     // simply returns movements that look proper without thought of check status
     // and don't worry about special moves yet.
-    var result = [];
-    var fromToPairs = getAllSquarePairings();
+    let result = [];
+    let fromToPairs = getAllSquarePairings();
     fromToPairs.forEach(function(pair){
-      var move = isvalidMovement(pair, color, board);
+      let move = isvalidMovement(pair, color, board);
       if (move){ result.push(move); }
     });
     return result;
@@ -671,11 +671,11 @@ const chessControl = (function(){
   * @param {Array} board array of arrays representing the board
   */
   function isvalidMovement(fromToPairs, activeColor, board){
-    var from = fromToPairs[0];
-    var to = fromToPairs[1];
+    let from = fromToPairs[0];
+    let to = fromToPairs[1];
     if (from === to){ return false;} // didn't go anywhere
-    var fromPiece = getPieceOnSquare(from, board);
-    var toPiece = getPieceOnSquare(to, board);
+    let fromPiece = getPieceOnSquare(from, board);
+    let toPiece = getPieceOnSquare(to, board);
     if (fromPiece === "00"){return false;} //need to move something
     if (fromPiece[0] !== activeColor){ return false;} // is it your turn?
     if ( (toPiece !== "00") && (toPiece[0] === fromPiece[0]) ){  //no friendly fire
@@ -704,7 +704,7 @@ const chessControl = (function(){
   * @return {Boolean} true if movement of piece is valid
   */
   function isValidPawnMove( from, fromPiece, to, toPiece, activeColor, board){
-    var direction = activeColor === "w" ? "n" : "s";
+    let direction = activeColor === "w" ? "n" : "s";
 
     result = false;
     // advance one square
@@ -715,8 +715,8 @@ const chessControl = (function(){
     }
     // advance two squares
     if(to === getNonAdjacentSquare(from, [direction,direction])){
-      var squareInBetween = getAdjacentSquare(from, direction);
-      var pieceInBetween = getPieceOnSquare(squareInBetween, board);
+      let squareInBetween = getAdjacentSquare(from, direction);
+      let pieceInBetween = getPieceOnSquare(squareInBetween, board);
       if ( (from[1] !== "2" && from[1] !== "7") || pieceInBetween !== "00" || toPiece !== "00"){
         return false;
       } else {
@@ -724,10 +724,10 @@ const chessControl = (function(){
       }
     }
     //diagonal capture
-    var diagDirections = ["w","e"];
-    for (var i=0;i < diagDirections.length; i++){
+    let diagDirections = ["w","e"];
+    for (let i=0;i < diagDirections.length; i++){
     //capture west or east
-      var diagDirection = diagDirections[i];
+      let diagDirection = diagDirections[i];
       if(to === getAdjacentSquare(from, direction + diagDirection)){
         if(toPiece !== "00"){
           result =  new Move(from, to, to, fromPiece, getPieceOnSquare(to, board), null);
@@ -735,7 +735,7 @@ const chessControl = (function(){
         if(lastMove.pieceMoved[1] === "p" &&
            lastMove.toSquare === getAdjacentSquare(from, diagDirection) &&
            lastMove.fromSquare === getNonAdjacentSquare(from,[diagDirection,direction,direction])){
-             var captureSquare = getAdjacentSquare(from, diagDirection);
+             let captureSquare = getAdjacentSquare(from, diagDirection);
              result = new Move(from, to, captureSquare, fromPiece, getPieceOnSquare(captureSquare,board), null);
         }
       }
@@ -759,9 +759,9 @@ const chessControl = (function(){
   * @return {Boolean} true if movement of piece is valid
   */
   function isValidRookMove(from, fromPiece, to, toPiece, activeColor,board){
-      var directions = ["n","s","e","w"];
-      for (var i=0; i < directions.length; i++){
-        var direction = directions[i];
+      let directions = ["n","s","e","w"];
+      for (let i=0; i < directions.length; i++){
+        let direction = directions[i];
         if (clearPath(from, to, direction, board) === true){
           return new Move(from, to, to, fromPiece, toPiece, null);
         }
