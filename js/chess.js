@@ -8,32 +8,43 @@ const chessView = (function(){
   let control;
   let destinations;
   let destSquare;
+
   /**
   * listener for div elements that make up chess board
   * @param {Event} evt
   */
-  function onClick(evt){
+  function mouseDown(evt){
+    if(lastClicked !== null){
+      return;
+    }
     evt.preventDefault();
     let target = evt.target.tagName === "IMG" ? evt.target.parentNode : evt.target;
     let id = target.id;
-    if (!target.classList.contains("square") ){ return;}  // if is top elem div and not square
-    if (lastClicked === null){
-      let destinationsAttr = target.getAttribute("destinations");
-      if (destinationsAttr != ""){
-        lastClicked = target;
-        lastClicked.classList.add("selected");
-        destinations = destinationsAttr.split(" ");
-        for (let i=0; i < destinations.length; i++){
-          destSquare = document.querySelector("#"+destinations[i]);
-          destSquare.classList.add("target");
-        }
-      }
-    } else {
-      lastClicked.classList.toggle("selected");
-      for (let i=0; i < destinations.length; i++){
-        destSquare = document.querySelector("#"+destinations[i]);
-        destSquare.classList.toggle("target");
-      }
+    let destinationsAttr = target.getAttribute("destinations");
+    if (!target.classList.contains("square") || destinationsAttr === "" ){ return;}
+
+    lastClicked = target;
+    lastClicked.classList.add("selected");
+    destinations = destinationsAttr.split(" ");
+    for (let i=0; i < destinations.length; i++){
+      destSquare = document.querySelector("#"+destinations[i]);
+      destSquare.classList.add("target");
+    }
+  }
+  /**
+  * listener for div elements that make up chess board
+  * @param {Event} evt
+  */
+  function mouseUp(evt){
+    evt.preventDefault();
+    let target = evt.target.tagName === "IMG" ? evt.target.parentNode : evt.target;
+    let id = target.id;
+    for (let i=0; i < destinations.length; i++){
+      destSquare = document.querySelector("#"+destinations[i]);
+      destSquare.classList.remove("target");
+    }
+    if (lastClicked !== null){
+      lastClicked.classList.remove("selected");
       control.viewRequest({ request : "move",
                             from : lastClicked.id,
                             to : id});
@@ -41,7 +52,7 @@ const chessView = (function(){
       lastClicked = null;
     }
   }
-
+  
   /**
   * rotate the board and each square 180deg by adding appropriate class
   */
@@ -83,7 +94,8 @@ const chessView = (function(){
     radioButtons.addEventListener("change", onChangeOfAutomationSelection);
     let board = document.querySelector("#board");
     board.classList.remove("flipped-board"); // if board was flipped, unflip
-    board.addEventListener("click",onClick,false); // during bubbling phase
+    board.addEventListener("mouseup",mouseUp,false); // during bubbling phase
+    board.addEventListener("mousedown",mouseDown,false);
 
     let flipButton = document.querySelector("#flip");
     flipButton.addEventListener("click",flipBoard);
@@ -222,7 +234,7 @@ const chessControl = (function(){
     };
     whiteInCheck = false;
     blackInCheck = false;
-    model.init(self)
+    model.init(self);
     toggleColorToMove("w");
     if (automated[colorToMove]){
       updateMovesMap();
