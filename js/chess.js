@@ -780,7 +780,7 @@ const chessControl = (function(){
   * @return {Boolean} true if movement of piece is valid
   */
   function isValidKnightMove(from, fromPiece, to, toPiece, activeColor, board){
-      var directions = [
+      let directions = [
         ["n","n","w"],
         ["n","n","e"],
         ["s","s","w"],
@@ -790,8 +790,8 @@ const chessControl = (function(){
         ["e","e","n"],
         ["e","e","s"]
       ];
-      for (var i=0; i < directions.length;i++){
-        var newLocation = from;
+      for (let i=0; i < directions.length;i++){
+        let newLocation = from;
         newLocation = getNonAdjacentSquare(newLocation, directions[i]);
         if (newLocation === to){
           return new Move(from, to, to, fromPiece, toPiece, null);
@@ -811,9 +811,9 @@ const chessControl = (function(){
   * @return {Boolean} true if movement of piece is valid
   */
   function isValidBishopMove(from, fromPiece, to, toPiece, activeColor,board){
-    var directions = ["nw","sw","ne","se"];
-    for (var i=0; i < directions.length; i++){
-      var direction = directions[i];
+    let directions = ["nw","sw","ne","se"];
+    for (let i=0; i < directions.length; i++){
+      let direction = directions[i];
       if (clearPath(from, to, direction, board) === true){
         return new Move(from, to, to, fromPiece, toPiece, null);
       }
@@ -850,9 +850,9 @@ const chessControl = (function(){
   * @return {Boolean} true if movement of piece is valid
   */
   function isValidKingMove(from, fromPiece, to, toPiece, activeColor,board){
-    var directions = ["n","ne","e","se","s","sw","w","nw"];
-    for (var i=0; i < directions.length; i++){
-      var target = getAdjacentSquare(from, directions[i]);
+    let directions = ["n","ne","e","se","s","sw","w","nw"];
+    for (let i=0; i < directions.length; i++){
+      let target = getAdjacentSquare(from, directions[i]);
       if (target === to){
         return new Move(from, to, to, fromPiece, toPiece, null);
       }
@@ -880,7 +880,7 @@ const chessControl = (function(){
   * @return {String} representation of piece
   */
   function getPieceOnSquare(square, board){
-    var indices = translateChessNotationToIndices(square);
+    let indices = translateChessNotationToIndices(square);
     return board[indices[0]][indices[1]];
   }
 
@@ -889,11 +889,11 @@ const chessControl = (function(){
   * @return {Array} array of strings
   */
   function getAllSquares(){
-    var columns = "abcdefgh";
-    var rows = "12345678";
-    var result = [];
-    for (var col=0; col < columns.length;col++){
-      for (var row=0; row < rows.length;row++){
+    let columns = "abcdefgh";
+    let rows = "12345678";
+    let result = [];
+    for (let col=0; col < columns.length;col++){
+      for (let row=0; row < rows.length;row++){
         result.push(columns[col]+rows[row]);
       }
     }
@@ -906,10 +906,10 @@ const chessControl = (function(){
   * @return {Array} array of arrays of all possible square pairings
   */
   function getAllSquarePairings(){
-    var squares = getAllSquares();
-    var result = [];
-    for (var f=0; f < squares.length;f++){
-      for (var t=0; t < squares.length;t++){
+    let squares = getAllSquares();
+    let result = [];
+    for (let f=0; f < squares.length;f++){
+      for (let t=0; t < squares.length;t++){
         result.push([ squares[f],squares[t] ]);
       }
     }
@@ -923,9 +923,9 @@ const chessControl = (function(){
   * @return {String} location this king on board as chessNotation
   */
   function findKing(color, board){
-    var target = color + "k";
-    for (var row=0;row < board.length; row++){
-      for (var col=0;col < board.length; col++){
+    let target = color + "k";
+    for (let row=0;row < board.length; row++){
+      for (let col=0;col < board.length; col++){
         if (target === board[row][col]){
           return translateIndicesToChessNotation([row,col]);
         }
@@ -948,8 +948,8 @@ const chessControl = (function(){
   * @return {Array} converted to from values
   */
   function translateChessNotationToIndices(location) { // for example turns a1 to row 7 col 0
-    var col = "abcdefgh".indexOf(location[0]);
-    var row =  8 - Number(location[1]);
+    let col = "abcdefgh".indexOf(location[0]);
+    let row =  8 - Number(location[1]);
     return [row, col];
   }
 
@@ -959,8 +959,8 @@ const chessControl = (function(){
   * @return {String} converted chessNotation
   */
   function translateIndicesToChessNotation(location){
-    var row = String(8 - location[0]);
-    var col = "abcdefgh"[location[1]];
+    let row = String(8 - location[0]);
+    let col = "abcdefgh"[location[1]];
     return col + row;
   }
 
@@ -970,8 +970,8 @@ const chessControl = (function(){
   * @return {String} location on board north of argument in chess notation
   */
   function north(square){
-    var col = square[0];
-    var row = square[1];
+    let col = square[0];
+    let row = square[1];
     newRow = String(Number(row) + 1);
     return col + newRow;
   }
@@ -982,8 +982,8 @@ const chessControl = (function(){
   * @return {String} location on board south of argument in chess notation
   */
   function south(square){
-    var col = square[0];
-    var row = square[1];
+    let col = square[0];
+    let row = square[1];
     newRow = String(Number(row) -1);
     return col + newRow;
   }
@@ -994,9 +994,9 @@ const chessControl = (function(){
   * @return {String} location on board east of argument in chess notation
   */
   function east(square){
-    var col = square[0];
-    var row = square[1];
-    var columns = "xabcdefghx";
+    let col = square[0];
+    let row = square[1];
+    let columns = "xabcdefghx";
     newCol = columns[chessNotationColToIndex(col) + 2];
     return newCol + row;
   }
@@ -1007,9 +1007,9 @@ const chessControl = (function(){
   * @return {String} location on board west of argument in chess notation
   */
   function west(square){
-    var col = square[0];
-    var row = square[1];
-    var columns = "xabcdefghx";
+    let col = square[0];
+    let row = square[1];
+    let columns = "xabcdefghx";
     newCol = columns[chessNotationColToIndex(col)];
     return newCol + row;
   }
@@ -1056,8 +1056,8 @@ const chessControl = (function(){
   * @return {String} location on board after moving as indicate by directions
   */
   function getNonAdjacentSquare(square, directions){// example - f3, ["n","w"]
-    var currentSquare = square;
-    for(var i=0;i < directions.length;i++){
+    let currentSquare = square;
+    for(let i=0;i < directions.length;i++){
       currentSquare = getAdjacentSquare(currentSquare, directions[i]);
       if (currentSquare === null){ return null;}
     }
@@ -1099,11 +1099,11 @@ const chessControl = (function(){
   */
 const chessModel = (function(){
   const startState = "brbnbbbqbkbbbnbr--bpbpbpbpbpbpbpbp--0000000000000000--0000000000000000--0000000000000000--0000000000000000--wpwpwpwpwpwpwpwp--wrwnwbwqwkwbwnwr";
-  var states;
-  var moves;
-  var board;
-  var control;
-  var capturedPieces;
+  let states;
+  let moves;
+  let board;
+  let control;
+  let capturedPieces;
 
   /**
   * Sets initial state variables
