@@ -194,7 +194,8 @@ const chessView = (function(){
     let isCheckmate = statusObj.isCheckmate;
     let status = document.querySelector("#status");
     if (!gameOver){
-      status.textContent = colorToMove + " to move.";
+      let fullColorName = colorToMove === "w" ? "White" : "Black";
+      status.textContent = fullColorName + " to move.";
     } else if (isCheckmate){
       status.textContent = "Checkmate!";
     } else {
