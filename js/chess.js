@@ -54,7 +54,6 @@ const chessView = (function(){
   * @param {Event} evt
   */
   function mouseLeave(evt){
-    console.log("goodbye")
     lastClicked = null;
     let squares = document.querySelectorAll(".square");
     for (let i=0; i < squares.length; i++){

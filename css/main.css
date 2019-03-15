@@ -85,6 +85,10 @@ td img {
   -moz-user-select: none;
 }
 
+#board grabbed {
+  cursor: grabbed;
+}
+
 /*
 *
 *
