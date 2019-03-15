@@ -85,6 +85,9 @@ td img {
   -moz-user-select: none;
 }
 
+button {
+  display: block;
+}
 
 /*
 *
