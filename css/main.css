@@ -85,9 +85,6 @@ td img {
   -moz-user-select: none;
 }
 
-#board.grabbed:hover {
-  cursor: grabbing;
-}
 
 /*
 *
@@ -99,6 +96,9 @@ td img {
 */
 
 
+#board.grabbed:hover {
+  cursor: grabbing;
+}
 
 #board:hover{
   cursor: grab;

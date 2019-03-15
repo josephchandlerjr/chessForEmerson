@@ -36,6 +36,7 @@ const chessView = (function(){
   function mouseUp(evt){
     evt.preventDefault();
     board.classList.remove("grabbed");
+    if (!destinations) {return;}
     let target = evt.target.tagName === "IMG" ? evt.target.parentNode : evt.target;
     let id = target.id;
     for (let i=0; i < destinations.length; i++){
@@ -225,6 +226,7 @@ const chessControl = (function(){
   let gameOver;
   let isCheckmate;
   const allSquares = getAllSquares();
+  const allSquarePairings = getAllSquarePairings();
 
   /**
   * initializes state variables
@@ -678,7 +680,7 @@ const chessControl = (function(){
     // simply returns movements that look proper without thought of check status
     // and don't worry about special moves yet.
     let result = [];
-    let fromToPairs = getAllSquarePairings();
+    let fromToPairs = allSquarePairings;
     fromToPairs.forEach(function(pair){
       let move = isvalidMovement(pair, color, board);
       if (move){ result.push(move); }
