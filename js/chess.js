@@ -224,6 +224,7 @@ const chessControl = (function(){
   let movesMap = {};
   let gameOver;
   let isCheckmate;
+  const allSquares = getAllSquares();
 
   /**
   * initializes state variables
@@ -259,7 +260,6 @@ const chessControl = (function(){
   * update movesMap with current board configuration
   */
   function updateMovesMap(){
-    let allSquares = getAllSquares();
     for (let i=0; i < allSquares.length; i++){
       movesMap[allSquares[i]] = {};
     }
@@ -929,11 +929,10 @@ const chessControl = (function(){
   * @return {Array} array of arrays of all possible square pairings
   */
   function getAllSquarePairings(){
-    let squares = getAllSquares();
     let result = [];
-    for (let f=0; f < squares.length;f++){
-      for (let t=0; t < squares.length;t++){
-        result.push([ squares[f],squares[t] ]);
+    for (let f=0; f < allSquares.length;f++){
+      for (let t=0; t < allSquares.length;t++){
+        result.push([allSquares[f],allSquares[t] ]);
       }
     }
     return result;
