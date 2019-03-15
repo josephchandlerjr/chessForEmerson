@@ -8,6 +8,7 @@ const chessView = (function(){
   let control;
   let destinations;
   let destSquare;
+  const board = document.querySelector("#board");
 
   /**
   * listener for div elements that make up chess board
@@ -19,12 +20,12 @@ const chessView = (function(){
     let id = target.id;
     let destinationsAttr = target.getAttribute("destinations");
     if (!target.classList.contains("square") || destinationsAttr === "" ){ return;}
-    document.querySelector("#board").classList.add("grabbed");
+    board.classList.add("grabbed");
     lastClicked = target;
     lastClicked.classList.add("selected");
     destinations = destinationsAttr.split(" ");
     for (let i=0; i < destinations.length; i++){
-      destSquare = document.querySelector("#"+destinations[i]);
+      destSquare = board.querySelector("#"+destinations[i]);
       destSquare.classList.add("target");
     }
   }
@@ -34,11 +35,11 @@ const chessView = (function(){
   */
   function mouseUp(evt){
     evt.preventDefault();
-    document.querySelector("#board").classList.remove("grabbed");
+    board.classList.remove("grabbed");
     let target = evt.target.tagName === "IMG" ? evt.target.parentNode : evt.target;
     let id = target.id;
     for (let i=0; i < destinations.length; i++){
-      destSquare = document.querySelector("#"+destinations[i]);
+      destSquare = board.querySelector("#"+destinations[i]);
       destSquare.classList.remove("target");
     }
     if (lastClicked !== null){
@@ -55,9 +56,9 @@ const chessView = (function(){
   * @param {Event} evt
   */
   function mouseLeave(evt){
-    document.querySelector("#board").classList.remove("grabbed");
+    board.classList.remove("grabbed");
     lastClicked = null;
-    let squares = document.querySelectorAll(".square");
+    let squares = board.querySelectorAll(".square");
     for (let i=0; i < squares.length; i++){
       squares[i].classList.remove("target");
       squares[i].classList.remove("selected");
@@ -68,8 +69,7 @@ const chessView = (function(){
   * rotate the board and each square 180deg by adding appropriate class
   */
   function flipBoard(){
-    let board = document.querySelector("#board");
-    let squares = document.querySelectorAll(".square, .rank-label, .file-label");
+    let squares = board.querySelectorAll(".square, .rank-label, .file-label");
     board.classList.toggle("flipped-board");
     squares.forEach(function(elem){
       elem.classList.toggle("flipped");
@@ -103,7 +103,6 @@ const chessView = (function(){
     resetButton.addEventListener("click",reset);
     let radioButtons = document.querySelector("#automation-radio-buttons");
     radioButtons.addEventListener("change", onChangeOfAutomationSelection);
-    let board = document.querySelector("#board");
     board.classList.remove("flipped-board"); // if board was flipped, unflip
     board.addEventListener("mouseup",mouseUp,false); // during bubbling phase
     board.addEventListener("mousedown",mouseDown,false);
@@ -159,7 +158,7 @@ const chessView = (function(){
   * Gets board from Control object and sets innerHTML of divs representing squares
   */
   function update(){
-    let squares = document.querySelectorAll("#board .square");
+    let squares = board.querySelectorAll(".square");
     let rep = control.getBoardAsString();
     let sqr = 0;
     for (let i=0;i<rep.length;i+=2){
