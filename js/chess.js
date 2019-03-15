@@ -19,6 +19,7 @@ const chessView = (function(){
     let id = target.id;
     let destinationsAttr = target.getAttribute("destinations");
     if (!target.classList.contains("square") || destinationsAttr === "" ){ return;}
+    document.querySelector("#board").classList.add("grabbed");
     lastClicked = target;
     lastClicked.classList.add("selected");
     destinations = destinationsAttr.split(" ");
@@ -33,6 +34,7 @@ const chessView = (function(){
   */
   function mouseUp(evt){
     evt.preventDefault();
+    document.querySelector("#board").classList.remove("grabbed");
     let target = evt.target.tagName === "IMG" ? evt.target.parentNode : evt.target;
     let id = target.id;
     for (let i=0; i < destinations.length; i++){
@@ -44,7 +46,6 @@ const chessView = (function(){
       control.viewRequest({ request : "move",
                             from : lastClicked.id,
                             to : id});
-      //update();
       lastClicked = null;
     }
   }
@@ -54,6 +55,7 @@ const chessView = (function(){
   * @param {Event} evt
   */
   function mouseLeave(evt){
+    document.querySelector("#board").classList.remove("grabbed");
     lastClicked = null;
     let squares = document.querySelectorAll(".square");
     for (let i=0; i < squares.length; i++){
