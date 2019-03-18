@@ -131,7 +131,7 @@ tr:nth-child(odd) td:nth-child(even).square, tr:nth-child(even) td:nth-child(odd
 }
 
 .selected {
-  box-shadow: 0 0 0 3px red inset;
+  box-shadow: 0 0 0 3px green inset;
 }
 
 .target {
