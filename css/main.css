@@ -1,6 +1,6 @@
 
 body {
-  background: linear-gradient(#f7bebe, #ada0a8);
+  background: radial-gradient(circle at bottom left, #f7bebe, #c7b5c0);
 }
 
 h1 {
@@ -102,7 +102,7 @@ button {
 */
 
 #board{
-    box-shadow: 2px -2px 5px grey; 
+    box-shadow: 2px -2px 5px grey;
 }
 
 #board.grabbed:hover {
