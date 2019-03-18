@@ -101,6 +101,9 @@ button {
 *
 */
 
+#board{
+    box-shadow: 2px -2px 5px grey; 
+}
 
 #board.grabbed:hover {
   cursor: grabbing;
