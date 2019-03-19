@@ -177,7 +177,7 @@ const chessView = (function(){
 
           case "wp": img.setAttribute("src","img/whitePawn.png"); break;
           case "wr": img.setAttribute("src","img/whiteRook.png"); break;
-          case "wn": img.setAttribute("src","img/whiteKnight.png"); break;
+          case "wn": img.setAttribute("src","img/whiteKnight.svg"); break;
           case "wb": img.setAttribute("src","img/whiteBishop.png"); break;
           case "wq": img.setAttribute("src","img/whiteQueen.png"); break;
           case "wk": img.setAttribute("src","img/whiteKing.png"); break;
