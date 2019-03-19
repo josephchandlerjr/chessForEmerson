@@ -1,6 +1,7 @@
 
 body {
   background: radial-gradient(circle at bottom left, #f7bebe, #c7b5c0);
+  height: 100vh;
 }
 
 h1 {
