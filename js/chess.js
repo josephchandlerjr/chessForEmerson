@@ -170,7 +170,7 @@ const chessView = (function(){
           case "00": img.setAttribute("style", "display:none;"); break;
           case "bp": img.setAttribute("src","img/blackPawn.png"); break;
           case "br": img.setAttribute("src","img/blackRook.png"); break;
-          case "bn": img.setAttribute("src","img/blackKnight.png"); break;
+          case "bn": img.setAttribute("src","img/blackKnight.svg"); break;
           case "bb": img.setAttribute("src","img/blackBishop.png"); break;
           case "bq": img.setAttribute("src","img/blackQueen.png"); break;
           case "bk": img.setAttribute("src","img/blackKing.png"); break;
