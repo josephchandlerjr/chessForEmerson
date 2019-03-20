@@ -326,11 +326,24 @@ const chessControl = (function(){
   * @return {Object} object with two properties, white and black containing valid moves for each color
   */
   function getAllValidMoves(board){
-    let white = getAllValidMovementsByColor("w", board);
-    white = removeMovesThatEndangerKing("w", white, board);
-    let black = getAllValidMovementsByColor("b", board);
-    black = removeMovesThatEndangerKing("b", black, board);
-    return {w:white, b:black};
+    let result = {};
+    let blackResults = [];
+    let whiteResults = [];
+    let fromToPairs = allSquarePairings;
+    fromToPairs.forEach(function(pair){
+      let whiteMove = isvalidMovement(pair, "w", board);
+      if (whiteMove){
+        whiteResults.push(whiteMove);
+      } else {
+        let blackMove = isvalidMovement(pair, "b", board);
+        if (blackMove){
+          blackResults.push(blackMove);
+      }
+    }
+    });
+    result.b = removeMovesThatEndangerKing("b", blackResults, board);
+    result.w = removeMovesThatEndangerKing("w", whiteResults, board);
+    return result
   }
 
   /**
