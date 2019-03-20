@@ -173,14 +173,14 @@ const chessView = (function(){
           case "bn": img.setAttribute("src","img/blackKnight.svg"); break;
           case "bb": img.setAttribute("src","img/blackBishop.svg"); break;
           case "bq": img.setAttribute("src","img/blackQueen.png"); break;
-          case "bk": img.setAttribute("src","img/blackKing.png"); break;
+          case "bk": img.setAttribute("src","img/blackKing.svg"); break;
 
           case "wp": img.setAttribute("src","img/whitePawn.svg"); break;
           case "wr": img.setAttribute("src","img/whiteRook.png"); break;
           case "wn": img.setAttribute("src","img/whiteKnight.svg"); break;
           case "wb": img.setAttribute("src","img/whiteBishop.svg"); break;
           case "wq": img.setAttribute("src","img/whiteQueen.png"); break;
-          case "wk": img.setAttribute("src","img/whiteKing.png"); break;
+          case "wk": img.setAttribute("src","img/whiteKing.svg"); break;
         }
         let squareID = squares[sqr].id;
         let destinations = control.viewRequest({request: "validMoves", from: squareID});
