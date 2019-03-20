@@ -169,14 +169,14 @@ const chessView = (function(){
         switch(rep.substring(i,i+2)) { // **********
           case "00": img.setAttribute("style", "display:none;"); break;
           case "bp": img.setAttribute("src","img/blackPawn.svg"); break;
-          case "br": img.setAttribute("src","img/blackRook.png"); break;
+          case "br": img.setAttribute("src","img/blackRook.svg"); break;
           case "bn": img.setAttribute("src","img/blackKnight.svg"); break;
           case "bb": img.setAttribute("src","img/blackBishop.svg"); break;
           case "bq": img.setAttribute("src","img/blackQueen.svg"); break;
           case "bk": img.setAttribute("src","img/blackKing.svg"); break;
 
           case "wp": img.setAttribute("src","img/whitePawn.svg"); break;
-          case "wr": img.setAttribute("src","img/whiteRook.png"); break;
+          case "wr": img.setAttribute("src","img/whiteRook.svg"); break;
           case "wn": img.setAttribute("src","img/whiteKnight.svg"); break;
           case "wb": img.setAttribute("src","img/whiteBishop.svg"); break;
           case "wq": img.setAttribute("src","img/whiteQueen.svg"); break;
