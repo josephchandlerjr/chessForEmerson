@@ -414,20 +414,19 @@ const chessControl = (function(){
   function updateCanCastle(move){
     let piece = move.pieceMoved;
     let square = move.fromSquare;
-    if (piece === "wk"){
-      canCastle.w.queenside = false;
-      canCastle.w.kingside = false;
+    let pieceColor = piece[0];
+    let pieceKind = piece[1];
+
+    if (pieceKind === "k"){
+      canCastle[pieceColor].queenside = false;
+      canCastle[pieceColor].kingside = false;
     }
-    if (piece === "bk"){
-      canCastle.b.queenside = false;
-      canCastle.b.kingside = false;
-    }
-    if (piece[1] === "r"){
+    if (pieceKind === "r"){
       if(square[0] === "a"){
-        canCastle[piece[0]]["queenside"] = false;
+        canCastle[pieceColor]["queenside"] = false;
       }
       if(square[0] === "h"){
-        canCastle[piece[0]]["kingside"] = false;
+        canCastle[pieceColor]["kingside"] = false;
       }
     }
     // what if rook is captured, not moved
@@ -606,7 +605,6 @@ const chessControl = (function(){
 
       if (thisMove.special !== null){
         if (thisMove.special.description == "castle"){
-          console.log(thisMove);
           let rookLocation =  thisMove.special.direction === "queenside"? "a"+from[1] : "h"+from[1];
           let rookDirection = thisMove.special.direction === "queenside" ? "e" : "w";
           let rookTo = getAdjacentSquare(to,rookDirection);
@@ -624,9 +622,8 @@ const chessControl = (function(){
       lastMove = thisMove;
       updateCanCastle(thisMove);
 
+      // let's see if its checkmate or stalemate
       let newValidMovesForOpponent = getAllValidMovementsByColor(opponentsColor, newBoard);
-
-      // let's see if we ajust put opponent in checkmate or if its stalemate
       let opponentsKingLocation = findKing(opponentsColor, newBoard);
       let newValidMovesForActiveColor = getAllValidMovementsByColor(activeColor, newBoard);
       let activeColorNowThreatens = getThreatenedSquares(newValidMovesForActiveColor, newBoard);
