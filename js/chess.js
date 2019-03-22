@@ -399,8 +399,15 @@ const chessControl = (function(){
   * @param {Object} move a Move object
   */
   function updateCanCastle(move){
+<<<<<<< HEAD
     let piece = move.pieceMoved, square = move.fromSquare;
     let pieceColor = piece[0], pieceKind = piece[1];
+=======
+    let piece = move.pieceMoved;
+    let square = move.fromSquare;
+    let pieceColor = piece[0];
+    let pieceKind = piece[1];
+>>>>>>> 86d4cc5c928052a5890ed56f1c4c8314e60db8ad
 
     if (pieceKind === "k"){
       canCastle[pieceColor].queenside = false;
