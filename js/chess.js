@@ -255,7 +255,7 @@ const chessControl = (function(){
     for (let i=0; i < allSquares.length; i++){
       movesMap[allSquares[i]] = {};
     }
-    let validMoves = getAllValidMoves(getBoardasArray());
+    let validMoves = getAllValidMoves(getBoard());
     for (let color in validMoves){
       for (let i=0; i < validMoves[color].length; i++){
         let moveObj = validMoves[color][i];
@@ -399,15 +399,8 @@ const chessControl = (function(){
   * @param {Object} move a Move object
   */
   function updateCanCastle(move){
-<<<<<<< HEAD
     let piece = move.pieceMoved, square = move.fromSquare;
     let pieceColor = piece[0], pieceKind = piece[1];
-=======
-    let piece = move.pieceMoved;
-    let square = move.fromSquare;
-    let pieceColor = piece[0];
-    let pieceKind = piece[1];
->>>>>>> 86d4cc5c928052a5890ed56f1c4c8314e60db8ad
 
     if (pieceKind === "k"){
       canCastle[pieceColor].queenside = false;
@@ -471,7 +464,7 @@ const chessControl = (function(){
   * calls requestMove with random move
   */
   function makeAutoMove(){
-    let currentBoard = getBoardasArray();
+    let currentBoard = getBoard();
     let activeColor = colorToMove;
     let result = false;
     while (!result){
@@ -496,23 +489,11 @@ const chessControl = (function(){
   * @return {Array} new state of the board
   */
   function movePiece(from, to, captureSquare, board){  // example C2 to C4
-    board = board.slice(); // just in case
-    let fromIx = translateChessNotationToIndices(from);
-    let fromRow = fromIx[0];
-    let fromCol = fromIx[1];
-
-    let toIx = translateChessNotationToIndices(to);
-    let toRow = toIx[0];
-    let toCol = toIx[1];
-
-    let piece = board[fromRow][fromCol];
-    board[fromRow][fromCol] = "00";
-    board[toRow][toCol] = piece;
+    let piece = board[from];
+    board[from] = "00";
+    board[to] = piece;
     if (captureSquare !== null && captureSquare !== to){ // really only true for pawns
-      let captureSquareIx = translateChessNotationToIndices(captureSquare);
-      let captureSquareRow = captureSquareIx[0];
-      let captureSquareCol = captureSquareIx[1];
-      board[captureSquareRow][captureSquareCol] = "00";
+      board[captureSquare] = "00";
     }
     return board;
   }
@@ -523,11 +504,7 @@ const chessControl = (function(){
   * @return {Array} deep copy of board array
   /*/
   function copyBoard(board){
-    let newBoard = [];
-    for (let i=0;i < board.length; i++){
-      newBoard.push(board[i].slice());
-    }
-    return newBoard;
+    return Object.assign({},board);
   }
 
   /**
@@ -543,22 +520,20 @@ const chessControl = (function(){
       }});
     // now include all squares NE or NW of white pawns and
     // SE or SW of black pawns
-    for (let row=0; row < board.length; row++){
-      for (let col=0; col < board.length; col++){
-        let piece = board[row][col];
-        if (piece[1] === "p"){
-          let square = translateIndicesToChessNotation([row,col]);
-          if (piece[0] === "w"){
-            result.push(getAdjacentSquare(square, "nw"));
-            result.push(getAdjacentSquare(square, "ne"));
-          }
-          if (piece[0] === "b"){
-            result.push(getAdjacentSquare(square, "sw"));
-            result.push(getAdjacentSquare(square, "se"));
-          }
+    for (let sqr in board){
+      let piece = board[sqr];
+      if (piece[1] === "p"){
+        if (piece[0] === "w"){
+          result.push(getAdjacentSquare(sqr, "nw"));
+          result.push(getAdjacentSquare(sqr, "ne"));
+        }
+        if (piece[0] === "b"){
+          result.push(getAdjacentSquare(sqr, "sw"));
+          result.push(getAdjacentSquare(sqr, "se"));
         }
       }
     }
+
   // remove null from list
   result = result.filter(x => x != null);
   return result;
@@ -574,7 +549,7 @@ const chessControl = (function(){
     // who's who
     let activeColor = colorToMove;
     let opponentsColor = otherColor(activeColor);
-    let currentBoard = getBoardasArray();
+    let currentBoard = getBoard();
 
     // get a list of valid Move objects for activeColor
     // see if requested move is in that list
@@ -602,10 +577,7 @@ const chessControl = (function(){
           newBoard = movePiece(rookLocation, rookTo, null, newBoard);
         }
         if (thisMove.special.description == "promotion"){
-          let toIx = translateChessNotationToIndices(thisMove.toSquare);
-          let toRow = toIx[0];
-          let toCol = toIx[1];
-          newBoard[toRow][toCol] = thisMove.special.promoteTo;
+          newBoard[thisMove.toSquare] = thisMove.special.promoteTo;
         }
       }
 
@@ -666,7 +638,7 @@ const chessControl = (function(){
   * gets current state of board as an Array
   * @return {Array} array of arrays representing board
   */
-  function getBoardasArray(){
+  function getBoard(){
     return model.getBoard();
   }
 
@@ -905,8 +877,7 @@ const chessControl = (function(){
   * @return {String} representation of piece
   */
   function getPieceOnSquare(square, board){
-    let indices = translateChessNotationToIndices(square);
-    return board[indices[0]][indices[1]];
+    return board[square];
   }
 
   /**
@@ -948,11 +919,9 @@ const chessControl = (function(){
   */
   function findKing(color, board){
     let target = color + "k";
-    for (let row=0;row < board.length; row++){
-      for (let col=0;col < board.length; col++){
-        if (target === board[row][col]){
-          return translateIndicesToChessNotation([row,col]);
-        }
+    for (let sqr in board){
+      if (board[sqr] === target) {
+        return sqr;
       }
     }
   }
@@ -1131,19 +1100,20 @@ const chessModel = (function(){
   */
   function init(obj){
     control = obj;
-    board = [[]];
+    board = {};
     moves = [];
     capturedPieces = [];
     states = [];
     states.push(startState);
-    for (let i=0;i<startState.length;i+=2){
-      if (startState[i] === "-"){
-        board.push([]);
-        } else if (startState[i] === "0"){
-        board[board.length - 1].push("00");
-        } else {
-        board[board.length - 1].push(startState.slice(i,i+2));
-        }
+    let ix = 0;
+    for (let rank=8; rank > 0; rank--) {
+      for (let file=0; file < 8; file++){
+        fileLetter = "abcdefgh".charAt(file);
+        let rep = startState.slice(ix,ix+2);
+        if (rep === "--") {ix+= 2; rep = startState.slice(ix,ix+2);}
+        board[fileLetter + rank] = startState.slice(ix,ix+2);
+        ix += 2;
+      }
     }
   }
 
@@ -1162,7 +1132,7 @@ const chessModel = (function(){
   * @return {Array} copy of board as an array
   */
   function getBoard(){
-    return board.slice();
+    return Object.assign({}, board);
   }
 
   /**
@@ -1191,14 +1161,15 @@ const chessModel = (function(){
   */
   function toString(){
     let result = "", piece = 0;
-    for (let row=0; row < board.length; row++){
-      if (row !== 0){result += "--";}
-      for (let col=0; col < board.length; col++){
-        piece = board[row][col];
+    for (let rank=8; rank > 0; rank--) {
+      for (let file=0; file < 8; file++){
+        fileLetter = "abcdefgh".charAt(file);
+        piece = board[fileLetter + rank];
         result += piece;
       }
+      result += "--"
     }
-    return result;
+    return result.slice(0,-2);
   }
   return {   // *****Public Methods*****
     toString : toString,
