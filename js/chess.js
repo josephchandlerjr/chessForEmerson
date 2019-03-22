@@ -4,10 +4,7 @@
   * @return {Object} object with public methods
   */
 const chessView = (function(){
-  let lastClicked = null;
-  let control;
-  let destinations;
-  let destSquare;
+  let lastClicked = null, control, destinations, destSquare;
   const board = document.querySelector("#board");
 
   /**
@@ -113,9 +110,7 @@ const chessView = (function(){
     flipButton.addEventListener("click",flipBoard);
 
     let trs = board.querySelectorAll("tr");
-    let col = 97;
-    let row = 8;
-    let rank = "";
+    let col = 97, row = 8, rank = "";
     trs.forEach(function(tr,ix,list){
       tr.innerHTML = "";
     	if (ix < list.length-1 && ix > 0){
@@ -214,18 +209,12 @@ const chessView = (function(){
 * @return {Object} object with public methods
 */
 const chessControl = (function(){
-  let model;
-  let view;
-  let colorToMove;
-  let lastMove;
-  let canCastle;
-  let whiteInCheck;
-  let blackInCheck;
-  let self;
-  let automated = {"b": true, "w": false};
-  let movesMap = {};
+  let model, view, self;
+  let colorToMove, lastMove, canCastle, whiteInCheck, blackInCheck;
   let gameOver;
   let isCheckmate;
+  let automated = {"b": true, "w": false};
+  let movesMap = {};
   const allSquares = getAllSquares();
   const allSquarePairings = getAllSquarePairings();
 
@@ -326,9 +315,7 @@ const chessControl = (function(){
   * @return {Object} object with two properties, white and black containing valid moves for each color
   */
   function getAllValidMoves(board){
-    let result = {};
-    let blackResults = [];
-    let whiteResults = [];
+    let result = {}, blackResults = [], whiteResults = [];
     let fromToPairs = allSquarePairings;
     fromToPairs.forEach(function(pair){
       let whiteMove = isvalidMovement(pair, "w", board);
@@ -412,10 +399,8 @@ const chessControl = (function(){
   * @param {Object} move a Move object
   */
   function updateCanCastle(move){
-    let piece = move.pieceMoved;
-    let square = move.fromSquare;
-    let pieceColor = piece[0];
-    let pieceKind = piece[1];
+    let piece = move.pieceMoved, square = move.fromSquare;
+    let pieceColor = piece[0], pieceKind = piece[1];
 
     if (pieceKind === "k"){
       canCastle[pieceColor].queenside = false;
@@ -582,7 +567,6 @@ const chessControl = (function(){
     // who's who
     let activeColor = colorToMove;
     let opponentsColor = otherColor(activeColor);
-
     let currentBoard = getBoardasArray();
 
     // get a list of valid Move objects for activeColor
@@ -671,7 +655,6 @@ const chessControl = (function(){
     model.updateCapturedPieces(move.pieceCaptured);
   }
 
-
   /**
   * gets current state of board as an Array
   * @return {Array} array of arrays representing board
@@ -707,8 +690,7 @@ const chessControl = (function(){
   * @param {Array} board array of arrays representing the board
   */
   function isvalidMovement(fromToPairs, activeColor, board){
-    let from = fromToPairs[0];
-    let to = fromToPairs[1];
+    let from = fromToPairs[0], to = fromToPairs[1];
     if (from === to){ return false;} // didn't go anywhere
     let fromPiece = getPieceOnSquare(from, board);
     let toPiece = getPieceOnSquare(to, board);
@@ -1005,8 +987,7 @@ const chessControl = (function(){
   * @return {String} location on board north of argument in chess notation
   */
   function north(square){
-    let col = square[0];
-    let row = square[1];
+    let col = square[0], row = square[1];
     newRow = String(Number(row) + 1);
     return col + newRow;
   }
@@ -1017,8 +998,7 @@ const chessControl = (function(){
   * @return {String} location on board south of argument in chess notation
   */
   function south(square){
-    let col = square[0];
-    let row = square[1];
+    let col = square[0], row = square[1];
     newRow = String(Number(row) -1);
     return col + newRow;
   }
@@ -1029,8 +1009,7 @@ const chessControl = (function(){
   * @return {String} location on board east of argument in chess notation
   */
   function east(square){
-    let col = square[0];
-    let row = square[1];
+    let col = square[0], row = square[1];
     let columns = "xabcdefghx";
     newCol = columns[chessNotationColToIndex(col) + 2];
     return newCol + row;
@@ -1042,8 +1021,7 @@ const chessControl = (function(){
   * @return {String} location on board west of argument in chess notation
   */
   function west(square){
-    let col = square[0];
-    let row = square[1];
+    let col = square[0], row = square[1];
     let columns = "xabcdefghx";
     newCol = columns[chessNotationColToIndex(col)];
     return newCol + row;
@@ -1205,8 +1183,7 @@ const chessModel = (function(){
   * @return {String} string representing board
   */
   function toString(){
-    let result = "";
-    let piece = 0;
+    let result = "", piece = 0;
     for (let row=0; row < board.length; row++){
       if (row !== 0){result += "--";}
       for (let col=0; col < board.length; col++){
