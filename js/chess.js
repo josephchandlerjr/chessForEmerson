@@ -927,15 +927,6 @@ const chessControl = (function(){
   }
 
   /**
-  *  convert column index into chess notation
-  * @param {Number} col col index
-  * @return {String} chess notation of that col
-  */
-  function chessNotationColToIndex(col){
-    return "abcdefgh".indexOf(col);
-  }
-
-  /**
   * convert from chess notation to row, col indices
   * @param {String} location location to be converted
   * @return {Array} converted to from values
@@ -987,7 +978,7 @@ const chessControl = (function(){
   function east(square){
     let col = square[0], row = square[1];
     let columns = "xabcdefghx";
-    newCol = columns[chessNotationColToIndex(col) + 2];
+    newCol = columns.charAt(columns.indexOf(col)+1);
     return newCol + row;
   }
 
@@ -999,7 +990,7 @@ const chessControl = (function(){
   function west(square){
     let col = square[0], row = square[1];
     let columns = "xabcdefghx";
-    newCol = columns[chessNotationColToIndex(col)];
+    newCol = columns.charAt(columns.indexOf(col)-1);
     return newCol + row;
   }
 
