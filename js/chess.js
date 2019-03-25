@@ -242,16 +242,15 @@ const chessControl = (function(){
     for (let sqr=0;sqr < allSquares.length;sqr++){
       let thisSqr = allSquares[sqr];
       adjacentSquares[thisSqr] = {};
-      adjacentSquares[thisSqr].north = getAdjacentSquare(thisSqr,"n");
-      adjacentSquares[thisSqr].northEast = getAdjacentSquare(thisSqr,"ne");
-      adjacentSquares[thisSqr].east = getAdjacentSquare(thisSqr,"e");
-      adjacentSquares[thisSqr].southEast = getAdjacentSquare(thisSqr,"se");
-      adjacentSquares[thisSqr].south = getAdjacentSquare(thisSqr,"s");
-      adjacentSquares[thisSqr].southWest = getAdjacentSquare(thisSqr,"sw");
-      adjacentSquares[thisSqr].west = getAdjacentSquare(thisSqr,"w");
-      adjacentSquares[thisSqr].northWest = getAdjacentSquare(thisSqr,"nw");
+      adjacentSquares[thisSqr].n = getAdjacentSquare(thisSqr,"n");
+      adjacentSquares[thisSqr].ne = getAdjacentSquare(thisSqr,"ne");
+      adjacentSquares[thisSqr].e = getAdjacentSquare(thisSqr,"e");
+      adjacentSquares[thisSqr].se = getAdjacentSquare(thisSqr,"se");
+      adjacentSquares[thisSqr].s = getAdjacentSquare(thisSqr,"s");
+      adjacentSquares[thisSqr].sw = getAdjacentSquare(thisSqr,"sw");
+      adjacentSquares[thisSqr].w = getAdjacentSquare(thisSqr,"w");
+      adjacentSquares[thisSqr].nw = getAdjacentSquare(thisSqr,"nw");
     }
-    console.log(adjacentSquares);
     model.init(self);
     toggleColorToMove("w");
     if (automated[colorToMove]){
@@ -371,8 +370,8 @@ const chessControl = (function(){
         // check if square to left/right is threatened
         let direction = thisMove.special.direction === "queenside" ? "w" : "e";
         if (newThreatenedSquares.includes(thisMove.fromSquare) ||
-            newThreatenedSquares.includes(getAdjacentSquare(thisMove.fromSquare, direction)) ||
-            newThreatenedSquares.includes(getNonAdjacentSquare(thisMove.fromSquare, [direction,direction]))){
+            newThreatenedSquares.includes(getSquare(thisMove.fromSquare, direction)) ||
+            newThreatenedSquares.includes(getSquare(thisMove.fromSquare, [direction,direction]))){
               continue;
             }
       }
@@ -538,12 +537,12 @@ const chessControl = (function(){
       let piece = board[sqr];
       if (piece[1] === "p"){
         if (piece[0] === "w"){
-          result.push(getAdjacentSquare(sqr, "nw"));
-          result.push(getAdjacentSquare(sqr, "ne"));
+          result.push(getSquare(sqr, "nw"));
+          result.push(getSquare(sqr, "ne"));
         }
         if (piece[0] === "b"){
-          result.push(getAdjacentSquare(sqr, "sw"));
-          result.push(getAdjacentSquare(sqr, "se"));
+          result.push(getSquare(sqr, "sw"));
+          result.push(getSquare(sqr, "se"));
         }
       }
     }
@@ -587,7 +586,7 @@ const chessControl = (function(){
         if (thisMove.special.description == "castle"){
           let rookLocation =  thisMove.special.direction === "queenside"? "a"+from[1] : "h"+from[1];
           let rookDirection = thisMove.special.direction === "queenside" ? "e" : "w";
-          let rookTo = getAdjacentSquare(to,rookDirection);
+          let rookTo = getSquare(to,rookDirection);
           newBoard = movePiece(rookLocation, rookTo, null, newBoard);
         }
         if (thisMove.special.description == "promotion"){
@@ -719,14 +718,14 @@ const chessControl = (function(){
 
     result = false;
     // advance one square
-    if(to === getAdjacentSquare(from, direction)){
+    if(to === getSquare(from, direction)){
       if (toPiece !== "00"){ return false;} else {
         result = new Move(from, to, to, fromPiece, toPiece, null);//
       }
     }
     // advance two squares
-    if(to === getNonAdjacentSquare(from, [direction,direction])){
-      let squareInBetween = getAdjacentSquare(from, direction);
+    if(to === getSquare(from, [direction,direction])){
+      let squareInBetween = getSquare(from, direction);
       let pieceInBetween = getPieceOnSquare(squareInBetween, board);
       if ( (from[1] !== "2" && from[1] !== "7") || pieceInBetween !== "00" || toPiece !== "00"){
         return false;
@@ -739,14 +738,14 @@ const chessControl = (function(){
     for (let i=0;i < diagDirections.length; i++){
     //capture west or east
       let diagDirection = diagDirections[i];
-      if(to === getAdjacentSquare(from, direction + diagDirection)){
+      if(to === getSquare(from, direction + diagDirection)){
         if(toPiece !== "00"){
           result =  new Move(from, to, to, fromPiece, getPieceOnSquare(to, board), null);
         }
         if(lastMove.pieceMoved[1] === "p" &&
-           lastMove.toSquare === getAdjacentSquare(from, diagDirection) &&
-           lastMove.fromSquare === getNonAdjacentSquare(from,[diagDirection,direction,direction])){
-             let captureSquare = getAdjacentSquare(from, diagDirection);
+           lastMove.toSquare === getSquare(from, diagDirection) &&
+           lastMove.fromSquare === getSquare(from,[diagDirection,direction,direction])){
+             let captureSquare = getSquare(from, diagDirection);
              result = new Move(from, to, captureSquare, fromPiece, getPieceOnSquare(captureSquare,board), null);
         }
       }
@@ -803,7 +802,7 @@ const chessControl = (function(){
       ];
       for (let i=0; i < directions.length;i++){
         let newLocation = from;
-        newLocation = getNonAdjacentSquare(newLocation, directions[i]);
+        newLocation = getSquare(newLocation, directions[i]);
         if (newLocation === to){
           return new Move(from, to, to, fromPiece, toPiece, null);
         }
@@ -863,21 +862,21 @@ const chessControl = (function(){
   function isValidKingMove(from, fromPiece, to, toPiece, activeColor,board){
     let directions = ["n","ne","e","se","s","sw","w","nw"];
     for (let i=0; i < directions.length; i++){
-      let target = getAdjacentSquare(from, directions[i]);
+      let target = getSquare(from, directions[i]);
       if (target === to){
         return new Move(from, to, to, fromPiece, toPiece, null);
       }
     }
     // are you trying to castle perhaps?
-    if (to === getNonAdjacentSquare(from, ["e","e"]) &&
+    if (to === getSquare(from, ["e","e"]) &&
         getPieceOnSquare(to, board) === "00" &&
-        getPieceOnSquare(getAdjacentSquare(from,"e"), board) == "00" &&
+        getPieceOnSquare(getSquare(from,"e"), board) == "00" &&
         canCastle[activeColor]["kingside"]){
       return new Move(from, to, null, fromPiece, toPiece, {description: "castle", color: activeColor, direction: "kingside",});
     }
-    if (to === getNonAdjacentSquare(from, ["w","w"]) &&
+    if (to === getSquare(from, ["w","w"]) &&
       getPieceOnSquare(to, board) === "00" &&
-      getPieceOnSquare(getAdjacentSquare(from,"w"), board) == "00" &&
+      getPieceOnSquare(getSquare(from,"w"), board) == "00" &&
       canCastle[activeColor]["queenside"]){
       return new Move(from, to, null, fromPiece, toPiece, {description: "castle", color: activeColor, direction: "queenside"});
     }
@@ -1031,7 +1030,20 @@ const chessControl = (function(){
         return null;
       }
   }
-
+  /**
+  *  pulls from mapping set during initialization
+  * @param {String} square location on board in chess notation
+  * @param {array} directions array of directions
+  * @return {String} location on board after moving as indicate by directions
+  */
+  function getSquare(square, directions){
+    let currentSquare = square;
+    for(let i=0;i < directions.length;i++){
+      currentSquare = adjacentSquares[currentSquare][directions[i]];
+      if (currentSquare === null){ return null;}
+    }
+    return currentSquare;
+  }
   /**
   *  convert column index into chess notation
   * @param {String} square location on board in chess notation
@@ -1058,7 +1070,7 @@ const chessControl = (function(){
   function clearPath(location, target, direction, board){
     // return true if moving direction leads to target without pieces in between
     while (true) {
-      location = getAdjacentSquare(location, direction);
+      location = getSquare(location, direction);
       if (location === target){ return true;}
       if (location === null || getPieceOnSquare(location, board) !== "00") {
         return false;
