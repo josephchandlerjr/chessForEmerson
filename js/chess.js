@@ -217,6 +217,7 @@ const chessControl = (function(){
   let movesMap = {};
   const allSquares = getAllSquares();
   const allSquarePairings = getAllSquarePairings();
+  const adjacentSquares = {};
 
   /**
   * initializes state variables
@@ -238,6 +239,19 @@ const chessControl = (function(){
     };
     whiteInCheck = false;
     blackInCheck = false;
+    for (let sqr=0;sqr < allSquares.length;sqr++){
+      let thisSqr = allSquares[sqr];
+      adjacentSquares[thisSqr] = {};
+      adjacentSquares[thisSqr].north = getAdjacentSquare(thisSqr,"n");
+      adjacentSquares[thisSqr].northEast = getAdjacentSquare(thisSqr,"ne");
+      adjacentSquares[thisSqr].east = getAdjacentSquare(thisSqr,"e");
+      adjacentSquares[thisSqr].southEast = getAdjacentSquare(thisSqr,"se");
+      adjacentSquares[thisSqr].south = getAdjacentSquare(thisSqr,"s");
+      adjacentSquares[thisSqr].southWest = getAdjacentSquare(thisSqr,"sw");
+      adjacentSquares[thisSqr].west = getAdjacentSquare(thisSqr,"w");
+      adjacentSquares[thisSqr].northWest = getAdjacentSquare(thisSqr,"nw");
+    }
+    console.log(adjacentSquares);
     model.init(self);
     toggleColorToMove("w");
     if (automated[colorToMove]){
