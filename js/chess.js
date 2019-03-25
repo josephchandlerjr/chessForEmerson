@@ -129,15 +129,15 @@ const chessView = (function(){
             if (col === 104){ col = 97, row -= 1;}
             else { col += 1; }
             }
-          } else {
+        } else {
             rank = "";
          		for (let i=0; i<9;i++){
-              td = document.createElement("th");
-              td.classList.add("file-label");
-              td.textContent = " abcdefgh".charAt(i);
-              tr.appendChild(td);
-          	 }
-            }
+            td = document.createElement("th");
+            td.classList.add("file-label");
+            td.textContent = " abcdefgh".charAt(i);
+            tr.appendChild(td);
+          	}
+          }
             th = document.createElement("th");
             th.classList.add("rank-label");
             th.textContent = rank;
