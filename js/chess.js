@@ -279,22 +279,20 @@ const chessControl = (function(){
   /**
   * @param {Object} request request.request will describe action requested
   */
-  function viewRequest(request){
-    if (request.request === "status"){
+  function viewRequest({request, color, from, to}){
+    if (request === "status"){
       return {colorToMove: colorToMove,
               gameOver: gameOver,
               isCheckmate: isCheckmate
             };
     }
-    if (request.request === "reset"){
+    if (request === "reset"){
       init();
     }
     if (gameOver) {
       return false;
     }
-    if (request.request === "move"){
-      let from = request.from;
-      let to = request.to;
+    if (request === "move"){
       let executed = requestMove(from, to);
       if (executed) {
         if (automated[colorToMove] && !gameOver){
@@ -303,8 +301,8 @@ const chessControl = (function(){
       }
     }
 
-    if (request.request === "automate"){
-      switch (request.color){
+    if (request === "automate"){
+      switch (color){
         case "none" : automated.b = false; automated.w = false; break;
         case "white": automated.b = false; automated.w = true; break;
         case "black": automated.b = true; automated.w = false; break;
@@ -314,8 +312,8 @@ const chessControl = (function(){
       }
     }
 
-    if (request.request === "validMoves"){
-      return movesMap[request.from];
+    if (request === "validMoves"){
+      return movesMap[from];
     }
   }
   /**
@@ -542,7 +540,6 @@ const chessControl = (function(){
         }
       }
     }
-
   // remove null from list
   result = result.filter(x => x != null);
   return result;
