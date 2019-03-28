@@ -5,7 +5,7 @@
   */
 const chessView = (function(){
   let lastClicked = null, control, destinations, destSquare;
-  const board = document.querySelector("#board");
+  const board = document.querySelector("#board-container");
 
   /**
   * listener for div elements that make up chess board
@@ -67,7 +67,7 @@ const chessView = (function(){
   * rotate the board and each square 180deg by adding appropriate class
   */
   function flipBoard(){
-    let squares = board.querySelectorAll(".square, .rank-label, .file-label");
+    let squares = board.querySelectorAll(".flippable");
     board.classList.toggle("flipped-board");
     squares.forEach(function(elem){
       elem.classList.toggle("flipped");
@@ -91,6 +91,12 @@ const chessView = (function(){
     }
   }
 
+  function makeBoardDiv(){
+    let div = document.createElement("div");
+    div.classList.add("flippable");
+    return div;
+  }
+
   /**
   * Sets control letiable, appends divs to #board and calls update
   * @param {Object} obj Control object in MVC
@@ -109,39 +115,36 @@ const chessView = (function(){
     let flipButton = document.querySelector("#flip");
     flipButton.addEventListener("click",flipBoard);
 
-    let trs = board.querySelectorAll("tr");
+    let boardRows = board.querySelectorAll(".row");
     let col = 97, row = 8, rank = "";
-    trs.forEach(function(tr,ix,list){
-      tr.innerHTML = "";
+    boardRows.forEach(function(boardRow,ix,list){
+      boardRow.innerHTML = "";
     	if (ix < list.length-1 && ix > 0){
-      	let th = document.createElement("th");
+      	let div = makeBoardDiv();
         rank = 9-ix;
-        th.classList.add("rank-label");
-        th.textContent = rank;
-        tr.appendChild(th);
+        div.textContent = rank;
+        boardRow.appendChild(div);
         for (let i=0; i<8;i++){
-            td = document.createElement("td");
-            td.classList.add("square");
+            div = makeBoardDiv();
+            div.classList.add("square");
             let file = String.fromCharCode(col);
-            td.id = file + row;
-            td.innerHTML = "<img src=''>";
-            tr.appendChild(td);
+            div.id = file + row;
+            div.innerHTML = "<img src=''>";
+            boardRow.appendChild(div);
             if (col === 104){ col = 97, row -= 1;}
             else { col += 1; }
             }
         } else {
             rank = "";
          		for (let i=0; i<9;i++){
-            td = document.createElement("th");
-            td.classList.add("file-label");
-            td.textContent = " abcdefgh".charAt(i);
-            tr.appendChild(td);
+            div = makeBoardDiv();
+            div.textContent = " abcdefgh".charAt(i);
+            boardRow.appendChild(div);
           	}
           }
-            th = document.createElement("th");
-            th.classList.add("rank-label");
-            th.textContent = rank;
-            tr.appendChild(th);
+            div = makeBoardDiv();
+            div.textContent = rank;
+            boardRow.appendChild(div);
     });
     update();
   }

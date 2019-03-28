@@ -3,14 +3,6 @@
   float: none;
   text-align: center;
 }
-#board-container {
-  margin: 48px auto;
-  width: 400px;
-}
-
-td {
-  height: 44px;
-}
 
 #automation-radio-buttons {
   position: static;

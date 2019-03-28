@@ -1,7 +1,6 @@
 
 body {
   background: radial-gradient(circle at bottom left, #f7bebe, #c7b5c0);
-  height: 100vh;
 }
 
 h1 {
@@ -16,8 +15,10 @@ h1:hover {
   animation-timing-function: linear;
   animation-iteration-count: 5;
 }
-#board-container h2{
+
+h2{
   text-align: center;
+  margin: 10px; auto;
 }
 
 button {
@@ -25,49 +26,14 @@ button {
   width: 96px;
 }
 
-#board-container {
-  width: 500px;
-  margin: auto;
-}
 
-table {
-  border-collapse: collapse;
-  table-layout: fixed;
-  width: 100%;
-  transition-duration: 2s;
-  background-color: #fff;
-}
 
-tr {
-  height: 55px;
-}
-
-tr:first-of-type, tr:last-of-type {
-  height: 2%;
-}
-
-th {
-  width: 10%;
-  text-align: center;
-  vertical-align: center;
-  background-color: #ad3283;
-  border-spacing: 0;
-}
-
-td {
-  height: 55px;
-  padding: 0;
-}
-
-th:first-of-type, th:last-of-type {
-  width: 5%;
-}
-
-td img {
+.square img {
   width: 100%;
   height: 100%;
   display: block;
 }
+
 
 @keyframes rotate {
   0% {
@@ -84,7 +50,7 @@ td img {
   top: 0;
 }
 
-#board, #board *,button#flip, button#reset, #automation-radio-buttons, h1 {
+#board-container *,button#flip, button#reset, #automation-radio-buttons, h1 {
   user-select: none;
   -moz-user-select: none;
 }
@@ -102,11 +68,53 @@ button {
 *
 */
 
-#board{
-    box-shadow: 2px -2px 5px grey;
+#board-container {
+  display: block;
+  width: 49vw;
+  height: 49vw;
+  position: relative;
 }
 
-#board.grabbed:hover {
+.row {
+  display: flex;
+  width: 100%;
+  height: 11%;
+  position: relative;
+}
+div {
+    text-align: center;
+      font-size: 2vw;
+}
+.square, #top-border div, #bottom-border div {
+  width: 11%;
+}
+
+.row:nth-child(even) .square:nth-child(even).square, .row:nth-child(odd) .square:nth-child(odd).square {
+  background: #f9a7cf;
+}
+.row:nth-child(odd) .square:nth-child(even).square, .row:nth-child(even) .square:nth-child(odd).square {
+  background: white;
+}
+
+#board-container #top-border, #board-container #bottom-border {
+  height: 6%;
+
+}
+#top-border div, #bottom-border div {
+  background-color: #ad3283;
+}
+#board-container .row div:first-of-type, #board-container .row div:last-of-type {
+  width: 6%;
+  background-color: #ad3283;
+}
+
+
+#board-container{
+    box-shadow: 2px -2px 5px grey;
+    margin: 0 auto;
+}
+
+#board-container.grabbed:hover {
   cursor: grabbing;
 }
 
@@ -118,23 +126,6 @@ button {
   text-align: center;
 
   color: rgba(0, 0, 0, 0.5);
-}
-
-
-tr:first-of-type td, tr:last-of-type td{
-  background-color: #ad3283;
-}
-
-tr td:first-of-type, tr td:last-of-type{
-  background-color: #ad3283;
-}
-
-
-tr:nth-child(even) td:nth-child(even).square, tr:nth-child(odd) td:nth-child(odd).square {
-  background: #f9a7cf;
-}
-tr:nth-child(odd) td:nth-child(even).square, tr:nth-child(even) td:nth-child(odd).square {
-  background: white;
 }
 
 .selected {
@@ -152,6 +143,7 @@ tr:nth-child(odd) td:nth-child(even).square, tr:nth-child(even) td:nth-child(odd
 .flipped {
   transform: rotate(180deg);
 }
+
 .flipped-board {
   transform: rotate(180deg);
   transition-duration: 2s;
