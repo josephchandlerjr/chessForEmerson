@@ -57,6 +57,7 @@ button {
 
 button {
   display: block;
+  margin: 10px auto;
 }
 
 /*
@@ -70,8 +71,8 @@ button {
 
 #board-container {
   display: block;
-  width: 49vw;
-  height: 49vw;
+  width: 38vw;
+  height: 38vw;
   position: relative;
 }
 
@@ -83,8 +84,9 @@ button {
 }
 div {
     text-align: center;
-      font-size: 2vw;
+    font-size: 2vw;
 }
+
 .square, #top-border div, #bottom-border div {
   width: 11%;
 }
