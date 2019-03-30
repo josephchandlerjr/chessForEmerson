@@ -1110,7 +1110,7 @@ const chessModel = (function(){
     let ix = 0;
     for (let rank=8; rank > 0; rank--) {
       for (let file=0; file < 8; file++){
-        fileLetter = "abcdefgh".charAt(file);
+        let fileLetter = "abcdefgh".charAt(file);
         let rep = startState.slice(ix,ix+2);
         if (rep === "--") {ix+= 2; rep = startState.slice(ix,ix+2);}
         board[fileLetter + rank] = startState.slice(ix,ix+2);
