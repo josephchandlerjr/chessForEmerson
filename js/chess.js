@@ -198,8 +198,8 @@ const chessView = (function(){
   }
 
   return { // *****Public Methods*****
-    update : update,
-    init : init
+    update,
+    init
   };
 }());
 
@@ -1075,11 +1075,11 @@ const chessControl = (function(){
   }
 
   return { // *****Public Methods*****
-      init : init,
-      getBoardAsString: getBoardAsString,
-      requestMove: requestMove,
-      otherColor: otherColor,
-      viewRequest: viewRequest
+      init,
+      getBoardAsString,
+      requestMove,
+      otherColor,
+      viewRequest
 
     };
 }());
@@ -1174,13 +1174,13 @@ const chessModel = (function(){
     return result.slice(0,-2);
   }
   return {   // *****Public Methods*****
-    toString : toString,
-    getBoard : getBoard,
-    init : init,
-    logMove : logMove,
-    getMoves : getMoves,
-    updateBoard : updateBoard,
-    updateCapturedPieces : updateCapturedPieces
+    toString,
+    getBoard,
+    init,
+    logMove,
+    getMoves,
+    updateBoard,
+    updateCapturedPieces
   };
 }());
 
