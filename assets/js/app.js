@@ -1,4 +1,6 @@
 
+
+
   /**
   * IIFE to create the View object in MVC
   * @return {Object} object with public methods
@@ -87,7 +89,7 @@ const chessView = (function(){
   */
   function onChangeOfAutomationSelection(evt){
     if (evt){
-      control.viewRequest({request:"automate", color:evt.target.value});
+      control.viewRequest({request:"automate", color:evt.target.name});
     }
   }
 
@@ -98,54 +100,21 @@ const chessView = (function(){
   }
 
   /**
-  * Sets control letiable, appends divs to #board and calls update
+  * Sets control variable, adds listeneres, calls update
   * @param {Object} obj Control object in MVC
   */
   function init(obj){
     control = obj;
     let resetButton = document.querySelector("#reset");
     resetButton.addEventListener("click",reset);
-    let radioButtons = document.querySelector("#automation-radio-buttons");
-    radioButtons.addEventListener("change", onChangeOfAutomationSelection);
-    board.classList.remove("flipped-board"); // if board was flipped, unflip
+    let dropdowns = document.querySelectorAll(".dropdown-item");
+    for (item of dropdowns) item.addEventListener("click", evt => onChangeOfAutomationSelection(evt));
     board.addEventListener("mouseup",mouseUp,false); // during bubbling phase
     board.addEventListener("mousedown",mouseDown,false);
     board.addEventListener("mouseleave",mouseLeave,false);
 
     let flipButton = document.querySelector("#flip");
     flipButton.addEventListener("click",flipBoard);
-
-    let boardRows = board.querySelectorAll(".row");
-    let col = 97, row = 8, rank = "";
-    boardRows.forEach(function(boardRow,ix,list){
-      boardRow.innerHTML = "";
-    	if (ix < list.length-1 && ix > 0){
-      	let div = makeBoardDiv();
-        rank = 9-ix;
-        div.textContent = rank;
-        boardRow.appendChild(div);
-        for (let i=0; i<8;i++){
-            div = makeBoardDiv();
-            div.classList.add("square");
-            let file = String.fromCharCode(col);
-            div.id = file + row;
-            div.innerHTML = "<img src=''>";
-            boardRow.appendChild(div);
-            if (col === 104){ col = 97, row -= 1;}
-            else { col += 1; }
-            }
-        } else {
-            rank = "";
-         		for (let i=0; i<9;i++){
-            div = makeBoardDiv();
-            div.textContent = " abcdefgh".charAt(i);
-            boardRow.appendChild(div);
-          	}
-          }
-            div = makeBoardDiv();
-            div.textContent = rank;
-            boardRow.appendChild(div);
-    });
     update();
   }
 
@@ -162,19 +131,19 @@ const chessView = (function(){
         img.setAttribute("style", "");
         switch(rep.substring(i,i+2)) { // **********
           case "00": img.setAttribute("style", "display:none;"); break;
-          case "bp": img.setAttribute("src","img/blackPawn.svg"); break;
-          case "br": img.setAttribute("src","img/blackRook.svg"); break;
-          case "bn": img.setAttribute("src","img/blackKnight.svg"); break;
-          case "bb": img.setAttribute("src","img/blackBishop.svg"); break;
-          case "bq": img.setAttribute("src","img/blackQueen.svg"); break;
-          case "bk": img.setAttribute("src","img/blackKing.svg"); break;
+          case "bp": img.setAttribute("src","assets/img/blackPawn.svg"); break;
+          case "br": img.setAttribute("src","assets/img/blackRook.svg"); break;
+          case "bn": img.setAttribute("src","assets/img/blackKnight.svg"); break;
+          case "bb": img.setAttribute("src","assets/img/blackBishop.svg"); break;
+          case "bq": img.setAttribute("src","assets/img/blackQueen.svg"); break;
+          case "bk": img.setAttribute("src","assets/img/blackKing.svg"); break;
 
-          case "wp": img.setAttribute("src","img/whitePawn.svg"); break;
-          case "wr": img.setAttribute("src","img/whiteRook.svg"); break;
-          case "wn": img.setAttribute("src","img/whiteKnight.svg"); break;
-          case "wb": img.setAttribute("src","img/whiteBishop.svg"); break;
-          case "wq": img.setAttribute("src","img/whiteQueen.svg"); break;
-          case "wk": img.setAttribute("src","img/whiteKing.svg"); break;
+          case "wp": img.setAttribute("src","assets/img/whitePawn.svg"); break;
+          case "wr": img.setAttribute("src","assets/img/whiteRook.svg"); break;
+          case "wn": img.setAttribute("src","assets/img/whiteKnight.svg"); break;
+          case "wb": img.setAttribute("src","assets/img/whiteBishop.svg"); break;
+          case "wq": img.setAttribute("src","assets/img/whiteQueen.svg"); break;
+          case "wk": img.setAttribute("src","assets/img/whiteKing.svg"); break;
         }
         let squareID = squares[sqr].id;
         let destinations = control.viewRequest({request: "validMoves", from: squareID});
