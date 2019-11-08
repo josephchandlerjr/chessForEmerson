@@ -69,11 +69,12 @@ const chessView = (function(){
   * rotate the board and each square 180deg by adding appropriate class
   */
   function flipBoard(){
-    let squares = board.querySelectorAll(".flippable");
-    board.classList.toggle("flipped-board");
-    squares.forEach(function(elem){
-      elem.classList.toggle("flipped");
-    });
+    if(board.classList == ""){
+      board.classList.add("flipped-board");
+    } else {
+      board.classList.toggle("flipped-board");
+      board.classList.toggle("unflipped-board");   
+    }
   }
 
   /**
@@ -207,7 +208,7 @@ const chessControl = (function(){
     };
     whiteInCheck = false;
     blackInCheck = false;
-    for (let sqr=0;sqr < allSquares.length;sqr++){
+    for (let sqr=0; sqr < allSquares.length;sqr++){
       let thisSqr = allSquares[sqr];
       adjacentSquares[thisSqr] = {};
       adjacentSquares[thisSqr].n = getAdjacentSquare(thisSqr,"n");
@@ -1096,7 +1097,6 @@ const chessModel = (function(){
     if (piece !== "00"){
       capturedPieces.push(piece);
     }
-    console.log(capturedPieces);
   }
   /**
   * returns a copy of the board as an array using slice
