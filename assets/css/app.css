@@ -100,26 +100,9 @@ div.square {
 }
 
 .flipped-board {
-  animation: rotateToBlackPerspective 2s ease-in;
+  transform: rotate(180deg);
 }
 
 .unflipped-board {
-  animation: rotateToWhitePerspective 2s ease-in;
-}
-
-
-@keyframes rotateToBlackPerspective {
-  100%{
-    transform: rotate(180deg);
-  }
-}
-
-
-@keyframes rotateToWhitePerspective {
-  0%{
-    transform: rotate(180deg);
-  }
-  100%{
-    transform: rotate(0deg);
-  }
+  transform: rotate(0deg);
 }

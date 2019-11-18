@@ -8,6 +8,7 @@
 const chessView = (function(){
   let lastClicked = null, control, destinations, destSquare;
   const board = document.querySelector("#board-container");
+  const squares = board.querySelectorAll(".square");
 
   /**
   * listener for div elements that make up chess board
@@ -71,9 +72,14 @@ const chessView = (function(){
   function flipBoard(){
     if(board.classList == ""){
       board.classList.add("flipped-board");
+      squares.forEach(sqr => sqr.classList.add("flipped-board"));
     } else {
       board.classList.toggle("flipped-board");
-      board.classList.toggle("unflipped-board");   
+      board.classList.toggle("unflipped-board");
+      squares.forEach(sqr => {
+        sqr.classList.toggle("flipped-board");
+        sqr.classList.toggle("unflipped-board");
+      });
     }
   }
 
