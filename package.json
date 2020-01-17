@@ -4,7 +4,8 @@
   "description": "A chess game I built for my six year old daughter. It's attached to a simple chess engine that:",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js -e js,ejs"
   },
   "repository": {
     "type": "git",
@@ -20,5 +21,8 @@
     "ejs": "^3.0.1",
     "express": "^4.17.1",
     "path": "^0.12.7"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.2"
   }
 }
