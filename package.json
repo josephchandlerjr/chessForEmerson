@@ -1,0 +1,24 @@
+{
+  "name": "chess_for_emerson",
+  "version": "1.0.0",
+  "description": "A chess game I built for my six year old daughter. It's attached to a simple chess engine that:",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/josephchandlerjr/Chess_For_Emerson.git"
+  },
+  "author": "Joseph Chandler",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/josephchandlerjr/Chess_For_Emerson/issues"
+  },
+  "homepage": "https://github.com/josephchandlerjr/Chess_For_Emerson#readme",
+  "dependencies": {
+    "ejs": "^3.0.1",
+    "express": "^4.17.1",
+    "path": "^0.12.7"
+  }
+}

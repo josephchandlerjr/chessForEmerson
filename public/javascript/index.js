@@ -138,19 +138,19 @@ const chessView = (function(){
         img.setAttribute("style", "");
         switch(rep.substring(i,i+2)) { // **********
           case "00": img.setAttribute("style", "display:none;"); break;
-          case "bp": img.setAttribute("src","assets/img/blackPawn.svg"); break;
-          case "br": img.setAttribute("src","assets/img/blackRook.svg"); break;
-          case "bn": img.setAttribute("src","assets/img/blackKnight.svg"); break;
-          case "bb": img.setAttribute("src","assets/img/blackBishop.svg"); break;
-          case "bq": img.setAttribute("src","assets/img/blackQueen.svg"); break;
-          case "bk": img.setAttribute("src","assets/img/blackKing.svg"); break;
+          case "bp": img.setAttribute("src","images/blackPawn.svg"); break;
+          case "br": img.setAttribute("src","images/blackRook.svg"); break;
+          case "bn": img.setAttribute("src","images/blackKnight.svg"); break;
+          case "bb": img.setAttribute("src","images/blackBishop.svg"); break;
+          case "bq": img.setAttribute("src","images/blackQueen.svg"); break;
+          case "bk": img.setAttribute("src","images/blackKing.svg"); break;
 
-          case "wp": img.setAttribute("src","assets/img/whitePawn.svg"); break;
-          case "wr": img.setAttribute("src","assets/img/whiteRook.svg"); break;
-          case "wn": img.setAttribute("src","assets/img/whiteKnight.svg"); break;
-          case "wb": img.setAttribute("src","assets/img/whiteBishop.svg"); break;
-          case "wq": img.setAttribute("src","assets/img/whiteQueen.svg"); break;
-          case "wk": img.setAttribute("src","assets/img/whiteKing.svg"); break;
+          case "wp": img.setAttribute("src","images/whitePawn.svg"); break;
+          case "wr": img.setAttribute("src","images/whiteRook.svg"); break;
+          case "wn": img.setAttribute("src","images/whiteKnight.svg"); break;
+          case "wb": img.setAttribute("src","images/whiteBishop.svg"); break;
+          case "wq": img.setAttribute("src","images/whiteQueen.svg"); break;
+          case "wk": img.setAttribute("src","images/whiteKing.svg"); break;
         }
         let squareID = squares[sqr].id;
         let destinations = control.viewRequest({request: "validMoves", from: squareID});
