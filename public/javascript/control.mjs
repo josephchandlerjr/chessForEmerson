@@ -11,17 +11,21 @@ const allSquares = getAllSquares();
 const allSquarePairings = getAllSquarePairings();
 const adjacentSquares = {};
 
+
+
 /**
 * initializes state variables
 * @param {Object} mObj Model Object
 * @param {Object} vObj View Object
 */
-function init(mObj, vObj){
-  if (!self){ // if this is first time initializing
-    self = this;
-    model = mObj;
-    view = vObj;
-  }
+function start(mObj, vObj){
+  model = mObj;
+  view = vObj;
+  self = this // when invoked from exported object, this refers to that object. store as 'self' so we can pass to view and model objects
+  init();
+}
+
+function init(){
   gameOver = false;
   isCheckmate = false;
   lastMove = new Move("00","00","00","00","00","00");
@@ -869,7 +873,7 @@ function clearPath(location, target, direction, board){
 }
 
 export const chessControl = { // *****Public Methods*****
-    init,
+    start,
     getBoardAsString,
     requestMove,
     otherColor,

@@ -4,7 +4,7 @@ import { chessView    } from './view.mjs';
  
 
 
-chessControl.init(chessModel, chessView);
+chessControl.start(chessModel, chessView);
 
 
 
