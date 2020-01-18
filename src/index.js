@@ -7,8 +7,8 @@ const publicPath = path.join(__dirname, '../public')
 console.log(publicPath)
 
 app.set('view engine', 'ejs')
-
 app.use(express.static(publicPath))
+
 
 app.get('/', (req, res) => {
 	res.render('index');
