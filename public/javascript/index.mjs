@@ -1,6 +1,6 @@
-import { chessControl } from './control.mjs';
-import { chessModel   } from './model.mjs';
-import { chessView    } from './view.mjs';
+import { chessControl } from './control/control.mjs';
+import { chessModel   } from './model/model.mjs';
+import { chessView    } from './view/view.mjs';
  
 
 

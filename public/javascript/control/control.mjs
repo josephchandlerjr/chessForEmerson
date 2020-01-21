@@ -878,5 +878,4 @@ export const chessControl = { // *****Public Methods*****
     requestMove,
     otherColor,
     viewRequest
-
   };
