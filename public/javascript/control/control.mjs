@@ -1,4 +1,4 @@
-
+import { getAllSquares, getAllSquarePairings } from './utils/squares.mjs'
 
 let model, view, self;
 let colorToMove, lastMove, canCastle, whiteInCheck, blackInCheck;
@@ -8,7 +8,7 @@ let automated = {"b": true, "w": false};
 let movesMap = {};
 
 const allSquares = getAllSquares();
-const allSquarePairings = getAllSquarePairings();
+const allSquarePairings = getAllSquarePairings(allSquares);
 const adjacentSquares = {};
 
 
@@ -686,36 +686,7 @@ function getPieceOnSquare(square, board){
   return board[square];
 }
 
-/**
-* get all possible squares on chess board in chess notation
-* @return {Array} array of strings
-*/
-function getAllSquares(){
-  let columns = "abcdefgh";
-  let rows = "12345678";
-  let result = [];
-  for (let col=0; col < columns.length;col++){
-    for (let row=0; row < rows.length;row++){
-      result.push(columns[col]+rows[row]);
-    }
-  }
-  return result;
-}
 
-/**
-* get all moves possible square pairings
-* @param {Array} board to evaluate
-* @return {Array} array of arrays of all possible square pairings
-*/
-function getAllSquarePairings(){
-  let result = [];
-  for (let f=0; f < allSquares.length;f++){
-    for (let t=0; t < allSquares.length;t++){
-      result.push([allSquares[f],allSquares[t] ]);
-    }
-  }
-  return result;
-}
 
 /**
 * find location of a particular king
