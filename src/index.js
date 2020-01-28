@@ -1,6 +1,9 @@
 const express 		= require('express'),
 	  app			= express(),
-	  path 			= require('path');
+	  path 			= require('path'),
+	  http			= require('http')
+
+const server = http.createServer(app)
 
 const publicPath = path.join(__dirname, '../public')
 
@@ -11,7 +14,7 @@ app.use(express.static(publicPath))
 
 
 app.get('/', (req, res) => {
-	res.render('index');
+	res.render('index')
 })
 
-app.listen(3000, () => console.log('Listening on port 3000'))
+server.listen(3000, () => console.log('Listening on port 3000'))
