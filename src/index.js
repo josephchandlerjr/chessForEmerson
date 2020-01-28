@@ -1,9 +1,9 @@
 const express 		= require('express'),
 	  app			= express(),
 	  path 			= require('path'),
-	  http			= require('http')
+	  http			= require('http'),
+	  socketio		= require('socket.io')
 
-const server = http.createServer(app)
 
 const publicPath = path.join(__dirname, '../public')
 
@@ -16,5 +16,9 @@ app.use(express.static(publicPath))
 app.get('/', (req, res) => {
 	res.render('index')
 })
+
+
+const server = http.createServer(app)
+const io = socketio(server)
 
 server.listen(3000, () => console.log('Listening on port 3000'))
