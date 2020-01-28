@@ -2,7 +2,7 @@
 let lastClicked = null, control, destinations, destSquare;
 const board = document.querySelector("#board-container");
 const squares = board.querySelectorAll(".square");
-
+const status = document.querySelector("#status");
 /**
 * listener for div elements that make up chess board
 * @param {Event} evt
@@ -155,16 +155,21 @@ function update(){
   let colorToMove = statusObj.colorToMove;
   let gameOver = statusObj.gameOver;
   let isCheckmate = statusObj.isCheckmate;
-  let status = document.querySelector("#status");
+  //let status = document.querySelector("#status");
   if (!gameOver){
     let fullColorName = colorToMove === "w" ? "White" : "Black";
-    status.textContent = fullColorName + " to move.";
+    setStatus(fullColorName + " to move.")
   } else if (isCheckmate){
-    status.textContent = "Checkmate!";
+    setStatus("Checkmate!");
   } else {
-    status.textContent = "Draw!";
+    setStatus("Draw!");
   }
 }
+
+function setStatus(msg) {
+  status.textContent = msg;
+}
+
 
 export const chessView = { // *****Public Methods*****
   update,
