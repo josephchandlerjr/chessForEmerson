@@ -7,6 +7,7 @@ const socket = io()
 chessControl.start(chessModel, chessView)
 
 chessControl.makeLive()
+chessView.setStatus('Waiting for opponent...')
 
 
 socket.emit('findOpponent')
@@ -16,6 +17,6 @@ socket.on('move', ({from, to}) => {
 })
 
 socket.on('setColor', (color) => {
-	console.log('color is', color)
+	chessView.setStatus('White to move.')
 	chessControl.startLiveGame(socket, color)
 })
