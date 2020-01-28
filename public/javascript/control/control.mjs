@@ -11,6 +11,15 @@ const allSquares = getAllSquares();
 const allSquarePairings = getAllSquarePairings(allSquares);
 const adjacentSquares = {};
 
+// live game stuff
+
+let live, myColor, socket;
+
+function makeLive(color, sock) {
+  live = true;
+  myColor = color
+  socket = sock
+}
 
 
 /**
@@ -80,6 +89,9 @@ function updateMovesMap(){
 * @param {Object} request request.request will describe action requested
 */
 function viewRequest({request, color, from, to}){
+  //if live can only move my own piece
+  //if(live && myColor !== color) return false
+
   if (request === "status"){
     return {colorToMove: colorToMove,
             gameOver: gameOver,
@@ -95,6 +107,9 @@ function viewRequest({request, color, from, to}){
   if (request === "move"){
     let executed = requestMove(from, to);
     if (executed) {
+      if (live) {
+        return socket.emit('move', {request, color, from, to})
+      }
       if (automated[colorToMove] && !gameOver){
         makeAutoMove();
       }
@@ -848,5 +863,6 @@ export const chessControl = { // *****Public Methods*****
     getBoardAsString,
     requestMove,
     otherColor,
-    viewRequest
+    viewRequest,
+    makeLive
   };

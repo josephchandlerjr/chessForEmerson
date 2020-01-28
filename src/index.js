@@ -21,4 +21,26 @@ app.get('/', (req, res) => {
 const server = http.createServer(app)
 const io = socketio(server)
 
+const queue = []
+
+io.on('connection', (socket) => {
+	socket.on('findOpponent', () => {
+		if(queue.length > 0) {
+			socket.opponentSocket = queue.shift()
+			socket.opponentSocket.opponentSocket = socket
+			console.log('socket now has', socket.opponentSocket)
+		} else {
+			queue.push(socket)
+			console.log('pushed to queue', queue)
+		}
+
+		socket.on('move', (moveData) => {
+			console.log('hi', moveData)
+			socket.opponentSocket.emit('move', moveData)
+
+		})
+
+	})
+})
+
 server.listen(3000, () => console.log('Listening on port 3000'))
