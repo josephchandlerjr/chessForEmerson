@@ -32,6 +32,8 @@ io.on('connection', (socket) => {
 		if(queue.length > 0) {
 			socket.opponentSocket = queue.shift()
 			socket.opponentSocket.opponentSocket = socket
+			socket.emit('setColor', 'black')
+			socket.opponentSocket.emit('setColor', 'white')
 		} else {
 			queue.push(socket)
 		}

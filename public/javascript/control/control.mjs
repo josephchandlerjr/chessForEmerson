@@ -15,9 +15,13 @@ const adjacentSquares = {};
 
 let live, myColor, socket;
 
-function makeLive(sock) {
+function makeLive() {
   live = true;
-    socket = sock
+}
+
+function startLiveGame(sock, col) {
+  socket = sock
+  myColor = col
 }
 
 
@@ -91,6 +95,8 @@ function viewRequest({request, color, from, to}){
   //if live can only move my own piece
   //if(live && myColor !== color) return false
 
+
+
   if (request === "status"){
     return {colorToMove: colorToMove,
             gameOver: gameOver,
@@ -104,6 +110,12 @@ function viewRequest({request, color, from, to}){
     return false;
   }
   if (request === "move"){
+    console.log(myColor)
+    console.log(getPieceOnSquare(from, getBoard()))
+    if(live && myColor[0] !== getPieceOnSquare(from, getBoard())[0]) {
+      console.log('hi')
+      return false
+    }
     let executed = requestMove(from, to);
     if (executed) {
       if (live) {
@@ -863,5 +875,6 @@ export const chessControl = { // *****Public Methods*****
     requestMove,
     otherColor,
     viewRequest,
-    makeLive
+    makeLive,
+    startLiveGame
   };
