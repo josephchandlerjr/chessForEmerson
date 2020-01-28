@@ -6,9 +6,12 @@ const socket = io()
 
 chessControl.start(chessModel, chessView)
 
+chessControl.makeLive(socket)
 
 
+socket.emit('findOpponent')
 
-
-
-
+socket.on('move', ({from, to}) => {
+	console.log('here')
+	chessControl.requestMove(from, to)
+})

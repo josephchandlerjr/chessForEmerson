@@ -14,7 +14,11 @@ app.use(express.static(publicPath))
 
 
 app.get('/', (req, res) => {
-	res.render('index')
+	res.render('index', {live: false})
+})
+
+app.get('/vs', (req, res) => {
+	res.render('index', { live: true})
 })
 
 
@@ -28,16 +32,12 @@ io.on('connection', (socket) => {
 		if(queue.length > 0) {
 			socket.opponentSocket = queue.shift()
 			socket.opponentSocket.opponentSocket = socket
-			console.log('socket now has', socket.opponentSocket)
 		} else {
 			queue.push(socket)
-			console.log('pushed to queue', queue)
 		}
 
 		socket.on('move', (moveData) => {
-			console.log('hi', moveData)
 			socket.opponentSocket.emit('move', moveData)
-
 		})
 
 	})

@@ -15,10 +15,9 @@ const adjacentSquares = {};
 
 let live, myColor, socket;
 
-function makeLive(color, sock) {
+function makeLive(sock) {
   live = true;
-  myColor = color
-  socket = sock
+    socket = sock
 }
 
 
