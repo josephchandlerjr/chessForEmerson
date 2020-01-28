@@ -155,7 +155,6 @@ function update(){
   let colorToMove = statusObj.colorToMove;
   let gameOver = statusObj.gameOver;
   let isCheckmate = statusObj.isCheckmate;
-  //let status = document.querySelector("#status");
   if (!gameOver){
     let fullColorName = colorToMove === "w" ? "White" : "Black";
     setStatus(fullColorName + " to move.")
@@ -173,5 +172,6 @@ function setStatus(msg) {
 
 export const chessView = { // *****Public Methods*****
   update,
-  init
+  init,
+  setStatus
 };
