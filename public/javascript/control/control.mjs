@@ -17,11 +17,13 @@ let live, myColor, socket;
 
 function makeLive() {
   live = true;
+
 }
 
 function startLiveGame(sock, col) {
   socket = sock
   myColor = col
+  alert(`Your opponent has arrived.\nYou will playing ${myColor}.\nGood Luck!`)
 }
 
 
