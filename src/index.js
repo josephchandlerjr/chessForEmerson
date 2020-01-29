@@ -42,6 +42,11 @@ io.on('connection', (socket) => {
 			socket.opponentSocket.emit('move', moveData)
 		})
 
+		socket.on('disconnect', function() {
+			queue.filter( (s) => s !== this)
+			if(this.opponentSocket) this.opponentSocket.emit('opponentLeft')
+		})
+
 	})
 })
 

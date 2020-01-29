@@ -20,3 +20,7 @@ socket.on('setColor', (color) => {
 	chessView.setStatus('White to move.')
 	chessControl.startLiveGame(socket, color)
 })
+
+socket.on('opponentLeft', (msg) => {
+	alert('Your opponent has disconnected.\n Please refresh page to find a new opponent')
+})
