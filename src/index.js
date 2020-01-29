@@ -2,7 +2,8 @@ const express 		= require('express'),
 	  app			= express(),
 	  path 			= require('path'),
 	  http			= require('http'),
-	  socketio		= require('socket.io')
+	  socketio		= require('socket.io'),
+	  port			= process.env.PORT || 3000
 
 
 const publicPath = path.join(__dirname, '../public')
@@ -56,4 +57,4 @@ io.on('connection', (socket) => {
 	})
 })
 
-server.listen(3000, () => console.log('Listening on port 3000'))
+server.listen(port, () => console.log('Listening on port 3000'))
