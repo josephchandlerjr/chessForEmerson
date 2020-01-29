@@ -110,9 +110,7 @@ function init(obj){
   let dropdowns = document.querySelectorAll(".dropdown-item");
   for (let item of dropdowns) item.addEventListener("click", evt => onChangeOfAutomationSelection(evt));
   board.addEventListener("mouseup",mouseUp,false); // during bubbling phase
-  board.addEventListener("touchend",mouseUp,false); // during bubbling phase
   board.addEventListener("mousedown",mouseDown,false);
-  board.addEventListener("toushstart",mouseDown,false);
   board.addEventListener("mouseleave",mouseLeave,false);
 
   let flipButton = document.querySelector("#flip");
