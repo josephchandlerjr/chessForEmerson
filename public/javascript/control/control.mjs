@@ -427,6 +427,7 @@ function requestMove(from, to){
     gameOver = noLegalMoves(opponentsColor, newValidMovesForOpponent, newBoard);
     if (gameOver){
       isCheckmate = activeColorNowThreatens.includes(opponentsKingLocation);
+      if(live) socket.emit('gameOver')
     }
     toggleColorToMove();
     updateMovesMap();

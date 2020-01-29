@@ -21,6 +21,10 @@ socket.on('setColor', (color) => {
 	chessControl.startLiveGame(socket, color)
 })
 
-socket.on('opponentLeft', (msg) => {
+socket.on('opponentLeft', () => {
 	alert('Your opponent has disconnected.\n Please refresh page to find a new opponent')
+})
+
+socket.on('gameOver', () => {
+	alert('This game is over.\n Please refresh page to find a new opponent')
 })

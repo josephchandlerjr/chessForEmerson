@@ -25,7 +25,7 @@ app.get('/vs', (req, res) => {
 const server = http.createServer(app)
 const io = socketio(server)
 
-const queue = []
+let queue = []
 
 io.on('connection', (socket) => {
 	socket.on('findOpponent', () => {
@@ -42,9 +42,15 @@ io.on('connection', (socket) => {
 			socket.opponentSocket.emit('move', moveData)
 		})
 
-		socket.on('disconnect', function() {
-			queue.filter( (s) => s !== this)
-			if(this.opponentSocket) this.opponentSocket.emit('opponentLeft')
+		socket.on('disconnect', () => {
+			queue = queue.filter( (s) => s !== socket)
+			if(socket.opponentSocket) socket.opponentSocket.emit('opponentLeft')
+		})
+
+		socket.on('gameOver', () => {
+			if(socket.opponentSocket) socket.opponentSocket.emit('gameOver')
+			socket.emit('gaveOver')
+
 		})
 
 	})
