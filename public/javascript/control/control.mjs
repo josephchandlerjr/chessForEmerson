@@ -106,14 +106,13 @@ function viewRequest({request, color, from, to}){
           };
   }
   if (request === "reset"){
+    console.log('here')
     init();
   }
   if (gameOver) {
     return false;
   }
   if (request === "move"){
-    console.log(myColor)
-    console.log(getPieceOnSquare(from, getBoard()))
     if(live && myColor[0] !== getPieceOnSquare(from, getBoard())[0]) {
       console.log('hi')
       return false

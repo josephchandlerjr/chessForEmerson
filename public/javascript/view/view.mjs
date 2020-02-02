@@ -106,7 +106,9 @@ function makeBoardDiv(){
 function init(obj){
   control = obj;
   let resetButton = document.querySelector("#reset");
-  if (resetButton) resetButton.addEventListener("click",reset);
+  if (resetButton) {
+    resetButton.addEventListener("click", reset);
+  }
   let dropdowns = document.querySelectorAll(".dropdown-item");
   for (let item of dropdowns) item.addEventListener("click", evt => onChangeOfAutomationSelection(evt));
   board.addEventListener("mouseup",mouseUp,false); // during bubbling phase
