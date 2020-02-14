@@ -118,7 +118,6 @@ function viewRequest({request, color, from, to}){
   }
   if (request === "move"){
     if(live && myColor[0] !== getPieceOnSquare(from, getBoard())[0]) {
-      console.log('hi')
       return false
     }
     let executed = requestMove(from, to);
@@ -129,6 +128,11 @@ function viewRequest({request, color, from, to}){
       if (automated[colorToMove] && !gameOver){
         makeAutoMove();
       }
+    }
+    return {
+      movesMap,
+      gameOver,
+      board: getBoard()
     }
   }
 
@@ -434,7 +438,6 @@ function requestMove(from, to){
     }
     toggleColorToMove();
     updateMovesMap();
-    view.update();
   }
   return validMovement;
 }

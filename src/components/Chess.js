@@ -28,9 +28,11 @@ export default class Chess extends React.Component {
 
     makeMove(to, from) {
         console.log(to, from)
-        // control.viewRequest({ request : "move",
-            //                     from : lastClicked.id,
-            //                     to : id});
+        let gameData = this.control.viewRequest({ request : "move",
+                        from : to,
+                        to : from})
+        console.log('it is', gameData)
+        this.setState( () => ( {gameData } ) )
     }
 
     render() {
