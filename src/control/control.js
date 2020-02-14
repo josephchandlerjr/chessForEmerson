@@ -32,11 +32,10 @@ function startLiveGame(sock, col) {
 * @param {Object} mObj Model Object
 * @param {Object} vObj View Object
 */
-function start(mObj, vObj){
+function start(mObj) {
   model = mObj;
-  view = vObj;
   self = this // when invoked from exported object, this refers to that object. store as 'self' so we can pass to view and model objects
-  init();
+  return init();
 }
 
 function init(){
@@ -68,7 +67,12 @@ function init(){
     makeAutoMove();
   }
   updateMovesMap();
-  view.init(self);
+  return {
+    movesMap,
+    gameOver,
+    board: getBoard()
+  }
+  //view.init(self);
 }
 
 /**

@@ -6,8 +6,9 @@ import Board from './Board'
 export default class Chess extends React.Component {
     constructor(props) {
         super(props)
+        console.log(this.props.gameData)
         this.state = {
-            layout: "brbnbbbqbkbbbnbr--bpbpbpbpbpbpbpbp--0000000000000000--0000000000000000--0000000000000000--0000000000000000--wpwpwpwpwpwpwpwp--wrwnwbwqwkwbwnwr",
+            gameData: this.props.gameData,
             flipped: undefined
         }
         this.handleFlipBoard = this.handleFlipBoard.bind(this)
@@ -18,30 +19,12 @@ export default class Chess extends React.Component {
         this.setState( () => ( { flipped } ) )
     }
 
-    boardStringToObject() {
-        let board = {};
-        let ix = 0;
-        let startState = this.state.layout;
-        for (let rank=8; rank > 0; rank--) {
-          for (let file=0; file < 8; file++){
-            let fileLetter = "abcdefgh".charAt(file);
-            let rep = startState.slice(ix,ix+2);
-            if (rep === "--") {ix+= 2; rep = startState.slice(ix,ix+2);}
-            board[fileLetter + rank] = startState.slice(ix,ix+2);
-            ix += 2;
-          }
-        }
-
-        board.flipped = this.state.flipped
-        return board;
-  }
-
     render() {
         return (
             <div>
                 <Nav handleFlipBoard={this.handleFlipBoard} />
                 <Status />
-                <Board boardObject={this.boardStringToObject()} />
+                <Board gameData={Object.assign(this.state.gameData, {flipped: this.state.flipped})} />
             </div>
             
         )

@@ -4,6 +4,7 @@ import Rows from './Rows'
 export default class Board extends React.Component {
     constructor(props) {
         super(props)
+        console.log(this.props.gameData)
         this.state = {
             layout: "brbnbbbqbkbbbnbr--bpbpbpbpbpbpbpbp--0000000000000000--0000000000000000--0000000000000000--0000000000000000--wpwpwpwpwpwpwpwp--wrwnwbwqwkwbwnwr"
         }
@@ -11,9 +12,9 @@ export default class Board extends React.Component {
    
     render() {
         return (
-                <div id="board-container" className={this.props.boardObject.flipped ? 'flipped-board' : ''} >
+                <div id="board-container" className={this.props.gameData.flipped ? 'flipped-board' : ''} >
                     <Rows 
-                        boardObject={this.props.boardObject}
+                        gameData={this.props.gameData}
                         />
                 </div>
 

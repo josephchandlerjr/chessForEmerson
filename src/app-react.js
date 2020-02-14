@@ -3,7 +3,13 @@ import ReactDOM from 'react-dom'
 import Chess from './components/Chess'
 import { chessControl } from './control/control'
 import { chessModel   } from './model/model'
-import { chessView    } from './view/view'
+
+
+const gameData = chessControl.start(chessModel)
  
 
-ReactDOM.render(<Chess />, document.getElementById('app'))
+ReactDOM.render(<Chess 
+                    chessControl={chessControl}
+                    gameData={gameData} 
+                    />, 
+                    document.getElementById('app'))
