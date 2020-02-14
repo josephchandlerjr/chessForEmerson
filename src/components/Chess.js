@@ -7,13 +7,13 @@ export default class Chess extends React.Component {
     constructor(props) {
         super(props)
         this.control = this.props.control
-        console.log(this.getPossibleMoves('a2'))
         this.state = {
             gameData: this.props.gameData,
             flipped: undefined
         }
         this.handleFlipBoard = this.handleFlipBoard.bind(this)
         this.getPossibleMoves = this.getPossibleMoves.bind(this)
+        this.makeMove = this.makeMove.bind(this)
     }
 
     getPossibleMoves(squareId) {
@@ -26,6 +26,13 @@ export default class Chess extends React.Component {
         this.setState( () => ( { flipped } ) )
     }
 
+    makeMove(to, from) {
+        console.log(to, from)
+        // control.viewRequest({ request : "move",
+            //                     from : lastClicked.id,
+            //                     to : id});
+    }
+
     render() {
         return (
             <div>
@@ -33,7 +40,8 @@ export default class Chess extends React.Component {
                 <Status />
                 <Board gameData={Object.assign( this.state.gameData, 
                                                 {flipped: this.state.flipped,
-                                                 getPossibleMoves: this.getPossibleMoves
+                                                 getPossibleMoves: this.getPossibleMoves,
+                                                 makeMove: this.makeMove
                                                 }
                                                 )} />
             </div>
