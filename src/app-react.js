@@ -6,10 +6,10 @@ import { chessModel   } from './model/model'
 
 
 const gameData = chessControl.start(chessModel)
- 
+
 
 ReactDOM.render(<Chess 
-                    chessControl={chessControl}
+                    control={chessControl}
                     gameData={gameData} 
                     />, 
                     document.getElementById('app'))
