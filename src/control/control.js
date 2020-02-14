@@ -1,4 +1,4 @@
-import { getAllSquares, getAllSquarePairings } from './utils/squares.mjs'
+import { getAllSquares, getAllSquarePairings } from './utils/squares'
 
 let model, view, self;
 let colorToMove, lastMove, canCastle, whiteInCheck, blackInCheck;
