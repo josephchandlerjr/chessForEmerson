@@ -4,10 +4,10 @@ import Rows from './Rows'
 export default class Board extends React.Component {
     constructor(props) {
         super(props)
-        console.log(props)
         this.lastClicked = null
         this.handleMouseDown = this.handleMouseDown.bind(this)
         this.handleMouseUp = this.handleMouseUp.bind(this)
+        this.handleMouseLeave = this.handleMouseLeave.bind(this)
 
         this.state = {
             grabbed: false,
@@ -30,7 +30,6 @@ export default class Board extends React.Component {
                 grabbed: true,
                 selected: id,
                 target: destinations
-            
             }
             ) 
         )
@@ -41,7 +40,6 @@ export default class Board extends React.Component {
                 grabbed: false,
                 selected: undefined,
                 target: []
-            
             }
             ) 
         )
@@ -50,9 +48,21 @@ export default class Board extends React.Component {
             this.lastClicked = null;
         }
     }
+    handleMouseLeave(evt){
+        this.lastClicked = null;
+        this.setState( () => (
+            {
+                grabbed: false,
+                selected: undefined,
+                target: []
+            }
+            ) 
+        )
+      }
     render() {
         return (
-                <div id="board-container" className={this.classNames()} >
+                <div id="board-container" className={this.classNames()} 
+                     onMouseLeave={this.handleMouseLeave}>
                     <Rows 
                         gameData={Object.assign(this.props.gameData, 
                                                 { handleMouseDown: this.handleMouseDown, handleMouseUp: this.handleMouseUp },
