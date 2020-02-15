@@ -12,22 +12,26 @@ export default class Nav extends React.Component {
                 <div className="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
                     <ul className="navbar-nav">
                         <li className="nav-item">
-                            <a className="nav-link" target="_blank" href="/vs">Play Live!</a>
+                            <a className="nav-link" target="_blank" href="/vs">{this.props.live ? 'Play Computer' : 'Play Live'}</a>
                         </li>
-                        <li className="nav-item dropdown"> 
-                            <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Computer Plays
-                            </a>
-                            <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a onClick={this.props.setAutomatedColor} className="dropdown-item" href="#" name="black">Black</a>
-                            <a onClick={this.props.setAutomatedColor} className="dropdown-item" href="#" name="white">White</a>
-                            <div className="dropdown-divider"></div>
-                            <a onClick={this.props.setAutomatedColor} className="dropdown-item" href="#" name="none">None</a>
-                            </div>
-                        </li>
-                        <li className="nav-item">
-                            <a onClick={this.props.reset}className="nav-link" id="reset" href="#">Reset</a>
-                        </li>
+                        {!this.props.live &&
+                            <li className="nav-item dropdown"> 
+                                <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Computer Plays
+                                </a>
+                                    <div className="dropdown-menu" aria-labelledby="navbarDropdown">
+                                        <a onClick={this.props.setAutomatedColor} className="dropdown-item" href="#" name="black">Black</a>
+                                        <a onClick={this.props.setAutomatedColor} className="dropdown-item" href="#" name="white">White</a>
+                                        <div className="dropdown-divider"></div>
+                                        <a onClick={this.props.setAutomatedColor} className="dropdown-item" href="#" name="none">None</a>
+                                    </div>   
+                            </li>
+                        }
+                        {!this.props.live &&
+                            <li className="nav-item">
+                                <a onClick={this.props.reset}className="nav-link" id="reset" href="#">Reset</a>
+                            </li>
+                        }
                         <li className="nav-item">
                             <a onClick={this.props.handleFlipBoard} className="nav-link" id="flip" href="#">Flip Board</a>
                         </li>
