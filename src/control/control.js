@@ -68,11 +68,13 @@ function init(){
   }
   updateMovesMap();
   return {
+    colorToMove: colorToMove,
+    gameOver: gameOver,
+    isCheckmate: isCheckmate,
     movesMap,
     gameOver,
     board: getBoard()
   }
-  //view.init(self);
 }
 
 /**
@@ -110,8 +112,7 @@ function viewRequest({request, color, from, to}){
           };
   }
   if (request === "reset"){
-    console.log('here')
-    init();
+    return init();
   }
   if (gameOver) {
     return false;
@@ -129,11 +130,6 @@ function viewRequest({request, color, from, to}){
         makeAutoMove();
       }
     }
-    return {
-      movesMap,
-      gameOver,
-      board: getBoard()
-    }
   }
 
   if (request === "automate"){
@@ -149,6 +145,15 @@ function viewRequest({request, color, from, to}){
 
   if (request === "validMoves"){
     return movesMap[from];
+  }
+
+  return {
+    colorToMove: colorToMove,
+    gameOver: gameOver,
+    isCheckmate: isCheckmate,
+    movesMap,
+    gameOver,
+    board: getBoard()
   }
 }
 /**

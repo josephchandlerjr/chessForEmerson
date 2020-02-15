@@ -26,7 +26,7 @@ export default class Nav extends React.Component {
                             </div>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link" id="reset" href="#">Reset</a>
+                            <a onClick={this.props.reset}className="nav-link" id="reset" href="#">Reset</a>
                         </li>
                         <li className="nav-item">
                             <a onClick={this.props.handleFlipBoard} className="nav-link" id="flip" href="#">Flip Board</a>

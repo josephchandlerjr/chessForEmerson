@@ -14,6 +14,7 @@ export default class Chess extends React.Component {
         this.handleFlipBoard = this.handleFlipBoard.bind(this)
         this.getPossibleMoves = this.getPossibleMoves.bind(this)
         this.makeMove = this.makeMove.bind(this)
+        this.reset = this.reset.bind(this)
     }
 
     getPossibleMoves(squareId) {
@@ -27,18 +28,23 @@ export default class Chess extends React.Component {
     }
 
     makeMove(to, from) {
-        console.log(to, from)
-        let gameData = this.control.viewRequest({ request : "move",
-                        from : to,
-                        to : from})
-        console.log('it is', gameData)
-        this.setState( () => ( {gameData } ) )
+        let gameData = this.control.viewRequest({ 
+            request : "move",
+            from : to,
+            to : from
+        })
+        this.setState( () => ( { gameData } ) )
+    }
+    reset() {
+        let gameData = this.control.viewRequest({ request : "reset" })
+        this.setState( () => ( { gameData } ) )
     }
 
     render() {
         return (
             <div>
-                <Nav handleFlipBoard={this.handleFlipBoard} />
+                <Nav    handleFlipBoard={this.handleFlipBoard}
+                        reset={this.reset} />
                 <Status />
                 <Board gameData={Object.assign( this.state.gameData, 
                                                 {flipped: this.state.flipped,
