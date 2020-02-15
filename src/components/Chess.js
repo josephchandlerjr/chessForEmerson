@@ -15,6 +15,7 @@ export default class Chess extends React.Component {
         this.getPossibleMoves = this.getPossibleMoves.bind(this)
         this.makeMove = this.makeMove.bind(this)
         this.reset = this.reset.bind(this)
+        this.setAutomatedColor = this.setAutomatedColor.bind(this)
     }
 
     getPossibleMoves(squareId) {
@@ -33,25 +34,37 @@ export default class Chess extends React.Component {
             from : to,
             to : from
         })
-        this.setState( () => ( { gameData } ) )
+        if (gameData) this.setState( () => ( { gameData } ) )
     }
-    reset() {
+    reset(evt) {
+        evt.preventDefault()
         let gameData = this.control.viewRequest({ request : "reset" })
         this.setState( () => ( { gameData } ) )
     }
 
+    setAutomatedColor(evt) {
+        if(evt){
+            let gameData = this.control.viewRequest( {request:"automate", color: evt.target.name} )
+            if (gameData) this.setState( () => ( { gameData } ) )
+        }
+    }
+    // colorToMove: colorToMove,
+    // gameOver: gameOver,
+    // isCheckmate: isCheckmate,
     render() {
+        let gameData = Object.assign( this.state.gameData, 
+            {flipped: this.state.flipped,
+             getPossibleMoves: this.getPossibleMoves,
+             makeMove: this.makeMove
+            }
+            )
         return (
             <div>
-                <Nav    handleFlipBoard={this.handleFlipBoard}
-                        reset={this.reset} />
-                <Status />
-                <Board gameData={Object.assign( this.state.gameData, 
-                                                {flipped: this.state.flipped,
-                                                 getPossibleMoves: this.getPossibleMoves,
-                                                 makeMove: this.makeMove
-                                                }
-                                                )} />
+                <Nav handleFlipBoard={this.handleFlipBoard}
+                     reset={this.reset}
+                     setAutomatedColor={this.setAutomatedColor} />
+                <Status gameData={gameData}/>
+                <Board gameData={gameData} />
             </div>
             
         )

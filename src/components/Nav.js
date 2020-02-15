@@ -19,10 +19,10 @@ export default class Nav extends React.Component {
                             Computer Plays
                             </a>
                             <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a className="dropdown-item" href="#" name="black">Black</a>
-                            <a className="dropdown-item" href="#" name="white">White</a>
+                            <a onClick={this.props.setAutomatedColor} className="dropdown-item" href="#" name="black">Black</a>
+                            <a onClick={this.props.setAutomatedColor} className="dropdown-item" href="#" name="white">White</a>
                             <div className="dropdown-divider"></div>
-                            <a className="dropdown-item" href="#" name="none">None</a>
+                            <a onClick={this.props.setAutomatedColor} className="dropdown-item" href="#" name="none">None</a>
                             </div>
                         </li>
                         <li className="nav-item">
