@@ -60,7 +60,8 @@ export default class Chess extends React.Component {
             <div>
                 <Nav handleFlipBoard={this.handleFlipBoard}
                      reset={this.reset}
-                     setAutomatedColor={this.setAutomatedColor} />
+                     setAutomatedColor={this.setAutomatedColor} 
+                     live={this.props.live}/>
                 <Status gameData={gameData}/>
                 <Board gameData={gameData} />
             </div>

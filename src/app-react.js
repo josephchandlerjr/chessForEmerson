@@ -4,12 +4,13 @@ import Chess from './components/Chess'
 import { chessControl } from './control/control'
 import { chessModel   } from './model/model'
 
-
+const live = window.location.search === '?live=true' ? true : false
 const gameData = chessControl.start(chessModel)
 
 
 ReactDOM.render(<Chess 
                     control={chessControl}
-                    gameData={gameData} 
+                    gameData={gameData}
+                    live={live}
                     />, 
                     document.getElementById('app'))

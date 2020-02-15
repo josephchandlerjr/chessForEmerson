@@ -12,7 +12,7 @@ export default class Nav extends React.Component {
                 <div className="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
                     <ul className="navbar-nav">
                         <li className="nav-item">
-                            <a className="nav-link" target="_blank" href="/vs">{this.props.live ? 'Play Computer' : 'Play Live'}</a>
+                            <a className="nav-link" target="_blank" href={ this.props.live ? "/" : "/?live=true"}>{this.props.live ? 'Play Computer' : 'Play Live'}</a>
                         </li>
                         {!this.props.live &&
                             <li className="nav-item dropdown"> 
