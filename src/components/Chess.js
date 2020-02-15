@@ -48,9 +48,7 @@ export default class Chess extends React.Component {
             if (gameData) this.setState( () => ( { gameData } ) )
         }
     }
-    // colorToMove: colorToMove,
-    // gameOver: gameOver,
-    // isCheckmate: isCheckmate,
+    
     render() {
         let gameData = Object.assign( this.state.gameData, 
             {flipped: this.state.flipped,
