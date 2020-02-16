@@ -25,7 +25,6 @@ app.get('/vs', (req, res) => {
 
 const server = http.createServer(app)
 const io = socketio(server)
-
 let queue = []
 
 io.on('connection', (socket) => {

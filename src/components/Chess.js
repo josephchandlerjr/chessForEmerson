@@ -2,6 +2,7 @@ import React from 'react'
 import Nav from './Nav'
 import Status from './Status'
 import Board from './Board'
+import WaitingModal from './WaitingModal'
 
 export default class Chess extends React.Component {
     constructor(props) {
@@ -9,7 +10,8 @@ export default class Chess extends React.Component {
         this.control = this.props.control
         this.state = {
             gameData: this.props.gameData,
-            flipped: undefined
+            flipped: undefined,
+            waiting: this.props.live
         }
         this.handleFlipBoard = this.handleFlipBoard.bind(this)
         this.getPossibleMoves = this.getPossibleMoves.bind(this)
@@ -53,7 +55,8 @@ export default class Chess extends React.Component {
         let gameData = Object.assign( this.state.gameData, 
             {flipped: this.state.flipped,
              getPossibleMoves: this.getPossibleMoves,
-             makeMove: this.makeMove
+             makeMove: this.makeMove,
+             live: this.props.live
             }
             )
         return (
@@ -64,6 +67,7 @@ export default class Chess extends React.Component {
                      live={this.props.live}/>
                 <Status gameData={gameData}/>
                 <Board gameData={gameData} />
+                <WaitingModal waiting={this.state.waiting}/>
             </div>
             
         )

@@ -6,7 +6,9 @@
   "scripts": {
     "start": "node src/index.js",
     "dev": "nodemon src/index.js -e js,ejs",
-    "devServer": "webpack-dev-server"
+    "devServer": "webpack-dev-server",
+    "build": "webpack --watch",
+    "server": "live-server public/"
   },
   "repository": {
     "type": "git",
@@ -33,6 +35,7 @@
     "@babel/preset-env": "^7.8.4",
     "@babel/preset-react": "^7.8.3",
     "babel-loader": "^8.0.6",
+    "live-server": "^1.2.1",
     "nodemon": "^2.0.2",
     "webpack": "^4.41.6",
     "webpack-cli": "^3.3.11",
