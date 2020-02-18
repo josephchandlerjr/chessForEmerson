@@ -8,20 +8,7 @@ const express 		= require('express'),
 
 const publicPath = path.join(__dirname, '../public')
 
-console.log(publicPath)
-
-app.set('view engine', 'ejs')
 app.use(express.static(publicPath))
-
-
-app.get('/', (req, res) => {
-	res.render('index', {live: false})
-})
-
-app.get('/vs', (req, res) => {
-	res.render('index', { live: true})
-})
-
 
 const server = http.createServer(app)
 const io = socketio(server)
@@ -29,7 +16,6 @@ let queue = []
 
 io.on('connection', (socket) => {
 	socket.on('findOpponent', () => {
-		console.log('looking for opponent')
 		if(queue.length > 0) {
 			socket.opponentSocket = queue.shift()
 			socket.opponentSocket.opponentSocket = socket

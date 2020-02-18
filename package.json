@@ -6,9 +6,8 @@
   "scripts": {
     "start": "node src/index.js",
     "dev": "nodemon src/index.js -e js,ejs",
-    "devServer": "webpack-dev-server",
-    "build": "webpack --watch",
-    "server": "live-server public/"
+    "build-watch": "webpack --watch",
+    "build": "webpack"
   },
   "repository": {
     "type": "git",
