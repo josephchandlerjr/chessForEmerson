@@ -18,6 +18,7 @@ export default class Chess extends React.Component {
         this.makeMove = this.makeMove.bind(this)
         this.reset = this.reset.bind(this)
         this.setAutomatedColor = this.setAutomatedColor.bind(this)
+        this.update = this.update.bind(this)
     }
 
     getPossibleMoves(squareId) {
@@ -28,6 +29,10 @@ export default class Chess extends React.Component {
     handleFlipBoard() {
         let flipped = !this.state.flipped
         this.setState( () => ( { flipped } ) )
+    }
+
+    update(gameData, waiting=false) {
+        if (gameData) this.setState( () => ( { gameData, waiting } ) )
     }
 
     makeMove(to, from) {
@@ -48,6 +53,33 @@ export default class Chess extends React.Component {
         if(evt){
             let gameData = this.control.viewRequest( {request:"automate", color: evt.target.name} )
             if (gameData) this.setState( () => ( { gameData } ) )
+        }
+    }
+
+    componentDidMount() {
+        if (this.props.live) {
+            const socket = io()
+        
+            this.props.control.makeLive(this.update)
+        
+            socket.emit('findOpponent')
+        
+            socket.on('move', ({from, to}) => {
+                let gameData = this.props.control.viewRequest({request:"mirrorOpponentMove", from, to})
+                this.update(gameData)
+            })
+        
+            socket.on('setColor', (color) => {
+                this.props.control.startLiveGame(socket, color)
+            })
+        
+            socket.on('opponentLeft', () => {
+                alert('Your opponent has disconnected.\n Please refresh page to find a new opponent')
+            })
+        
+            socket.on('gameOver', () => {
+                alert('This game is over.\n Please refresh page to find a new opponent')
+            })
         }
     }
     

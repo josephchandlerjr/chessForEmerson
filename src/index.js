@@ -29,6 +29,7 @@ let queue = []
 
 io.on('connection', (socket) => {
 	socket.on('findOpponent', () => {
+		console.log('looking for opponent')
 		if(queue.length > 0) {
 			socket.opponentSocket = queue.shift()
 			socket.opponentSocket.opponentSocket = socket

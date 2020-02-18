@@ -13,16 +13,24 @@ const adjacentSquares = {};
 
 // live game stuff
 
-let live, myColor, socket;
+let live, myColor, socket, updateView;
 
-function makeLive() {
-  live = true;
-
+function makeLive(update) {
+  live = true
+  updateView = update
 }
 
 function startLiveGame(sock, col) {
   socket = sock
   myColor = col
+  updateView({
+    colorToMove: colorToMove,
+    gameOver: gameOver,
+    isCheckmate: isCheckmate,
+    movesMap,
+    gameOver,
+    board: getBoard()
+  })
   alert(`Your opponent has arrived.\nYou will playing ${myColor}.\nGood Luck!`)
 }
 
@@ -100,22 +108,14 @@ function updateMovesMap(){
 * @param {Object} request request.request will describe action requested
 */
 function viewRequest({request, color, from, to}){
-  //if live can only move my own piece
-  //if(live && myColor !== color) return false
-
-
-
-  if (request === "status"){
-    return {colorToMove: colorToMove,
-            gameOver: gameOver,
-            isCheckmate: isCheckmate
-          };
-  }
   if (request === "reset"){
     return init();
   }
   if (gameOver) {
     return false;
+  }
+  if( request == "mirrorOpponentMove"){
+    requestMove(from, to)
   }
   if (request === "move"){
     if(live && myColor[0] !== getPieceOnSquare(from, getBoard())[0]) {
@@ -124,21 +124,21 @@ function viewRequest({request, color, from, to}){
     let executed = requestMove(from, to);
     if (executed) {
       if (live) {
-        return socket.emit('move', {request, color, from, to})
-      }
-      if (automated[colorToMove] && !gameOver){
+        socket.emit('move', {request, color, from, to}) 
+      } else if (automated[colorToMove] && !gameOver){
         makeAutoMove();
       }
+    } else {
+      return false
     }
   }
-
   if (request === "automate"){
     switch (color){
       case "none" : automated.b = false; automated.w = false; break;
       case "white": automated.b = false; automated.w = true; break;
       case "black": automated.b = true; automated.w = false; break;
     }
-    if (automated[colorToMove]){
+    if (!live && automated[colorToMove]){
       makeAutoMove();
     }
   }
@@ -436,6 +436,7 @@ function requestMove(from, to){
     let opponentsKingLocation = findKing(opponentsColor, newBoard);
     let newValidMovesForActiveColor = getAllValidMovementsByColor(activeColor, newBoard);
     let activeColorNowThreatens = getThreatenedSquares(newValidMovesForActiveColor, newBoard);
+    
     gameOver = noLegalMoves(opponentsColor, newValidMovesForOpponent, newBoard);
     if (gameOver){
       isCheckmate = activeColorNowThreatens.includes(opponentsKingLocation);
