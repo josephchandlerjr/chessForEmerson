@@ -6,7 +6,6 @@
   "scripts": {
     "start": "node src/index.js",
     "dev": "nodemon src/index.js -e js,ejs",
-    "build-watch": "webpack --watch",
     "build": "webpack"
   },
   "repository": {

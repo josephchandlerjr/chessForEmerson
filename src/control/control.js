@@ -436,10 +436,13 @@ function requestMove(from, to){
     let opponentsKingLocation = findKing(opponentsColor, newBoard);
     let newValidMovesForActiveColor = getAllValidMovementsByColor(activeColor, newBoard);
     let activeColorNowThreatens = getThreatenedSquares(newValidMovesForActiveColor, newBoard);
-    
+    let opponentInCheck = activeColorNowThreatens.includes(opponentsKingLocation);
+    if (opponentInCheck) {
+      newValidMovesForOpponent = newValidMovesForOpponent.filter( (m) => !(m.special && m.special.description === "castle"))
+    } 
     gameOver = noLegalMoves(opponentsColor, newValidMovesForOpponent, newBoard);
     if (gameOver){
-      isCheckmate = activeColorNowThreatens.includes(opponentsKingLocation);
+      isCheckmate = opponentInCheck;
       if(live) socket.emit('gameOver')
     }
     toggleColorToMove();
