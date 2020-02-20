@@ -4,9 +4,9 @@
 }
 
 .row:nth-child(even) .square:nth-child(even), .row:nth-child(odd) .square:nth-child(odd) {
-    background: #ddd6f3;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right, #faaca8, #ddd6f3);  /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to right, #faaca8, #ddd6f3); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background: $off-white;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, $peach, $off-white);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, $peach, $off-white); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 .row:nth-child(odd) .square:nth-child(even), .row:nth-child(even) .square:nth-child(odd) {
     background: white;
