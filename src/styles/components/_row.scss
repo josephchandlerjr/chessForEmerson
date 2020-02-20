@@ -1,6 +1,5 @@
 .row {
     width: $l-row;
-    margin: 0;
 }
 
 .row:nth-child(even) .square:nth-child(even), .row:nth-child(odd) .square:nth-child(odd) {
