@@ -1,5 +1,5 @@
 .row {
-    width: 560px;
+    width: $l-row;
     margin: 0;
 }
 
@@ -14,12 +14,12 @@
 
 @media screen and (max-width: 768px) {
     .row {
-      width: 400px;
+      width: $m-row;
     }
   }
 
 @media screen and (max-width: 576px) {
     .row {
-      width: 320px;
+      width: $s-row;
     }
   }
