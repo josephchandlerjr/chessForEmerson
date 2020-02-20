@@ -18,7 +18,9 @@ export default class Status extends React.Component {
     }
     render() {
         return (
-            <h2 id="status">{this.generateMessage()}</h2>
+            <div id="status">
+                <h2>{this.generateMessage()}</h2>
+            </div>
         )
     }
 }
