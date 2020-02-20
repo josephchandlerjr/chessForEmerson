@@ -9,7 +9,7 @@ body {
     color: white;
   }
   
-  #board-container {
+  #board {
     width: 560px;
     height: 560px; /*so that it will tranform properly*/
     margin: 70px auto;
@@ -35,7 +35,7 @@ body {
   }
   
   @media screen and (max-width: 768px) {
-      #board-container {
+      #board {
         width: 400px;
         height: 400px; /*so that it will tranform properly*/
       }
@@ -45,7 +45,7 @@ body {
     }
   
   @media screen and (max-width: 576px) {
-      #board-container {
+      #board {
         width: 320px;
         height: 320px; /*so that it will tranform properly*/
       }
@@ -60,11 +60,11 @@ body {
     display: block;
   }
   
-  #board-container.grabbed:hover {
+  #board.grabbed:hover {
     cursor: grabbing;
   }
   
-  #board-container:hover{
+  #board:hover{
     cursor: grab;
   }
   

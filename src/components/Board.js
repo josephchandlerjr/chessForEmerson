@@ -61,7 +61,7 @@ export default class Board extends React.Component {
       }
     render() {
         return (
-                <div id="board-container" className={this.classNames()} 
+                <div id="board" className={this.classNames()} 
                      onMouseLeave={this.handleMouseLeave}>
                     <Rows 
                         gameData={Object.assign(this.props.gameData, 
