@@ -1,0 +1,32 @@
+#board {
+    width: 560px;
+    height: 560px; /*so that it will tranform properly*/
+    margin: 70px auto;
+    transform-origin: center;
+    -webkit-transition: 2s ease-in;
+    -moz-transition: 2s ease-in;
+    -ms-transition: 2s ease-in;
+    -o-transition: 2s ease-in;
+} 
+
+@media screen and (max-width: 768px) {
+    #board {
+        width: 400px;
+        height: 400px; /*so that it will tranform properly*/
+    }
+}
+
+@media screen and (max-width: 576px) {
+    #board {
+        width: 320px;
+        height: 320px; /*so that it will tranform properly*/
+    }
+}
+
+#board.grabbed:hover {
+    cursor: grabbing;
+}
+
+#board:hover{
+    cursor: grab;
+}

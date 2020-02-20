@@ -1,0 +1,25 @@
+.row {
+    width: 560px;
+    margin: 0;
+}
+
+.row:nth-child(even) .square:nth-child(even), .row:nth-child(odd) .square:nth-child(odd) {
+    background: #ddd6f3;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #faaca8, #ddd6f3);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #faaca8, #ddd6f3); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+.row:nth-child(odd) .square:nth-child(even), .row:nth-child(even) .square:nth-child(odd) {
+    background: white;
+}
+
+@media screen and (max-width: 768px) {
+    .row {
+      width: 400px;
+    }
+  }
+
+@media screen and (max-width: 576px) {
+    .row {
+      width: 320px;
+    }
+  }
