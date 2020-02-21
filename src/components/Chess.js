@@ -1,6 +1,6 @@
 import React from 'react'
 import Nav from './Nav'
-import Status from './Status'
+import StatusMessage from './StatusMessage'
 import Board from './Board'
 import LiveModal from './LiveModal'
 
@@ -97,7 +97,7 @@ export default class Chess extends React.Component {
                      reset={this.reset}
                      setAutomatedColor={this.setAutomatedColor} 
                      live={this.props.live}/>
-                <Status gameData={gameData}/>
+                <StatusMessage gameData={gameData}/>
                 <Board gameData={gameData} />
                 <LiveModal waiting={this.state.waiting}/>
             </div>

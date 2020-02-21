@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default class Status extends React.Component {
+export default class StatusMessage extends React.Component {
     generateMessage() {
         let colorToMove = this.props.gameData.colorToMove === 'w' ? 'White' : 'Black'
         let otherColor = colorToMove ==='White' ? 'Black' : 'White'
