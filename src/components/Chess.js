@@ -2,7 +2,7 @@ import React from 'react'
 import Nav from './Nav'
 import Status from './Status'
 import Board from './Board'
-import WaitingModal from './WaitingModal'
+import LiveModal from './LiveModal'
 
 export default class Chess extends React.Component {
     constructor(props) {
@@ -99,7 +99,7 @@ export default class Chess extends React.Component {
                      live={this.props.live}/>
                 <Status gameData={gameData}/>
                 <Board gameData={gameData} />
-                <WaitingModal waiting={this.state.waiting}/>
+                <LiveModal waiting={this.state.waiting}/>
             </div>
             
         )

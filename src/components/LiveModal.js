@@ -2,7 +2,7 @@ import React from 'react'
 import Modal from 'react-modal'
 
 Modal.setAppElement('#app') // removes console error
-const WaitingModal = (props) =>  (
+const LiveModal = (props) =>  (
     <Modal
         isOpen={props.waiting}
         contentLabel="Waiting for opponent"
@@ -11,4 +11,4 @@ const WaitingModal = (props) =>  (
     </Modal>
 )
 
-export default WaitingModal
+export default LiveModal
