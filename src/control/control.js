@@ -30,8 +30,10 @@ function startLiveGame(sock, col) {
     movesMap,
     gameOver,
     board: getBoard()
+  }, {
+    status: 'found',
+    myColor
   })
-  alert(`Your opponent has arrived.\nYou will playing ${myColor}.\nGood Luck!`)
 }
 
 

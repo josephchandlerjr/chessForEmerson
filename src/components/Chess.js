@@ -11,7 +11,7 @@ export default class Chess extends React.Component {
         this.state = {
             gameData: this.props.gameData,
             flipped: undefined,
-            waiting: this.props.live
+            liveGameInfo: this.props.live ? { status: 'waiting'} : {}
         }
         this.handleFlipBoard = this.handleFlipBoard.bind(this)
         this.getPossibleMoves = this.getPossibleMoves.bind(this)
@@ -31,8 +31,12 @@ export default class Chess extends React.Component {
         this.setState( () => ( { flipped } ) )
     }
 
-    update(gameData, waiting=false) {
-        if (gameData) this.setState( () => ( { gameData, waiting } ) )
+    update(gameData, liveGameInfo={}) {
+        console.log('here are the args')
+        console.log(gameData)
+        console.log(liveGameInfo)
+        if (gameData) this.setState( () => ( { gameData } ) )
+        this.setState( () => ( { liveGameInfo } ) )
     }
 
     makeMove(to, from) {
@@ -74,11 +78,13 @@ export default class Chess extends React.Component {
             })
         
             socket.on('opponentLeft', () => {
-                alert('Your opponent has disconnected.\n Please refresh page to find a new opponent')
+                this.update(null, {status: 'disconnect'})
+                //alert('Your opponent has disconnected.\n Please refresh page to find a new opponent')
             })
         
             socket.on('gameOver', () => {
-                alert('This game is over.\n Please refresh page to find a new opponent')
+                this.update(null,  {status: 'game-over'} )
+                //alert('This game is over.\n Please refresh page to find a new opponent')
             })
         }
     }
@@ -99,7 +105,10 @@ export default class Chess extends React.Component {
                      live={this.props.live}/>
                 <StatusMessage gameData={gameData}/>
                 <Board gameData={gameData} />
-                <LiveModal waiting={this.state.waiting}/>
+                <LiveModal liveGameInfo={this.state.liveGameInfo}
+                            updateStatus={ (status) => {
+                                this.update(null, {status})
+                            }}/>
             </div>
             
         )
