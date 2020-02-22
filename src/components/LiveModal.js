@@ -26,6 +26,7 @@ export default class LiveModal extends React.Component {
             <Modal
                 isOpen={['waiting', 'found', 'disconnect', 'game-over'].includes(this.props.liveGameInfo.status)}
                 contentLabel="Live game modal"
+                className="modal"
                 >
                 <h3>{this.generateMessage()}</h3>
                 {
