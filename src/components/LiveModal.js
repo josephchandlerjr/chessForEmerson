@@ -11,9 +11,9 @@ export default class LiveModal extends React.Component {
     generateMessage() {
         let status = this.props.liveGameInfo.status
         if(status === 'waiting') return 'Waiting for opponent to arrive...'
-        if(status === 'found') return `Your opponent has arrived. You will be playing as ${this.props.liveGameInfo.myColor}`
-        if(status === 'disconnect') return 'Your opponent has disconnected. Click OK to find a new opponent'
-        if(status === 'game-over') return 'Game Over. Click OK to find a new opponent'
+        if(status === 'found') return `Your opponent has arrived. You will be playing as ${this.props.liveGameInfo.myColor}.`
+        if(status === 'disconnect') return 'Your opponent has disconnected. Click OK to find a new opponent.'
+        if(status === 'game-over') return 'Game Over. Click OK to find a new opponent.'
     }
     updateStatus() {
         let status = this.props.liveGameInfo.status
@@ -29,7 +29,7 @@ export default class LiveModal extends React.Component {
                 closeTimeoutMS={500}
                 className="live-modal"
                 >
-                <h3>{this.generateMessage()}</h3>
+                <h3 className="live-modal__text">{this.generateMessage()}</h3>
                 {
                     this.props.liveGameInfo.status !== 'waiting' &&
                     <button onClick={this.updateStatus}>OK</button>

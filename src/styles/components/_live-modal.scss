@@ -1,3 +1,28 @@
 .live-modal {
-    color:red;
+    background: white;
+    max-width: 30rem;
+    outline: none;
+    padding: 2rem;
+    text-align: center;
+}
+
+.live-modal__text {
+    font-size: 2rem;
+    font-weight: 300;
+    margin: 0 0 3rem 0;
+}
+
+
+.ReactModalPortal > div {
+    opacity: 0;
+    justify-content: center;
+    align-items: center;
+}
+.ReactModalPortal .ReactModal__Overlay {
+    display: flex;
+    transition: opacity 500ms ease-in-out;
+}
+
+.ReactModalPortal .ReactModal__Overlay--after-open {
+    opacity: 1;
 }
