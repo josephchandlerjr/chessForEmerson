@@ -3,6 +3,11 @@ import ReactDOM from 'react-dom'
 import Chess from './components/Chess'
 import { chessControl } from './control/control'
 import { chessModel   } from './model/model'
+import configureStore from './store/configureStore'
+
+const store = configureStore()
+console.log(store.getState())
+
 
 import 'normalize.css/normalize.css'
 import './styles/styles.scss'
