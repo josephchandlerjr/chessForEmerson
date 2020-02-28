@@ -75,7 +75,6 @@ export default class Board extends React.Component {
                      >
                     <Rows 
                         gameData={Object.assign(this.props.gameData, 
-                                                { handleMouseDown: this.handleMouseDown, handleMouseUp: this.handleMouseUp },
                                                 {selected: this.state.selected, target:this.state.target}) }
                         
                         />
