@@ -15,16 +15,15 @@ export default class Board extends React.Component {
             target: []
         }
     }
-    classNames() {
-        let result = ''
-        if(this.props.gameData.flipped) result = result + ' ' + 'flipped-board'
-        if(this.state.grabbed) result = result + ' ' + 'grabbed'
-        return result
-    }
-
-    handleMouseDown(id, destinations){
+    handleMouseDown(evt) {
+        evt.preventDefault()
+        const target = evt.target
+        if(target.tagName !== 'IMG') return
+        const parent = target.parentElement
+        const id = parent.id
+        const destinations = parent.getAttribute('destinations').split(" ")
         this.lastClicked = id
-        destinations = destinations.split(" ")
+
         this.setState( () => (
             {
                 grabbed: true,
@@ -33,7 +32,26 @@ export default class Board extends React.Component {
             }
             ) 
         )
-      }
+    }
+    classNames() {
+        let result = ''
+        if(this.props.gameData.flipped) result = result + ' ' + 'flipped-board'
+        if(this.state.grabbed) result = result + ' ' + 'grabbed'
+        return result
+    }
+
+    // handleMouseDown(id, destinations){
+    //     this.lastClicked = id
+    //     destinations = destinations.split(" ")
+    //     this.setState( () => (
+    //         {
+    //             grabbed: true,
+    //             selected: id,
+    //             target: destinations
+    //         }
+    //         ) 
+    //     )
+    //   }
     handleMouseUp(id){
         this.setState( () => (
             {
@@ -62,7 +80,9 @@ export default class Board extends React.Component {
     render() {
         return (
                 <div id="board" className={this.classNames()} 
-                     onMouseLeave={this.handleMouseLeave}>
+                     onMouseLeave={this.handleMouseLeave}
+                     onMouseDown={this.handleMouseDown}
+                     >
                     <Rows 
                         gameData={Object.assign(this.props.gameData, 
                                                 { handleMouseDown: this.handleMouseDown, handleMouseUp: this.handleMouseUp },

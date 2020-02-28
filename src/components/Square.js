@@ -16,10 +16,10 @@ export default class Square extends React.Component {
             <div id={id} 
                  className={this.classNames(id)}
                  destinations={destinations}
-                 onMouseDown={(evt) => { 
-                     evt.preventDefault()
-                     this.props.gameData.handleMouseDown(id, destinations)
-                 } }
+                //  onMouseDown={(evt) => { 
+                //      evt.preventDefault()
+                //      this.props.gameData.handleMouseDown(id, destinations)
+                //  } }
                  onMouseUp={(evt) => { 
                     evt.preventDefault()
                     this.props.gameData.handleMouseUp(id)
