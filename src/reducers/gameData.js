@@ -72,11 +72,6 @@ export default (state = gameDataReducerDefaultState, action) => {
                 ...state,
                 colorToMove: action.color
             }
-        case 'SET_GRABBED':
-            return {
-                ...state,
-                grabbed: action.grabbed
-            }
         case 'SET_TARGET':
             return {
                 ...state,

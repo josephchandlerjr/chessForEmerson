@@ -16,16 +16,10 @@ class Chess extends React.Component {
             liveGameInfo: this.props.live ? { status: 'waiting'} : {}
         }
         this.handleFlipBoard = this.handleFlipBoard.bind(this)
-        this.getPossibleMoves = this.getPossibleMoves.bind(this)
         this.makeMove = this.makeMove.bind(this)
         this.reset = this.reset.bind(this)
         this.setAutomatedColor = this.setAutomatedColor.bind(this)
         this.update = this.update.bind(this)
-    }
-
-    getPossibleMoves(squareId) {
-        let destinations = this.control.viewRequest({request: "validMoves", from: squareId});
-        return Object.keys(destinations).join(" ")
     }
 
     handleFlipBoard() {
@@ -95,7 +89,6 @@ class Chess extends React.Component {
     render() {
         let gameData = Object.assign( this.state.gameData, 
             {flipped: this.state.flipped,
-             getPossibleMoves: this.getPossibleMoves,
              makeMove: this.makeMove,
              live: this.props.live
             }

@@ -2,7 +2,6 @@ import React from 'react'
 import Rows from './Rows'
 import { connect } from 'react-redux'
 
-import { setGrabbed } from '../actions/gameData'
 import { setTarget } from '../actions/gameData'
 import { setSelected } from '../actions/gameData'
 
@@ -26,7 +25,6 @@ class Board extends React.Component {
         const destinations = parent.getAttribute('destinations').split(" ")
         this.lastClicked = id
 
-        this.props.dispatch(setGrabbed(true))
         this.props.dispatch(setTarget(destinations))
         this.props.dispatch(setSelected(id))
         this.setState( () => ({ grabbed: true }))
@@ -40,7 +38,6 @@ class Board extends React.Component {
     handleMouseUp(evt){
         evt.preventDefault()
         const id = evt.target.tagName === 'IMG' ? evt.target.parentElement.id : evt.target.id
-        this.props.dispatch(setGrabbed(false))
         this.props.dispatch(setTarget([]))
         this.props.dispatch(setSelected(undefined))
         this.setState( () => ({ grabbed: false }))
@@ -51,7 +48,6 @@ class Board extends React.Component {
     }
     handleMouseLeave(evt){
         this.lastClicked = null;
-        this.props.dispatch(setGrabbed(false))
         this.props.dispatch(setTarget([]))
         this.props.dispatch(setSelected(undefined))
         this.setState( () => ({grabbed: false}))
