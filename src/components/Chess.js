@@ -47,7 +47,7 @@ class Chess extends React.Component {
             from : to,
             to : from
         })
-        if (gameData) this.setState( () => ( { gameData } ) )
+        //if (gameData) this.setState( () => ( { gameData } ) )
         if (gameData) this.props.dispatch(setBoard(gameData.board))
     }
     reset(evt) {

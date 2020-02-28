@@ -1,7 +1,12 @@
 import React from 'react'
 import Rows from './Rows'
+import { connect } from 'react-redux'
 
-export default class Board extends React.Component {
+import { setGrabbed } from '../actions/gameData'
+import { setTarget } from '../actions/gameData'
+import { setSelected } from '../actions/gameData'
+
+class Board extends React.Component {
     constructor(props) {
         super(props)
         this.lastClicked = null
@@ -9,11 +14,7 @@ export default class Board extends React.Component {
         this.handleMouseUp = this.handleMouseUp.bind(this)
         this.handleMouseLeave = this.handleMouseLeave.bind(this)
 
-        this.state = {
-            grabbed: false,
-            selected: undefined,
-            target: []
-        }
+        this.state = { grabbed: false }
     }
     handleMouseDown(evt) {
         evt.preventDefault()
@@ -21,17 +22,14 @@ export default class Board extends React.Component {
         if(target.tagName !== 'IMG') return
         const parent = target.parentElement
         const id = parent.id
+        console.log(id)
         const destinations = parent.getAttribute('destinations').split(" ")
         this.lastClicked = id
 
-        this.setState( () => (
-            {
-                grabbed: true,
-                selected: id,
-                target: destinations
-            }
-            ) 
-        )
+        this.props.dispatch(setGrabbed(true))
+        this.props.dispatch(setTarget(destinations))
+        this.props.dispatch(setSelected(id))
+        this.setState( () => ({ grabbed: true }))
     }
     classNames() {
         let result = ''
@@ -42,14 +40,10 @@ export default class Board extends React.Component {
     handleMouseUp(evt){
         evt.preventDefault()
         const id = evt.target.tagName === 'IMG' ? evt.target.parentElement.id : evt.target.id
-        this.setState( () => (
-            {
-                grabbed: false,
-                selected: undefined,
-                target: []
-            }
-            ) 
-        )
+        this.props.dispatch(setGrabbed(false))
+        this.props.dispatch(setTarget([]))
+        this.props.dispatch(setSelected(undefined))
+        this.setState( () => ({ grabbed: false }))
         if (this.lastClicked !== null){
             this.props.gameData.makeMove(this.lastClicked, id)
             this.lastClicked = null;
@@ -57,14 +51,10 @@ export default class Board extends React.Component {
     }
     handleMouseLeave(evt){
         this.lastClicked = null;
-        this.setState( () => (
-            {
-                grabbed: false,
-                selected: undefined,
-                target: []
-            }
-            ) 
-        )
+        this.props.dispatch(setGrabbed(false))
+        this.props.dispatch(setTarget([]))
+        this.props.dispatch(setSelected(undefined))
+        this.setState( () => ({grabbed: false}))
     }
     render() {
         return (
@@ -83,3 +73,5 @@ export default class Board extends React.Component {
         )
     }
 }
+
+export default connect()(Board)

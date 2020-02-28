@@ -10,12 +10,24 @@ const gameDataReducerDefaultState = {
         a2: "wp", b2: "wp", c2: "wp", d2: "wp", e2: "wp", f2: "wp", g2: "wp", h2: "wp", 
         a1: "wr", b1: "wn", c1: "wb", d1: "wq", e1: "wk", f1: "wb", g1: "wn", h1: "wr",
     },
-    movesMap: {},
+    movesMap: {
+        a1: "", a2: "a3 a4", a3: "", a4: "", a5: "", a6: "", a7: "a5 a6", a8: "", 
+        b1: "a3 c3", b2: "b3 b4", b3: "", b4: "", b5: "", b6: "", b7: "b5 b6", b8: "a6 c6", 
+        c1: "", c2: "c3 c4", c3: "", c4: "", c5: "", c6: "", c7: "c5 c6", c8: "", 
+        d1: "", d2: "d3 d4", d3: "", d4: "", d5: "", d6: "", d7: "d5 d6", d8: "", 
+        e1: "", e2: "e3 e4", e3: "", e4: "", e5: "", e6: "", e7: "e5 e6", e8: "", 
+        f1: "", f2: "f3 f4", f3: "", f4: "", f5: "", f6: "", f7: "f5 f6", f8: "", 
+        g1: "f3 h3", g2: "g3 g4", g3: "", g4: "", g5: "", g6: "", g7: "g5 g6", g8: "f6 h6", 
+        h1: "", h2: "h3 h4", h3: "", h4: "", h5: "", h6: "", h7: "h5 h6", h8: "",
+    },
     moves: [],
     gameOver: false,
     checkmate: false,
     winner: undefined,
-    colorToMove: "w"
+    colorToMove: "w",
+    grabbed: false,
+    selected: undefined,
+    target: []
     }
     
 export default (state = gameDataReducerDefaultState, action) => {
@@ -59,6 +71,21 @@ export default (state = gameDataReducerDefaultState, action) => {
             return {
                 ...state,
                 colorToMove: action.color
+            }
+        case 'SET_GRABBED':
+            return {
+                ...state,
+                grabbed: action.grabbed
+            }
+        case 'SET_TARGET':
+            return {
+                ...state,
+                target: action.target
+            }
+        case 'SET_SELECTED':
+            return {
+                ...state,
+                selected: action.selected
             }
         default:
             return state

@@ -38,3 +38,18 @@ export const setColorToMove = (color = undefined) => ({
     type: 'SET_COLOR_TO_MOVE',
     color
 })
+//SET_GRABBED
+export const setGrabbed = (grabbed = false) => ({
+    type: 'SET_GRABBED',
+    grabbed
+})
+//SET_TARGET
+export const setTarget = (target= []) => ({
+    type: 'SET_TARGET',
+    target
+})
+//SET_SELECTED
+export const setSelected = (selected = undefined) => ({
+    type: 'SET_SELECTED',
+    selected
+})
