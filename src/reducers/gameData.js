@@ -15,7 +15,7 @@ const gameDataReducerDefaultState = {
     gameOver: false,
     checkmate: false,
     winner: undefined,
-    colorToMove: undefined
+    colorToMove: "w"
     }
     
 export default (state = gameDataReducerDefaultState, action) => {
