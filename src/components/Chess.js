@@ -12,7 +12,6 @@ class Chess extends React.Component {
         this.control = this.props.control
         this.state = {
             gameData: this.props.gameData,
-            // flipped: undefined,
             liveGameInfo: this.props.live ? { status: 'waiting'} : {}
         }
         this.makeMove = this.makeMove.bind(this)

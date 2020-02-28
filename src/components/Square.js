@@ -12,7 +12,6 @@ class Square extends React.Component {
     render() {
         let id = this.props.file + this.props.rank
         let rep = this.props.board[id]
-        //let destinations = this.props.gameData.getPossibleMoves(id)
         return (
             <div id={id} 
                  className={this.classNames(id)}
