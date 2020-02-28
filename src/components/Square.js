@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 class Square extends React.Component {
     classNames(id) {
         let result = 'square'
-        if(this.props.gameData.flipped) result = result + ' ' + 'flipped-board'
+        if(this.props.flipped) result = result + ' ' + 'flipped-board'
         if(this.props.selected === id) result = result + ' ' + 'selected'
         if(this.props.target.includes(id)) result = result + ' ' + 'target'
         return result
@@ -30,7 +30,7 @@ const mapStateToProps = (state) => {
         movesMap: state.gameData.movesMap,
         selected: state.gameData.selected,
         target: state.gameData.target,
-
+        flipped: state.gameData.flipped
     }
 }
 

@@ -1,6 +1,8 @@
 import React from 'react'
+import { connect } from 'react-redux'
+import { toggleFlipped } from '../actions/gameData'
 
-export default class Nav extends React.Component {
+class Nav extends React.Component {
     render() {
         return (
             <nav className="navbar navbar-expand-sm navbar-dark bg-info">
@@ -33,7 +35,7 @@ export default class Nav extends React.Component {
                             </li>
                         }
                         <li className="nav-item">
-                            <a onClick={this.props.handleFlipBoard} className="nav-link" id="flip" href="#">Flip Board</a>
+                            <a onClick={() => this.props.dispatch(toggleFlipped())} className="nav-link" id="flip" href="#">Flip Board</a>
                         </li>
                     </ul>
                 </div>
@@ -42,3 +44,10 @@ export default class Nav extends React.Component {
     }
 }
 
+const mapStateToProps = (state) => {
+    return {
+
+    }
+}
+
+export default connect(mapStateToProps)(Nav)

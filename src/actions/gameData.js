@@ -48,3 +48,7 @@ export const setSelected = (selected = undefined) => ({
     type: 'SET_SELECTED',
     selected
 })
+//SET_FLIPPED
+export const toggleFlipped = () => ({
+    type: 'TOGGLE_FLIPPED',
+})

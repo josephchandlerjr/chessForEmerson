@@ -31,7 +31,7 @@ class Board extends React.Component {
     }
     classNames() {
         let result = ''
-        if(this.props.gameData.flipped) result = result + ' ' + 'flipped-board'
+        if(this.props.flipped) result = result + ' ' + 'flipped-board'
         if(this.state.grabbed) result = result + ' ' + 'grabbed'
         return result
     }
@@ -70,4 +70,10 @@ class Board extends React.Component {
     }
 }
 
-export default connect()(Board)
+const mapStateToProps = (state) => {
+    return {
+        flipped: state.gameData.flipped
+    }
+}
+
+export default connect(mapStateToProps)(Board)

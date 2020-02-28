@@ -12,19 +12,13 @@ class Chess extends React.Component {
         this.control = this.props.control
         this.state = {
             gameData: this.props.gameData,
-            flipped: undefined,
+            // flipped: undefined,
             liveGameInfo: this.props.live ? { status: 'waiting'} : {}
         }
-        this.handleFlipBoard = this.handleFlipBoard.bind(this)
         this.makeMove = this.makeMove.bind(this)
         this.reset = this.reset.bind(this)
         this.setAutomatedColor = this.setAutomatedColor.bind(this)
         this.update = this.update.bind(this)
-    }
-
-    handleFlipBoard() {
-        let flipped = !this.state.flipped
-        this.setState( () => ( { flipped } ) )
     }
 
     update(gameData, liveGameInfo={}) {
@@ -41,7 +35,6 @@ class Chess extends React.Component {
             from : to,
             to : from
         })
-        //if (gameData) this.setState( () => ( { gameData } ) )
         if (gameData) this.props.dispatch(setBoard(gameData.board))
     }
     reset(evt) {
@@ -76,19 +69,17 @@ class Chess extends React.Component {
         
             socket.on('opponentLeft', () => {
                 this.update(null, {status: 'disconnect'})
-                //alert('Your opponent has disconnected.\n Please refresh page to find a new opponent')
             })
         
             socket.on('gameOver', () => {
                 this.update(null,  {status: 'game-over'} )
-                //alert('This game is over.\n Please refresh page to find a new opponent')
             })
         }
     }
     
     render() {
         let gameData = Object.assign( this.state.gameData, 
-            {flipped: this.state.flipped,
+            {
              makeMove: this.makeMove,
              live: this.props.live
             }

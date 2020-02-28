@@ -27,7 +27,8 @@ const gameDataReducerDefaultState = {
     colorToMove: "w",
     grabbed: false,
     selected: undefined,
-    target: []
+    target: [],
+    flipped: false
     }
     
 export default (state = gameDataReducerDefaultState, action) => {
@@ -81,6 +82,11 @@ export default (state = gameDataReducerDefaultState, action) => {
             return {
                 ...state,
                 selected: action.selected
+            }
+        case 'TOGGLE_FLIPPED':
+            return {
+                ...state,
+                flipped: !state.flipped
             }
         default:
             return state
