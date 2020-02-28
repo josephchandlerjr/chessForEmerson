@@ -39,20 +39,9 @@ export default class Board extends React.Component {
         if(this.state.grabbed) result = result + ' ' + 'grabbed'
         return result
     }
-
-    // handleMouseDown(id, destinations){
-    //     this.lastClicked = id
-    //     destinations = destinations.split(" ")
-    //     this.setState( () => (
-    //         {
-    //             grabbed: true,
-    //             selected: id,
-    //             target: destinations
-    //         }
-    //         ) 
-    //     )
-    //   }
-    handleMouseUp(id){
+    handleMouseUp(evt){
+        evt.preventDefault()
+        const id = evt.target.tagName === 'IMG' ? evt.target.parentElement.id : evt.target.id
         this.setState( () => (
             {
                 grabbed: false,
@@ -76,12 +65,13 @@ export default class Board extends React.Component {
             }
             ) 
         )
-      }
+    }
     render() {
         return (
                 <div id="board" className={this.classNames()} 
                      onMouseLeave={this.handleMouseLeave}
                      onMouseDown={this.handleMouseDown}
+                     onMouseUp={this.handleMouseUp}
                      >
                     <Rows 
                         gameData={Object.assign(this.props.gameData, 
