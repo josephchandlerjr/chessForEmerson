@@ -14,12 +14,24 @@ class Chess extends React.Component {
             gameData: this.props.gameData,
             liveGameInfo: this.props.live ? { status: 'waiting'} : {}
         }
+<<<<<<< HEAD
+=======
+        this.handleFlipBoard = this.handleFlipBoard.bind(this)
+>>>>>>> c230ac09410b56c3917b4072c806caba285c6a6f
         this.makeMove = this.makeMove.bind(this)
         this.reset = this.reset.bind(this)
         this.setAutomatedColor = this.setAutomatedColor.bind(this)
         this.update = this.update.bind(this)
     }
 
+<<<<<<< HEAD
+=======
+    handleFlipBoard() {
+        let flipped = !this.state.flipped
+        this.setState( () => ( { flipped } ) )
+    }
+
+>>>>>>> c230ac09410b56c3917b4072c806caba285c6a6f
     update(gameData, liveGameInfo={}) {
         console.log('here are the args')
         console.log(gameData)
@@ -78,7 +90,11 @@ class Chess extends React.Component {
     
     render() {
         let gameData = Object.assign( this.state.gameData, 
+<<<<<<< HEAD
             {
+=======
+            {flipped: this.state.flipped,
+>>>>>>> c230ac09410b56c3917b4072c806caba285c6a6f
              makeMove: this.makeMove,
              live: this.props.live
             }
