@@ -4,6 +4,7 @@ import StatusMessage from './StatusMessage'
 import Board from './Board'
 import LiveModal from './LiveModal'
 import { connect } from 'react-redux'
+import { setBoard } from '../actions/gameData'
 
 class Chess extends React.Component {
     constructor(props) {
@@ -47,6 +48,7 @@ class Chess extends React.Component {
             to : from
         })
         if (gameData) this.setState( () => ( { gameData } ) )
+        if (gameData) this.props.dispatch(setBoard(gameData.board))
     }
     reset(evt) {
         evt.preventDefault()

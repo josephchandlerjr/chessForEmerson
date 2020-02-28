@@ -1,6 +1,7 @@
 import React from 'react'
+import { connect } from 'react-redux'
 
-export default class Square extends React.Component {
+class Square extends React.Component {
     classNames(id) {
         let result = 'square'
         if(this.props.gameData.flipped) result = result + ' ' + 'flipped-board'
@@ -10,7 +11,7 @@ export default class Square extends React.Component {
     }
     render() {
         let id = this.props.file + this.props.rank
-        let rep = this.props.gameData.board[id]
+        let rep = this.props.board[id]
         let destinations = this.props.gameData.getPossibleMoves(id)
         return (
             <div id={id} 
@@ -22,3 +23,12 @@ export default class Square extends React.Component {
         )
     }
 }
+
+const mapStateToProps = (state) => {
+    console.log('state is', state)
+    return {
+        board: state.gameData.board
+    }
+}
+
+export default connect(mapStateToProps)(Square)
