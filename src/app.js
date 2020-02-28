@@ -15,7 +15,7 @@ import './styles/styles.scss'
 
 const live = window.location.search === '?live=true' ? true : false
 const gameData = chessControl.start(chessModel)
-
+console.log(gameData)
 
 const jsx = (
     <Provider store={store}>
@@ -23,5 +23,4 @@ const jsx = (
     </Provider>
 )
 
-ReactDOM.render(jsx , 
-                    document.getElementById('app'))
+ReactDOM.render(jsx, document.getElementById('app'))

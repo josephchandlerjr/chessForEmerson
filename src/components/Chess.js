@@ -3,8 +3,9 @@ import Nav from './Nav'
 import StatusMessage from './StatusMessage'
 import Board from './Board'
 import LiveModal from './LiveModal'
+import { connect } from 'react-redux'
 
-export default class Chess extends React.Component {
+class Chess extends React.Component {
     constructor(props) {
         super(props)
         this.control = this.props.control
@@ -114,3 +115,5 @@ export default class Chess extends React.Component {
         )
     }
 }
+
+export default connect()(Chess)
