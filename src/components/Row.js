@@ -2,16 +2,16 @@ import React from 'react'
 import Square from './Square'
 
 
-export default class Row extends React.Component {
-    render() {
+const Row = (props)  => {
         return (
             <div className="row">
             {["a","b","c","d","e","f","g","h"].map( (file) => <Square 
-                                                                   rank={this.props.rank}
+                                                                   rank={props.rank}
                                                                    file={file} 
-                                                                   gameData={this.props.gameData}
+                                                                   gameData={props.gameData}
                                                                    />)}
             </div>
-        )
-    }
+        )  
 }
+
+export default Row
