@@ -12,7 +12,6 @@ class Board extends React.Component {
         this.handleMouseDown = this.handleMouseDown.bind(this)
         this.handleMouseUp = this.handleMouseUp.bind(this)
         this.handleMouseLeave = this.handleMouseLeave.bind(this)
-
         this.state = { grabbed: false }
     }
     handleMouseDown(evt) {
@@ -21,10 +20,8 @@ class Board extends React.Component {
         if(target.tagName !== 'IMG') return
         const parent = target.parentElement
         const id = parent.id
-        console.log(id)
         const destinations = parent.getAttribute('destinations').split(" ")
         this.lastClicked = id
-
         this.props.dispatch(setTarget(destinations))
         this.props.dispatch(setSelected(id))
         this.setState( () => ({ grabbed: true }))
@@ -65,7 +62,6 @@ class Board extends React.Component {
                         
                         />
                 </div>
-
         )
     }
 }

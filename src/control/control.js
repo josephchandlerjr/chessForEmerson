@@ -1,7 +1,7 @@
 import { getAllSquares, getAllSquarePairings } from './utils/squares'
 
-let model, view, self;
-let colorToMove, lastMove, canCastle, whiteInCheck, blackInCheck;
+let model, self;
+let colorToMove, lastMove, canCastle;
 let gameOver;
 let isCheckmate;
 let automated = {"b": true, "w": false};
@@ -51,13 +51,10 @@ function start(mObj) {
 function init(){
   gameOver = false;
   isCheckmate = false;
-  lastMove = new Move("00","00","00","00","00","00");
   canCastle = {
     w : {queenside: true, kingside: true},
     b : {queenside: true, kingside: true}
   };
-  whiteInCheck = false;
-  blackInCheck = false;
   for (let sqr=0; sqr < allSquares.length;sqr++){
     let thisSqr = allSquares[sqr];
     adjacentSquares[thisSqr] = {};
@@ -581,7 +578,8 @@ function isValidPawnMove( from, fromPiece, to, toPiece, activeColor, board){
       if(toPiece !== "00"){
         result =  new Move(from, to, to, fromPiece, getPieceOnSquare(to, board), null);
       }
-      if(lastMove.pieceMoved[1] === "p" &&
+      if(lastMove &&
+         lastMove.pieceMoved[1] === "p" &&
          lastMove.toSquare === getSquare(from, diagDirection) &&
          lastMove.fromSquare === getSquare(from,[diagDirection,direction,direction])){
            let captureSquare = getSquare(from, diagDirection);

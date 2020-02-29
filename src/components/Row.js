@@ -6,10 +6,11 @@ const Row = (props)  => {
         return (
             <div className="row">
             {["a","b","c","d","e","f","g","h"].map( (file) => <Square 
-                                                                   rank={props.rank}
-                                                                   file={file} 
-                                                                   gameData={props.gameData}
-                                                                   />)}
+                                                                key={file+props.rank}
+                                                                rank={props.rank}
+                                                                file={file} 
+                                                                gameData={props.gameData}
+                                                                />)}
             </div>
         )  
 }
