@@ -399,6 +399,7 @@ function requestMove(from, to){
   // get a list of valid Move objects for activeColor
   // see if requested move is in that list
   let validMovesforActiveColor = movesMap.all[activeColor];
+  console.log(validMovesforActiveColor)
   let validMovement = false; //
   let thisMove;
   for (let i=0; i < validMovesforActiveColor.length; i++){
