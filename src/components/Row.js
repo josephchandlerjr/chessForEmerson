@@ -9,7 +9,7 @@ const Row = (props)  => {
                                                                 key={file+props.rank}
                                                                 rank={props.rank}
                                                                 file={file} 
-                                                                gameData={props.gameData}
+                                                                // gameData={props.gameData}
                                                                 />)}
             </div>
         )  

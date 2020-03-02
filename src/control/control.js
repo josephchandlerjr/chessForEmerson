@@ -2,14 +2,28 @@ import { getAllSquares, getAllSquarePairings } from './utils/squares'
 
 let model, self;
 let colorToMove, lastMove, canCastle;
-let gameOver;
-let isCheckmate;
+let gameOver = false;
+let isCheckmate = false;
 let automated = {"b": true, "w": false};
 let movesMap = {};
 
 const allSquares = getAllSquares();
 const allSquarePairings = getAllSquarePairings(allSquares);
 const adjacentSquares = {};
+for (let sqr=0; sqr < allSquares.length;sqr++){
+  let thisSqr = allSquares[sqr];
+  adjacentSquares[thisSqr] = {};
+  adjacentSquares[thisSqr].n = getAdjacentSquare(thisSqr,"n");
+  adjacentSquares[thisSqr].ne = getAdjacentSquare(thisSqr,"ne");
+  adjacentSquares[thisSqr].e = getAdjacentSquare(thisSqr,"e");
+  adjacentSquares[thisSqr].se = getAdjacentSquare(thisSqr,"se");
+  adjacentSquares[thisSqr].s = getAdjacentSquare(thisSqr,"s");
+  adjacentSquares[thisSqr].sw = getAdjacentSquare(thisSqr,"sw");
+  adjacentSquares[thisSqr].w = getAdjacentSquare(thisSqr,"w");
+  adjacentSquares[thisSqr].nw = getAdjacentSquare(thisSqr,"nw");
+}
+
+let officialBoard = undefined
 
 // live game stuff
 
@@ -84,10 +98,10 @@ function init(){
   }
 }
 
-/**
-* update movesMap with current board configuration
-*/
-function updateMovesMap(){
+export const getMovesMap = (board)  => {
+  if (board) officialBoard = board
+
+  const movesMap = {}
   for (let i=0; i < allSquares.length; i++){
     movesMap[allSquares[i]] = {};
   }
@@ -101,6 +115,14 @@ function updateMovesMap(){
     }
   }
   movesMap.all = validMoves;
+  return movesMap
+}
+
+/**
+* update movesMap with current board configuration
+*/
+function updateMovesMap(){
+  movesMap = getMovesMap()
 }
 
 /**
@@ -161,9 +183,11 @@ function viewRequest({request, color, from, to}){
 * @return {Object} object with two properties, white and black containing valid moves for each color
 */
 function getAllValidMoves(board){
+
   let result = {}, blackResults = [], whiteResults = [];
   let fromToPairs = allSquarePairings;
   fromToPairs.forEach(function(pair){
+  
     let whiteMove = isvalidMovement(pair, "w", board);
     if (whiteMove){
       whiteResults.push(whiteMove);
@@ -309,7 +333,8 @@ function toggleColorToMove(color){
 /**
 * calls requestMove with random move
 */
-function makeAutoMove(){
+export function makeAutoMove(){
+  console.log(getGameData())
   let currentBoard = getBoard();
   let activeColor = colorToMove;
   let result = false;
@@ -317,6 +342,7 @@ function makeAutoMove(){
     let moveObject = getRandomMove(activeColor, currentBoard);
     result = requestMove(moveObject.fromSquare, moveObject.toSquare);
   }
+  return result
 }
 
 /**
@@ -384,14 +410,31 @@ result = result.filter(x => x != null);
 return result;
 }
 
+export const setGameData = (gameData) => {
+   officialBoard = gameData.board
+   movesMap = gameData.movesMap
+   colorToMove = gameData.colorToMove
+   canCastle = gameData.canCastle
+}
+export const getGameData = () => ({
+  board: officialBoard,
+  movesMap,
+  colorToMove,
+  canCastle,
+  gameOver,
+  checkmate: isCheckmate
+})
+
 /**
 * determines if move is valid and if so executes moves
 * @param {String} from square moving piece from in in chess notation
 * @param {String} to square moving piece to in in chess notation
 * @return {Boolean} true if move executed else false;
 */
-function requestMove(from, to){
+export function requestMove(from, to, gameData){
+  if (gameData) setGameData(gameData)
   // who's who
+  currentBoard = board
   let activeColor = colorToMove;
   let opponentsColor = otherColor(activeColor);
   let currentBoard = getBoard();
@@ -399,7 +442,7 @@ function requestMove(from, to){
   // get a list of valid Move objects for activeColor
   // see if requested move is in that list
   let validMovesforActiveColor = movesMap.all[activeColor];
-  console.log(validMovesforActiveColor)
+
   let validMovement = false; //
   let thisMove;
   for (let i=0; i < validMovesforActiveColor.length; i++){
@@ -427,7 +470,8 @@ function requestMove(from, to){
       }
     }
 
-    updateModel(thisMove, newBoard);
+    //updateModel(thisMove, newBoard);
+    officialBoard = newBoard
     lastMove = thisMove;
     updateCanCastle(thisMove);
 
@@ -439,8 +483,9 @@ function requestMove(from, to){
     let opponentInCheck = activeColorNowThreatens.includes(opponentsKingLocation);
     if (opponentInCheck) {
       newValidMovesForOpponent = newValidMovesForOpponent.filter( (m) => !(m.special && m.special.description === "castle"))
-    } 
+    }
     gameOver = noLegalMoves(opponentsColor, newValidMovesForOpponent, newBoard);
+    console.log('from no legal moves', gameOver)
     if (gameOver){
       isCheckmate = opponentInCheck;
       if(live) socket.emit('gameOver')
@@ -448,7 +493,8 @@ function requestMove(from, to){
     toggleColorToMove();
     updateMovesMap();
   }
-  return validMovement;
+  console.log('getGameData returns', getGameData())
+  return validMovement && getGameData();
 }
 
 /**
@@ -473,23 +519,23 @@ function noLegalMoves(colorToMove, validMoves, board){
   return true;
 }
 
-/**
-* update the model
-* @param {Object} move a move object
-* @param {Array} board array of arrays
-*/
-function updateModel(move, board){
-  model.logMove(move);
-  model.updateBoard(board);
-  model.updateCapturedPieces(move.pieceCaptured);
-}
+// /**
+// * update the model
+// * @param {Object} move a move object
+// * @param {Array} board array of arrays
+// */
+// function updateModel(move, board){
+//   model.logMove(move);
+//   model.updateBoard(board);
+//   model.updateCapturedPieces(move.pieceCaptured);
+// }
 
 /**
 * gets current state of board as an Array
 * @return {Array} array of arrays representing board
 */
 function getBoard(){
-  return model.getBoard();
+  return officialBoard
 }
 
 /**
@@ -529,6 +575,7 @@ function isvalidMovement(fromToPairs, activeColor, board){
     return false;
   }
 
+
   switch(fromPiece[1]){
     case "p": return isValidPawnMove(  from, fromPiece, to, toPiece, activeColor, board);
     case "r": return isValidRookMove(  from, fromPiece, to, toPiece, activeColor, board);
@@ -537,6 +584,7 @@ function isvalidMovement(fromToPairs, activeColor, board){
     case "q": return isValidQueenMove( from, fromPiece, to, toPiece, activeColor, board);
     case "k": return isValidKingMove(  from, fromPiece, to, toPiece, activeColor, board);
   }
+
   return false;
 }
 
@@ -606,10 +654,11 @@ function isValidPawnMove( from, fromPiece, to, toPiece, activeColor, board){
 * @param {Array} board array of arrays representing board
 * @return {Boolean} true if movement of piece is valid
 */
-function isValidRookMove(from, fromPiece, to, toPiece, activeColor,board){
+function isValidRookMove(from, fromPiece, to, toPiece, activeColor, board){
     let directions = ["n","s","e","w"];
     for (let i=0; i < directions.length; i++){
       let direction = directions[i];
+    
       if (clearPath(from, to, direction, board) === true){
         return new Move(from, to, to, fromPiece, toPiece, null);
       }
@@ -847,11 +896,13 @@ let newSquare;
 * @return {String} location on board after moving as indicate by directions
 */
 function getSquare(square, directions){
+
   let currentSquare = square;
   for(let i=0;i < directions.length;i++){
     currentSquare = adjacentSquares[currentSquare][directions[i]];
     if (currentSquare === null){ return null;}
   }
+
   return currentSquare;
 }
 /**
@@ -879,6 +930,7 @@ function getNonAdjacentSquare(square, directions){// example - f3, ["n","w"]
 */
 function clearPath(location, target, direction, board){
   // return true if moving direction leads to target without pieces in between
+
   while (true) {
     location = getSquare(location, direction);
     if (location === target){ return true;}
@@ -888,12 +940,12 @@ function clearPath(location, target, direction, board){
   }
 }
 
-export const chessControl = { // *****Public Methods*****
-    start,
-    getBoardAsString,
-    requestMove,
-    otherColor,
-    viewRequest,
-    makeLive,
-    startLiveGame
-  };
+// export const chessControl = { // *****Public Methods*****
+//     start,
+//     getBoardAsString,
+//     requestMove,
+//     otherColor,
+//     viewRequest,
+//     makeLive,
+//     startLiveGame
+//   };

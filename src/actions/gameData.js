@@ -52,3 +52,28 @@ export const setSelected = (selected = undefined) => ({
 export const toggleFlipped = () => ({
     type: 'TOGGLE_FLIPPED',
 })
+
+//SET_AUTOMATED
+export const setAutomated = (color) => {
+    let automated = {b: undefined, w: undefined}
+    switch (color){
+        case "none" : automated.b = false; automated.w = false; break;
+        case "w": automated.b = false; automated.w = true; break;
+        case "b": automated.b = true; automated.w = false; break;
+      }
+    return {
+        type: 'SET_AUTOMATED',
+        automated
+    }
+}
+
+//SET_CAN_CASTLE
+export const setCanCastle = (canCastle) => ({
+    type: 'CAN_CASTLE',
+    canCastle
+})
+
+//RESET
+export const reset = () => ({
+    type: 'RESET'
+})

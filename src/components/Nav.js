@@ -1,8 +1,21 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { toggleFlipped } from '../actions/gameData'
+import { toggleFlipped, setAutomated, reset } from '../actions/gameData'
+
 
 class Nav extends React.Component {
+    constructor(props){
+        super(props)
+        this.setAutomated = this.setAutomated.bind(this)
+    }
+    setAutomated(color) {
+        new Promise( (resolve, reject) => {
+            this.props.dispatch(setAutomated(color))
+            resolve()
+        }).then( () => {
+            console.log(this.props.automated)
+        })
+    }
     render() {
         return (
             <nav className="navbar navbar-expand-sm navbar-dark bg-info">
@@ -22,16 +35,16 @@ class Nav extends React.Component {
                                 Computer Plays
                                 </a>
                                     <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-                                        <a onClick={this.props.setAutomatedColor} className="dropdown-item" href="#" name="black">Black</a>
-                                        <a onClick={this.props.setAutomatedColor} className="dropdown-item" href="#" name="white">White</a>
+                                        <a onClick={() => this.props.dispatch(setAutomated('b'))} className="dropdown-item" href="#" name="black">Black</a>
+                                        <a onClick={() => this.props.dispatch(setAutomated('w'))} className="dropdown-item" href="#" name="white">White</a>
                                         <div className="dropdown-divider"></div>
-                                        <a onClick={this.props.setAutomatedColor} className="dropdown-item" href="#" name="none">None</a>
+                                        <a onClick={() => this.props.dispatch(setAutomated('none'))} className="dropdown-item" href="#" name="none">None</a>
                                     </div>   
                             </li>
                         }
                         {!this.props.live &&
                             <li className="nav-item">
-                                <a onClick={this.props.reset}className="nav-link" id="reset" href="#">Reset</a>
+                                <a onClick={() => this.props.dispatch(reset())}className="nav-link" id="reset" href="#">Reset</a>
                             </li>
                         }
                         <li className="nav-item">
@@ -46,7 +59,9 @@ class Nav extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-
+        gameOver: state.gameData.gameOver,
+        automated: state.gameData.automated,
+        colorToMove: state.gameData.colorToMove
     }
 }
 

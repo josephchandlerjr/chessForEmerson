@@ -1,12 +1,13 @@
 import React from 'react'
+import { connect } from 'react-redux'
 
-export default class StatusMessage extends React.Component {
+class StatusMessage extends React.Component {
     generateMessage() {
-        let colorToMove = this.props.gameData.colorToMove === 'w' ? 'White' : 'Black'
+        let colorToMove = this.props.colorToMove === 'w' ? 'White' : 'Black'
         let otherColor = colorToMove ==='White' ? 'Black' : 'White'
-        if(this.props.gameData.gameOver) {
+        if(this.props.gameOver) {
             let message = 'Game over.'
-            if(this.props.gameData.isCheckmate) {
+            if(this.props.checkmate) {
                 message += `${otherColor} wins by checkmate.`
             } else {
                 message += 'Draw.'
@@ -24,3 +25,13 @@ export default class StatusMessage extends React.Component {
         )
     }
 }
+
+const mapStateToProps = (state) => {
+    return {
+        gameOver: state.gameData.gameOver,
+        colorToMove: state.gameData.colorToMove,
+        checkmate: state.gameData.checkmate
+    }
+}
+
+export default connect(mapStateToProps)(StatusMessage)

@@ -1,9 +1,17 @@
 import React from 'react'
 import Rows from './Rows'
 import { connect } from 'react-redux'
-
-import { setTarget } from '../actions/gameData'
-import { setSelected } from '../actions/gameData'
+import { requestMove, makeAutoMove } from '../control/control'
+import { setTarget, 
+        setSelected,
+        setBoard, 
+        setMovesMap, 
+        addMove, 
+        setGameOver,
+        setCheckmate, 
+        setWinner, 
+        setColorToMove, 
+        setCanCastle } from '../actions/gameData'
 
 class Board extends React.Component {
     constructor(props) {
@@ -39,7 +47,7 @@ class Board extends React.Component {
         this.props.dispatch(setSelected(undefined))
         this.setState( () => ({ grabbed: false }))
         if (this.lastClicked !== null){
-            this.props.gameData.makeMove(this.lastClicked, id)
+            this.makeMove(this.lastClicked, id)
             this.lastClicked = null;
         }
     }
@@ -49,6 +57,42 @@ class Board extends React.Component {
         this.props.dispatch(setSelected(undefined))
         this.setState( () => ({grabbed: false}))
     }
+    makeMove(from, to, piece) {
+        if (this.props.gameOver) {
+        return false;
+        }
+        if(this.props.live && this.props.liveColor[0] !== this.props.board[from][0]) {
+            return false
+        }
+        let executed = requestMove(from, to, this.props.gameData);
+        console.log('EXECUTED', executed)
+        if (executed) {
+            this.updateStoreAfterSuccessfulMove(executed)
+            if (this.props.live) {
+                this.props.socket.emit('move', {request, color, from, to}) 
+            
+            } else {
+                return false
+            }
+        }
+    }
+    componentDidUpdate() {
+        //make automove if appropriate
+        if (this.props.automated[this.props.colorToMove] && !this.props.gameOver){
+            let autoMove = makeAutoMove()
+            this.updateStoreAfterSuccessfulMove(autoMove)
+        }
+    }
+    updateStoreAfterSuccessfulMove({ board, canCastle, checkmate, colorToMove, gameOver, movesMap}){
+            this.props.dispatch(setBoard(board))
+            this.props.dispatch(setMovesMap(movesMap))
+            //this.props.dispatch(addMove())
+            this.props.dispatch(setGameOver(gameOver))
+            this.props.dispatch(setCheckmate(checkmate))
+            //this.props.dispatch(setWinner())
+            this.props.dispatch(setCanCastle(canCastle))
+            this.props.dispatch(setColorToMove(colorToMove))
+    }
     render() {
         return (
                 <div id="board" className={this.classNames()} 
@@ -56,11 +100,7 @@ class Board extends React.Component {
                      onMouseDown={this.handleMouseDown}
                      onMouseUp={this.handleMouseUp}
                      >
-                    <Rows 
-                        gameData={Object.assign(this.props.gameData, 
-                                                {selected: this.state.selected, target:this.state.target}) }
-                        
-                        />
+                    <Rows />
                 </div>
         )
     }
@@ -68,7 +108,15 @@ class Board extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        flipped: state.gameData.flipped
+        automated: state.gameData.automated,
+        board: state.gameData.board,
+        colorToMove: state.gameData.colorToMove,
+        flipped: state.gameData.flipped,
+        gameData: state.gameData,
+        gameOver: state.gameData.gameOver,
+        live: state.liveGameData.live,
+        liveColor: state.liveGameData.color,
+        socket: state.liveGameData.socket
     }
 }
 
