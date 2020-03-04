@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { toggleFlipped, setAutomated, reset } from '../actions/gameData'
+import { toggleFlipped, setAutomated, reset} from '../actions/gameData'
+import { setLiveGame, setLiveGameStatus } from '../actions/liveGameData'
 
 
 class Nav extends React.Component {
@@ -27,7 +28,15 @@ class Nav extends React.Component {
                 <div className="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
                     <ul className="navbar-nav">
                         <li className="nav-item">
-                            <a className="nav-link" target="_blank" href={ this.props.live ? "/" : "/?live=true"}>{this.props.live ? 'Play Computer' : 'Play Live'}</a>
+                            <a className="nav-link" href="#" onClick={() => {
+                                    if (this.props.live) {
+                                        this.props.dispatch(setLiveGameStatus('abort'))
+                                    } else {
+                                        this.props.dispatch(setLiveGame())
+                                        this.props.dispatch(reset())
+                                    }
+                                }
+                            }>{this.props.live ? 'Play Computer' : 'Play Live'}</a>
                         </li>
                         {!this.props.live &&
                             <li className="nav-item dropdown"> 
@@ -59,9 +68,10 @@ class Nav extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        gameOver: state.gameData.gameOver,
         automated: state.gameData.automated,
-        colorToMove: state.gameData.colorToMove
+        colorToMove: state.gameData.colorToMove,
+        gameOver: state.gameData.gameOver,
+        live: state.liveGameData.live
     }
 }
 

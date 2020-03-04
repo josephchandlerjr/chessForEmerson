@@ -16,6 +16,7 @@ let queue = []
 
 io.on('connection', (socket) => {
 	socket.on('findOpponent', () => {
+		queue = queue.filter( (s) => s !== socket) //defensive programming. May not be necessary
 		if(queue.length > 0) {
 			socket.opponentSocket = queue.shift()
 			socket.opponentSocket.opponentSocket = socket
@@ -24,22 +25,17 @@ io.on('connection', (socket) => {
 		} else {
 			queue.push(socket)
 		}
-
-		socket.on('move', (moveData) => {
-			socket.opponentSocket.emit('move', moveData)
+		socket.on('mirrorGameData', (moveData) => {
+			socket.opponentSocket.emit('mirrorGameData', moveData)
 		})
-
 		socket.on('disconnect', () => {
 			queue = queue.filter( (s) => s !== socket)
 			if(socket.opponentSocket) socket.opponentSocket.emit('opponentLeft')
 		})
-
-		socket.on('gameOver', () => {
-			if(socket.opponentSocket) socket.opponentSocket.emit('gameOver')
-			socket.emit('gaveOver')
-
+		socket.on('abort', () => {
+			queue = queue.filter( (s) => s !== socket)
+			if(socket.opponentSocket) socket.opponentSocket.emit('opponentLeft')
 		})
-
 	})
 })
 

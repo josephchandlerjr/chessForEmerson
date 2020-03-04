@@ -1,4 +1,5 @@
 // Action Generators for game
+
 //SET_BOARD
 export const setBoard = (board) => ({
     type: 'SET_BOARD',
@@ -52,7 +53,6 @@ export const setSelected = (selected = undefined) => ({
 export const toggleFlipped = () => ({
     type: 'TOGGLE_FLIPPED',
 })
-
 //SET_AUTOMATED
 export const setAutomated = (color) => {
     let automated = {b: undefined, w: undefined}
@@ -66,14 +66,17 @@ export const setAutomated = (color) => {
         automated
     }
 }
-
 //SET_CAN_CASTLE
 export const setCanCastle = (canCastle) => ({
     type: 'CAN_CASTLE',
     canCastle
 })
-
 //RESET
 export const reset = () => ({
     type: 'RESET'
+})
+//MIRROR_GAME_DATA
+export const mirrorGameData = (gameData) => ({
+    type: 'MIRROR_GAME_DATA',
+    gameData
 })

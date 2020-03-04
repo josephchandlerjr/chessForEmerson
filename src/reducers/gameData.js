@@ -30,6 +30,10 @@ const gameDataReducerDefaultState = {
     
 export default (state = gameDataReducerDefaultState, action) => {
     switch (action.type) {
+        case 'MIRROR_GAME_DATA':
+            return {
+                ...action.gameData
+            }
         case 'SET_CAN_CASTLE':
             return {
                 ...state,

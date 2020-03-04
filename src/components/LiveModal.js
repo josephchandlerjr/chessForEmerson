@@ -1,53 +1,87 @@
 import React from 'react'
 import Modal from 'react-modal'
 import { connect } from 'react-redux'
-import { setLiveGameStatus } from '../actions/liveGameData'
+import { reset } from '../actions/gameData'
+import { setLiveGameStatus, setLiveGame } from '../actions/liveGameData'
 
 Modal.setAppElement('#app') // removes console error
 
 class LiveModal extends React.Component {
     constructor(props) {
         super(props)
-        this.updateStatus = this.updateStatus.bind(this)
+        this.confirm = this.confirm.bind(this)
+        this.cancel = this.cancel.bind(this)
     }
     generateMessage() {
         let status = this.props.status
-        if(status === 'waiting') return 'Waiting for opponent to arrive...'
-        if(status === 'found') return `Your opponent has arrived. You will be playing as ${this.props.color}.`
-        if(status === 'disconnect') return 'Your opponent has disconnected. Click OK to find a new opponent.'
-        if(status === 'game-over') return 'Game Over. Click OK to find a new opponent.'
+        if(status === 'waiting') return 'Waiting for opponent. You will be paired with the next user to access live game mode. Click cancel to end live game mode. '
+        if(status === 'found') return `Your opponent has arrived. You will be playing as ${this.props.color}. Good luck!`
+        if(status === 'disconnect') return 'Your opponent has disconnected. Click OK to find a new opponent or click Cancel to end live game mode.'
+        if(status === 'game-over') return 'This game is over. Click OK to find a new opponent or click Cancel to end live game mode.'
+        if(status === 'abort') return 'Are you sure? Click OK to end live game mode. Click Cancel to continue playing.'
     }
-    updateStatus() {
+    confirm() {
         let status = this.props.status
-
-        if(status === 'found') return this.props.dispatch(setLiveGameStatus('playing'))
-        window.location.reload()
+        switch (status) {
+            case 'found':
+                return () => this.props.dispatch(setLiveGameStatus('playing'))
+            case 'game-over':
+                return () => this.props.dispatch(reset())
+            case 'disconnect':
+                return () => this.props.dispatch(reset())
+            case 'abort':
+                return () => {
+                    this.props.dispatch(setLiveGame())
+                    this.props.socket.emit('abort')
+                    this.props.dispatch(reset())
+                }
+        }
     }
-    render(){
+    cancel() { 
+        let status = this.props.status     
+        switch (status) {
+            case 'waiting':
+                return () => {
+                    this.props.dispatch(setLiveGame())
+                    this.props.socket.emit('abort')
+                    this.props.dispatch(reset())
+                }
+            case 'game-over':
+                return () => {
+                    this.props.dispatch(setLiveGame())
+                    this.props.dispatch(reset())
+                }
+            case 'disconnect':
+                return () => {
+                    this.props.dispatch(setLiveGame())
+                    this.props.dispatch(reset())
+                }
+            case 'abort':
+                return () => this.props.dispatch(setLiveGameStatus('playing'))
+        }
+    }
+    render() {
         return (
             <Modal
-                isOpen={['waiting', 'found', 'disconnect', 'game-over'].includes(this.props.status)}
+                isOpen={['waiting', 'found', 'abort', 'game-over', 'disconnect'].includes(this.props.status)}
                 contentLabel="Live game modal"
                 closeTimeoutMS={500}
                 className="live-modal"
                 >
                 <h3 className="live-modal__text">{this.generateMessage()}</h3>
-                {
-                    this.props.status !== 'waiting' &&
-                    <button onClick={this.updateStatus}>OK</button>
-                }
+                { this.props.status !== 'waiting' && <button onClick={this.confirm()}>OK</button> }
+                { this.props.status !== 'found' && <button onClick={this.cancel()}>Cancel</button> }
             </Modal>
-        )
-        
+        )   
     }
-
 }
 
 const mapStateToProps = (state) => {
     return {
+        color: state.liveGameData.color,
         live: state.liveGameData.live,
-        status: state.liveGameData.status,
-
+        socket: state.liveGameData.socket,
+        status: state.liveGameData.status
     }
 }
 

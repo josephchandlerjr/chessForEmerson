@@ -11,7 +11,7 @@ switch (action.type) {
     case 'SET_LIVE_GAME':
         return {
             ...state,
-            live: action.live
+            live: !state.live
         }
         case 'SET_LIVE_GAME_STATUS':
             return {

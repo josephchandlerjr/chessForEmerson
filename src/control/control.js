@@ -334,7 +334,7 @@ function toggleColorToMove(color){
 * calls requestMove with random move
 */
 export function makeAutoMove(){
-  console.log(getGameData())
+  
   let currentBoard = getBoard();
   let activeColor = colorToMove;
   let result = false;
@@ -485,15 +485,15 @@ export function requestMove(from, to, gameData){
       newValidMovesForOpponent = newValidMovesForOpponent.filter( (m) => !(m.special && m.special.description === "castle"))
     }
     gameOver = noLegalMoves(opponentsColor, newValidMovesForOpponent, newBoard);
-    console.log('from no legal moves', gameOver)
+    
     if (gameOver){
       isCheckmate = opponentInCheck;
-      if(live) socket.emit('gameOver')
+      //if(live) socket.emit('gameOver')
     }
     toggleColorToMove();
     updateMovesMap();
   }
-  console.log('getGameData returns', getGameData())
+  
   return validMovement && getGameData();
 }
 

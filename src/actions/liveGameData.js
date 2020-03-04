@@ -1,9 +1,8 @@
 //Action Generators for live game
 
 //SET_LIVE_GAME
-export const setLiveGame = (live) => ({
-    type: 'SET_LIVE_GAME',
-    live
+export const setLiveGame = () => ({
+    type: 'SET_LIVE_GAME'
 })
 //SET_LIVE_GAME_STATUS
 export const setLiveGameStatus = (status = undefined) => ({

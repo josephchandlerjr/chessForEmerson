@@ -28,9 +28,9 @@ class StatusMessage extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        gameOver: state.gameData.gameOver,
+        checkmate: state.gameData.checkmate,
         colorToMove: state.gameData.colorToMove,
-        checkmate: state.gameData.checkmate
+        gameOver: state.gameData.gameOver
     }
 }
 

@@ -1,34 +1,51 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import Chess from './components/Chess'
-// import { chessControl } from './control/control'
-// import { chessModel   } from './model/model'
 import configureStore from './store/configureStore'
 import { Provider } from 'react-redux'
-import { getMovesMap, setGameData, getGameData } from './control/control'
-import { setMovesMap } from './actions/gameData'
+import { getMovesMap, setGameData } from './control/control'
+import { setMovesMap, mirrorGameData} from './actions/gameData'
+import { setLiveGame, setLiveGameStatus, setLiveGameColor, setLiveGameSocket } from './actions/liveGameData'
 
 import 'normalize.css/normalize.css'
 import './styles/styles.scss'
 
 let store
+const socket = io()
+
+socket.on('setColor',(color) => {
+    store.dispatch(setLiveGameColor(color))
+    store.dispatch(setLiveGameStatus('found'))
+})
+socket.on('mirrorGameData', (gameData) => {
+    store.subscribe( () => store.getState())
+    store.dispatch(mirrorGameData(gameData))
+})
+
+socket.on('opponentLeft', () => {
+    store.dispatch(setLiveGameStatus('disconnect'))
+})
+
+const initLive = () => {
+    init()
+    store.dispatch(setLiveGameSocket(socket))
+    store.dispatch(setLiveGame())
+    store.dispatch(setLiveGameStatus('waiting'))
+    socket.emit('findOpponent')
+}
 
 const init = () => {
     store = configureStore()
     const startState = store.getState()
     store.dispatch(setMovesMap(getMovesMap(startState.gameData.board)))
-
     setGameData(store.getState().gameData)
-    store.subscribe( () => console.log(store.getState()))
-    const live = window.location.search === '?live=true' ? true : false
-    //const gameData = chessControl.start(chessModel)
 
     const jsx = (
         <Provider store={store}>
-            <Chess init={init} live={live} />
+            <Chess init={init}
+                   initLive={initLive} />
         </Provider>
     )
-
     ReactDOM.render(jsx, document.getElementById('app'))
 }
 

@@ -2,6 +2,7 @@ import React from 'react'
 import Rows from './Rows'
 import { connect } from 'react-redux'
 import { requestMove, makeAutoMove } from '../control/control'
+import { setLiveGameStatus } from '../actions/liveGameData'
 import { setTarget, 
         setSelected,
         setBoard, 
@@ -65,23 +66,30 @@ class Board extends React.Component {
             return false
         }
         let executed = requestMove(from, to, this.props.gameData);
-        console.log('EXECUTED', executed)
         if (executed) {
-            this.updateStoreAfterSuccessfulMove(executed)
-            if (this.props.live) {
-                this.props.socket.emit('move', {request, color, from, to}) 
-            
+            new Promise( (resolve, reject) => {
+                this.updateStoreAfterSuccessfulMove(executed)
+                resolve()
+            }).then( () => {
+                    if (this.props.live) {
+                        this.props.socket.emit('mirrorGameData', this.props.gameData) 
+                    }
+                })
             } else {
                 return false
             }
-        }
     }
     componentDidUpdate() {
         //make automove if appropriate
-        if (this.props.automated[this.props.colorToMove] && !this.props.gameOver){
+        if (!this.props.live && this.props.automated[this.props.colorToMove] && !this.props.gameOver){
             let autoMove = makeAutoMove()
             this.updateStoreAfterSuccessfulMove(autoMove)
         }
+        // if this is a live game and game is over
+        if (this.props.live && this.props.gameOver) {
+            this.props.dispatch(setLiveGameStatus('game-over'))
+        }
+        
     }
     updateStoreAfterSuccessfulMove({ board, canCastle, checkmate, colorToMove, gameOver, movesMap}){
             this.props.dispatch(setBoard(board))
