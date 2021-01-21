@@ -27,7 +27,7 @@
     "react-modal": "^3.11.1",
     "react-redux": "^7.2.0",
     "redux": "^4.0.5",
-    "socket.io": "^2.3.0"
+    "socket.io": "^2.4.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.8.4",
